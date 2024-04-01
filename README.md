@@ -1,2 +1,27 @@
-# CookNow
-Application developed in flutter to consult recipes
+# 🍳 CookNow
+
+## 💡 Features
+This is project is an app of the user can see a lot of revenues and favorite then in his account. 
+
+## ⚒️ Technologies
+- TypeScript
+- React
+- Styled-Components
+- Node.js
+- Fastify
+- Jest - Testes automatizados
+- CI | CD
+- Docker
+- PostgreSQL
+- Prisma ORM
+- Estilização de código - Prettier
+- TDD
+- API Rest
+- Flutter
+- Dart
+
+## 🔗 Integration
+You can see the API documentation <a href="#"> here </a>
+
+## 💻 Usage
+You can access the project from this <a href="#"> link </a>
