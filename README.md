@@ -8,11 +8,12 @@ This is project is an app of the user can see a lot of revenues and favorite the
 - React
 - Styled-Components
 - Node.js
-- Fastify
+- Express
+- Zod
 - Jest - Testes automatizados
 - CI | CD
 - Docker
-- PostgreSQL
+- MongoDB
 - Prisma ORM
 - Estilização de código - Prettier
 - TDD
