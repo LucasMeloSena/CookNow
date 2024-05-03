@@ -1,13 +1,8 @@
-import fastify from "fastify";
-import cors from "@fastify/cors";
-import { routes } from "./routes";
+import express, {Request, Response} from "express";
 
-export const app = fastify();
+const app = express();
 const port = 3001;
 
-app.register(cors, {});
-app.register(routes)
-
-app.listen({ port: port }).then(() => {
-  console.log(`Server running in ${port} port`);
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
