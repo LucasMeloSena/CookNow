@@ -1,3 +1,4 @@
+import 'package:cooknow/assets/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -12,7 +13,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.leading,
     this.actions,
     this.toolbarHeight = 4,
-    this.backgroundColor = const Color.fromRGBO(236, 208, 155, 1),
+    this.backgroundColor = MyColors.yellow_500,
   });
 
   @override

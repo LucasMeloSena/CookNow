@@ -1,3 +1,4 @@
+import 'package:cooknow/assets/styles/colors.dart';
 import 'package:cooknow/utils/routes.dart';
 import 'package:cooknow/widgets/Common/app_bar.dart';
 import 'package:cooknow/widgets/Introduce/introduce_card.dart';
@@ -15,7 +16,7 @@ class IntroduceView extends StatelessWidget {
       body: Container(
         height: height * 1,
         width: width * 1,
-        color: const Color.fromRGBO(255, 248, 235, 1),
+        color: MyColors.yellow_200,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,

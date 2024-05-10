@@ -1,3 +1,4 @@
+import 'package:cooknow/assets/styles/colors.dart';
 import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:flutter/material.dart';
 
@@ -5,6 +6,10 @@ InputDecoration getInputDecoration(String label) {
   return InputDecoration(
     hintText: label,
     hintStyle: MyTextStyle(),
+    errorStyle: MyTextStyle(
+      color: MyColors.red_700,
+      fontSize: 11,
+    ),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
     ),
@@ -13,15 +18,15 @@ InputDecoration getInputDecoration(String label) {
     contentPadding: const EdgeInsets.only(left: 10),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: Color.fromRGBO(211, 211, 211, 1)),
+      borderSide: const BorderSide(color: MyColors.grey_600),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: Color.fromRGBO(236, 208, 155, 1)),
+      borderSide: const BorderSide(color: MyColors.yellow_500),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: Color.fromRGBO(255, 138, 138, 1)),
+      borderSide: const BorderSide(color: MyColors.red_300),
     ),
   );
 }

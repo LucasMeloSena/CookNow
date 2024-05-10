@@ -1,3 +1,4 @@
+import 'package:cooknow/assets/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 class MyTextStyle extends TextStyle {
@@ -11,7 +12,7 @@ class MyTextStyle extends TextStyle {
     this.fontFamily = 'Poppins',
     this.fontWeight = FontWeight.normal,
     this.fontSize = 14,
-    this.color = const Color.fromRGBO(27, 32, 41, 1),
+    this.color = MyColors.black_600,
     this.height,
   });
 }

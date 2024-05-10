@@ -1,1 +1,1 @@
-enum InputType { email, senha }
+enum InputType { email, senha, celular, nome, image }

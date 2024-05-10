@@ -1,10 +1,9 @@
+import 'package:cooknow/assets/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 ButtonStyle getButtonStyle() {
   return ButtonStyle(
-    backgroundColor: const MaterialStatePropertyAll(
-      Color.fromRGBO(236, 208, 155, 1),
-    ),
+    backgroundColor: const MaterialStatePropertyAll(MyColors.yellow_500),
     fixedSize: const MaterialStatePropertyAll(
       Size.fromWidth(220),
     ),

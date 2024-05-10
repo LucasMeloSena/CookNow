@@ -4,9 +4,14 @@ import 'package:cooknow/utils/validator.dart';
 import 'package:cooknow/assets/styles/button_style.dart';
 import 'package:cooknow/assets/styles/input_style.dart';
 import 'package:cooknow/assets/styles/text_style.dart';
+import 'package:cooknow/widgets/Common/modal.dart';
 import 'package:flutter/material.dart';
 
 class LoginCard extends StatefulWidget {
+  final Function(bool) onLoadingChange;
+
+  LoginCard({required this.onLoadingChange});
+
   @override
   State<LoginCard> createState() => _LoginCardState();
 }
@@ -15,16 +20,31 @@ class _LoginCardState extends State<LoginCard> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  bool isLoading = false;
 
   void handleClickCriarConta(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed(AppRoutes.cadastro);
+    Navigator.of(context).pushNamed(AppRoutes.cadastro);
   }
 
-  Future<void> submitForm() async {
+  Future<void> submitForm(BuildContext context) async {
     final bool isValid = formKey.currentState?.validate() ?? false;
     if (!isValid) {
       return;
+    }
+    widget.onLoadingChange(true);
+    try {
+      print("Área segura");
+      throw Exception();
+    } catch (err) {
+      showModal(
+        context,
+        "Alerta!",
+        "Ocorreu um erro ao fazer login! Por favor, tente novamente mais tarde!",
+        [
+          {"icon": Icons.check, "label": "OK"}
+        ],
+      );
+    } finally {
+      widget.onLoadingChange(false);
     }
   }
 
@@ -35,7 +55,7 @@ class _LoginCardState extends State<LoginCard> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -91,7 +111,7 @@ class _LoginCardState extends State<LoginCard> {
             child: Column(
               children: [
                 ElevatedButton(
-                  onPressed: submitForm,
+                  onPressed: () => submitForm(context),
                   style: getButtonStyle(),
                   child: Text(
                     'LOGIN',
@@ -106,6 +126,7 @@ class _LoginCardState extends State<LoginCard> {
                   onPressed: () => handleClickCriarConta(context),
                   child: Text(
                     'Ainda não tem uma conta? Crie uma agora!',
+                    textAlign: TextAlign.center,
                     style: MyTextStyle(
                       fontWeight: FontWeight.w400,
                     ),
