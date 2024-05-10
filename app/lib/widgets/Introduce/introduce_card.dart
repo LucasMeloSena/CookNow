@@ -1,5 +1,6 @@
 import 'package:cooknow/utils/routes.dart';
-import 'package:cooknow/widgets/Common/text_style.dart';
+import 'package:cooknow/assets/styles/button_style.dart';
+import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:flutter/material.dart';
 
 class IntroduceCard extends StatefulWidget {
@@ -68,20 +69,7 @@ class _IntroduceCardState extends State<IntroduceCard> {
         Center(
           child: ElevatedButton(
             onPressed: () => handleChangeScreen(context),
-            style: ButtonStyle(
-              backgroundColor: const MaterialStatePropertyAll(
-                Color.fromRGBO(236, 208, 155, 1),
-              ),
-              fixedSize: const MaterialStatePropertyAll(
-                Size.fromWidth(220),
-              ),
-              elevation: const MaterialStatePropertyAll(3),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
+            style: getButtonStyle(),
             child: Text(
               buttonText,
               style: MyTextStyle(
