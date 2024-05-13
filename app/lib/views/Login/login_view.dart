@@ -20,7 +20,6 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: MyAppBar(),
@@ -30,8 +29,6 @@ class _LoginViewState extends State<LoginView> {
             )
           : SingleChildScrollView(
               child: Container(
-                height: height * 1,
-                width: width * 1,
                 color: MyColors.yellow_200,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -47,7 +44,6 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     Container(
                       padding: const EdgeInsets.all(25),
-                      width: width * 1,
                       height: height * 0.55,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),

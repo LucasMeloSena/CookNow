@@ -20,11 +20,11 @@ export const createUserController = async (req: Request, res: Response, next: Ne
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar cadastrar o usuário! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
-      res.status(404).json({ message: err.issues[0].message });
+      res.status(500).json({ message: err.issues[0].message });
       return;
     }
 
-    res.status(400).json({
+    res.status(500).json({
       message: errMessage,
     });
   } finally {
@@ -42,7 +42,7 @@ export const getUserByIdController = async (req: Request, res: Response, next: N
 
 export const getUsersController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-
+    res.status(200).json({ message: "host ok" });
   } catch (err) {
   } finally {
   }

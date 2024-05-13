@@ -12,4 +12,12 @@ class Validator {
       return null;
     }
   }
+
+  static String? validatePass(String pass, String confirm) {
+    if (pass != confirm) {
+      return "As senhas não são iguais!";
+    } else {
+      return null;
+    }
+  }
 }

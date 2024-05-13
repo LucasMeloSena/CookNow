@@ -20,9 +20,6 @@ class _CadastroViewState extends State<CadastroView> {
 
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: MyAppBar(),
       body: isLoading
@@ -32,8 +29,6 @@ class _CadastroViewState extends State<CadastroView> {
           : SingleChildScrollView(
               child: Container(
                 padding: const EdgeInsets.all(25),
-                height: height * 1,
-                width: width * 1,
                 color: MyColors.yellow_200,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,

@@ -7,8 +7,8 @@ export const createUserSchema = z.object({
   celular: z.string().min(16, "O celular está incorreto!"),
   img_profile: z.string().url("Imagem de perfil não é válida!").startsWith("https://", "Imagem de perfil não é válida!"),
   senha: z.string().min(6, "A senha precisa ter no mínimo 6 caracteres!"),
-  dt_cadastro: z.string().datetime(),
-  dt_atualizacao: z.string().datetime(),
+  dt_cadastro: z.string().datetime({ offset: true }),
+  dt_atualizacao: z.string().datetime({ offset: true }),
 });
 
 export type User = z.infer<typeof createUserSchema>;
