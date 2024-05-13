@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:cooknow/utils/scripts.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 
 class User {
@@ -22,26 +25,35 @@ class User {
 }
 
 class UserProvider with ChangeNotifier {
-  Future<String> uploadImage(File image, String fileName) async {
-    return "";
-    // Future<String?> _uploadUserImage(File? image, String imageName) async {
-    //   if (image == null) return null;
+  Future<String> uploadImage(
+      File file, String fileName, String fileType) async {
+    try {
+      FormData formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+          contentType: MediaType("image", "jpg"),
+        ),
+      });
 
-    //   final storage = FirebaseStorage.instance;
-    //   final imageRef = storage.ref().child('user_images').child(imageName);
-    //   await imageRef.putFile(image).whenComplete(() {});
-    //   return await imageRef.getDownloadURL();
-    // }
+      var response = await Dio().post(
+        'http://10.0.2.2:3001/upload/user/image/',
+        data: formData,
+      );
+
+      return response.data['image'];
+    } catch (err) {
+      throw Exception();
+    }
   }
 
   Future<void> createUser(User user) async {
     try {
-      // String imgUser = await uploadImage(
-      //   user.imageProfile,
-      //   "${(user.nome).trim().toLowerCase()}-${Random().nextDouble().toString()}",
-      // );
-
-      String imgTemp = "https://avatars.githubusercontent.com/u/93053816?v=4";
+      String imgUser = await uploadImage(
+        user.imageProfile,
+        "${(user.nome).trim().toLowerCase()}-${Random().nextDouble().toString()}",
+        Scripts.getFileType(user.imageProfile),
+      );
 
       final response = await http.post(
         Uri.parse(
@@ -54,7 +66,7 @@ class UserProvider with ChangeNotifier {
           'nome': user.nome,
           'email': user.email,
           'celular': user.celular,
-          'img_profile': imgTemp,
+          'img_profile': imgUser,
           'senha': user.senha,
           'dt_cadastro': DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(
             DateTime.now(),
@@ -64,8 +76,6 @@ class UserProvider with ChangeNotifier {
           ),
         }),
       );
-
-      print(jsonDecode(response.body));
 
       notifyListeners();
     } catch (err) {
