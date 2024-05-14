@@ -23,11 +23,11 @@ export enum userPath {
 
 export enum uploadPath {
   uploadUserImage = "/user/image",
-  removeUserImage = "/user/image"
+  removeUserImage = "/user/image",
 }
 
 export enum fileTypes {
   jpg = ".jpg",
   jpeg = ".jpeg",
-  png = ".png"
+  png = ".png",
 }

@@ -61,8 +61,7 @@ export const removeUserImageController = async (req: Request, res: Response, nex
 
     await deleteObject(storageRef);
     res.status(200).json({ message: "Imagem excluída com sucesso!" });
-  }
-  catch (err) {
+  } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar cadastrar o usuário! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
@@ -78,4 +77,4 @@ export const removeUserImageController = async (req: Request, res: Response, nex
       message: errMessage,
     });
   }
-}
+};
