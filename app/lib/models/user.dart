@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:cooknow/utils/constants.dart';
 import 'package:cooknow/utils/scripts.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class User {
   String celular;
   String email;
   String senha;
-  File imageProfile;
+  File? imageProfile;
 
   User({
     required this.nome,
@@ -26,13 +27,16 @@ class User {
 
 class UserProvider with ChangeNotifier {
   Future<String> uploadImage(
-      File file, String fileName, String fileType) async {
+    File file,
+    String fileName,
+    String fileType,
+  ) async {
     try {
       FormData formData = FormData.fromMap({
         'file': await MultipartFile.fromFile(
           file.path,
           filename: fileName,
-          contentType: MediaType("image", "jpg"),
+          contentType: MediaType("image", fileType),
         ),
       });
 
@@ -47,13 +51,38 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<void> createUser(User user) async {
+  Future<void> removeImage(String fileName) async {
     try {
-      String imgUser = await uploadImage(
-        user.imageProfile,
-        "${(user.nome).trim().toLowerCase()}-${Random().nextDouble().toString()}",
-        Scripts.getFileType(user.imageProfile),
+      await http.delete(
+        Uri.parse(
+          "http://10.0.2.2:3001/upload/user/image",
+        ),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'fileName': fileName}),
       );
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
+  Future<Map<String, dynamic>> createUser(User user) async {
+    try {
+      String fileName =
+          "${(user.nome).trim().toLowerCase()}-${Random().nextDouble().toString()}";
+      String imgUser = "";
+
+      if (user.imageProfile == null) {
+        imgUser =
+            'https://firebasestorage.googleapis.com/v0/b/cooknow-cdaf5.appspot.com/o/users%2Fdefault_avatar.jpg?alt=media&token=0ff1cc96-8793-4999-9f8a-23cdb48a379b';
+      } else {
+        imgUser = await uploadImage(
+          user.imageProfile!,
+          fileName,
+          Scripts.getFileType(user.imageProfile!),
+        );
+      }
 
       final response = await http.post(
         Uri.parse(
@@ -77,9 +106,24 @@ class UserProvider with ChangeNotifier {
         }),
       );
 
-      notifyListeners();
+      final result = jsonDecode(response.body);
+      if (response.statusCode == 500) {
+        removeImage(fileName);
+        Map<String, dynamic> retorno = {
+          'status': StatusResponse.error,
+          'message': result['message']
+        };
+        return retorno;
+      } else {
+        Map<String, dynamic> retorno = {
+          'status': StatusResponse.success,
+          'message': result['message']
+        };
+        notifyListeners();
+        return retorno;
+      }
     } catch (err) {
-      throw Exception();
+      throw Exception(err);
     }
   }
 }

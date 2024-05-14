@@ -58,6 +58,7 @@ class _CadastroViewState extends State<CadastroView> {
                     ),
                     CadastroForm(
                       onLoadingChange: changeLoadingState,
+                      context: context,
                     ),
                   ],
                 ),

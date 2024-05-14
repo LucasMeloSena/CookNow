@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cooknow/models/user.dart';
 import 'package:cooknow/utils/constants.dart';
 import 'package:cooknow/utils/routes.dart';
+import 'package:cooknow/utils/scripts.dart';
 import 'package:cooknow/utils/validator.dart';
 import 'package:cooknow/assets/styles/button_style.dart';
 import 'package:cooknow/assets/styles/input_style.dart';
@@ -9,13 +10,14 @@ import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:cooknow/widgets/Cadastro/image_input.dart';
 import 'package:cooknow/widgets/Common/modal.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 
 class CadastroForm extends StatefulWidget {
   final Function(bool) onLoadingChange;
+  final BuildContext context;
 
-  CadastroForm({required this.onLoadingChange});
+  CadastroForm({required this.onLoadingChange, required this.context});
 
   @override
   State<CadastroForm> createState() => _CadastroFormState();
@@ -28,30 +30,28 @@ class _CadastroFormState extends State<CadastroForm> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPassController = TextEditingController();
+  final maskFormatterCell = MaskTextInputFormatter(
+    mask: '+55 (##) 9 ####-####',
+    filter: {
+      "#": RegExp(r'[0-9]'),
+    },
+  );
+
   File? imageProfile;
 
-  void handleClickCriarConta(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed(AppRoutes.cadastro);
+  void handleClickCriarConta() {
+    Navigator.of(widget.context).pushReplacementNamed(AppRoutes.cadastro);
   }
 
   void onSelectedImage(File image) {
     imageProfile = image;
   }
 
-  Future<void> loadDefaultImageProfile() async {
-    final tempDir = await getTemporaryDirectory();
-    final tempFile = File('${tempDir.path}/lib/assets/img/default_avatar.jpg');
-    imageProfile = tempFile;
-  }
-
-  Future<void> submitForm(BuildContext context) async {
+  Future<void> submitForm() async {
     final bool isValid = formKey.currentState?.validate() ?? false;
 
     if (!isValid) {
       return;
-    }
-    if (imageProfile == null) {
-      await loadDefaultImageProfile();
     }
 
     widget.onLoadingChange(true);
@@ -61,22 +61,35 @@ class _CadastroFormState extends State<CadastroForm> {
       celular: celularController.text,
       email: emailController.text,
       senha: passwordController.text,
-      imageProfile: imageProfile!,
+      imageProfile: imageProfile,
     );
 
     try {
-      await Provider.of<UserProvider>(context, listen: false).createUser(user);
+      final Map<String, dynamic> response = await Provider.of<UserProvider>(
+        widget.context,
+        listen: false,
+      ).createUser(user);
+
+      if (widget.context.mounted) {
+        Scripts.verifyResponse(
+          widget.context,
+          response,
+        );
+      }
     } catch (err) {
-      showModal(
-        context,
-        "Alerta!",
-        "Ocorreu um erro ao fazer o cadastro! Por favor, tente novamente mais tarde!",
-        [
-          {"icon": Icons.check, "label": "OK"}
-        ],
-      );
+      if (widget.context.mounted) {
+        await showModal(
+          widget.context,
+          "Alerta!",
+          "Ocorreu um erro ao fazer o cadastro! Por favor, tente novamente mais tarde!",
+          [
+            {"icon": Icons.check, "label": "OK"}
+          ],
+        );
+      }
     } finally {
       widget.onLoadingChange(false);
+      await imageProfile?.delete();
     }
   }
 
@@ -102,7 +115,7 @@ class _CadastroFormState extends State<CadastroForm> {
               TextFormField(
                 style: MyTextStyle(),
                 decoration: getInputDecoration('John Doe'),
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.name,
                 controller: nomeController,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
@@ -116,8 +129,9 @@ class _CadastroFormState extends State<CadastroForm> {
               ),
               TextFormField(
                 style: MyTextStyle(),
+                inputFormatters: [maskFormatterCell],
                 decoration: getInputDecoration('+55 (XX) 9 9999-9999'),
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.phone,
                 controller: celularController,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
@@ -149,7 +163,7 @@ class _CadastroFormState extends State<CadastroForm> {
                 decoration: getInputDecoration('******'),
                 obscureText: true,
                 controller: passwordController,
-                textInputAction: TextInputAction.done,
+                textInputAction: TextInputAction.next,
                 validator: (value) {
                   String senha = value ?? '';
                   return Validator.validateString(senha, InputType.senha);
@@ -172,7 +186,7 @@ class _CadastroFormState extends State<CadastroForm> {
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: () => submitForm(context),
+                  onPressed: submitForm,
                   style: getButtonStyle(),
                   child: Text(
                     'CADASTRAR',
