@@ -1,3 +1,4 @@
+import 'package:cooknow/models/user.dart';
 import 'package:cooknow/utils/constants.dart';
 import 'package:cooknow/utils/routes.dart';
 import 'package:cooknow/utils/validator.dart';
@@ -6,6 +7,7 @@ import 'package:cooknow/assets/styles/input_style.dart';
 import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:cooknow/widgets/Common/modal.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginCard extends StatefulWidget {
   final Function(bool) onLoadingChange;
@@ -27,13 +29,18 @@ class _LoginCardState extends State<LoginCard> {
 
   Future<void> submitForm(BuildContext context) async {
     final bool isValid = formKey.currentState?.validate() ?? false;
+
     if (!isValid) {
       return;
     }
+
     widget.onLoadingChange(true);
+
     try {
-      print("Área segura");
-      throw Exception();
+      await Provider.of<UserProvider>(context, listen: false).loginUser(
+        emailController.text,
+        passwordController.text,
+      );
     } catch (err) {
       showModal(
         context,

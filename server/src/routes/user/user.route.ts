@@ -1,5 +1,5 @@
 import express from "express";
-import { createUserController, getUserByIdController, getUsersController } from "src/controllers/user.controller";
+import { createUserController, loginUserController } from "src/controllers/user.controller";
 import { userPath } from "src/utils/constants";
 
 const userRoute = express.Router();
@@ -9,8 +9,7 @@ const userRoute = express.Router();
 // token com jwt
 // hash em req get
 
-userRoute.get(userPath.getUsers, getUsersController);
-userRoute.get(userPath.getUserById, getUserByIdController);
+userRoute.post(userPath.getUser, loginUserController);
 userRoute.post(userPath.createUser, createUserController);
 
 export { userRoute };

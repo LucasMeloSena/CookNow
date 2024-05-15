@@ -16,9 +16,8 @@ const firebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth(firebaseApp);
 
 export enum userPath {
-  createUser = "/",
-  getUsers = "/",
-  getUserById = "/:id",
+  createUser = "/register/",
+  getUser = "/login/",
 }
 
 export enum uploadPath {

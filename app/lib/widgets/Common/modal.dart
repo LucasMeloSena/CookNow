@@ -6,7 +6,7 @@ Future<void> showModal(BuildContext context, String title, String msg,
     List<Map<String, dynamic>> actions) async {
   await showDialog(
     context: context,
-    builder: (ctx) => AlertDialog(
+    builder: (ctx) => AlertDialog.adaptive(
       title: Text(
         title,
         style: MyTextStyle(

@@ -10,6 +10,7 @@ import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:cooknow/widgets/Cadastro/image_input.dart';
 import 'package:cooknow/widgets/Common/modal.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 
@@ -62,6 +63,12 @@ class _CadastroFormState extends State<CadastroForm> {
       email: emailController.text,
       senha: passwordController.text,
       imageProfile: imageProfile,
+      dtCadastro: DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(
+        DateTime.now(),
+      ),
+      dtAtualizacao: DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(
+        DateTime.now(),
+      ),
     );
 
     try {
