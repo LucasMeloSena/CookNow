@@ -6,7 +6,6 @@ const userRoute = express.Router();
 
 // limite de tentativas de login
 // timeout
-// token com jwt
 // hash em req get
 
 userRoute.post(userPath.getUser, loginUserController);

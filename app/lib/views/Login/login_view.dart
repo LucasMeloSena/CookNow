@@ -51,6 +51,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       child: LoginCard(
                         onLoadingChange: changeLoadingState,
+                        context: context,
                       ),
                     )
                   ],

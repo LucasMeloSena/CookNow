@@ -1,6 +1,7 @@
 import 'package:cooknow/models/user.dart';
 import 'package:cooknow/utils/constants.dart';
 import 'package:cooknow/utils/routes.dart';
+import 'package:cooknow/utils/scripts.dart';
 import 'package:cooknow/utils/validator.dart';
 import 'package:cooknow/assets/styles/button_style.dart';
 import 'package:cooknow/assets/styles/input_style.dart';
@@ -11,8 +12,12 @@ import 'package:provider/provider.dart';
 
 class LoginCard extends StatefulWidget {
   final Function(bool) onLoadingChange;
+  final BuildContext context;
 
-  LoginCard({required this.onLoadingChange});
+  LoginCard({
+    required this.onLoadingChange,
+    required this.context,
+  });
 
   @override
   State<LoginCard> createState() => _LoginCardState();
@@ -27,7 +32,7 @@ class _LoginCardState extends State<LoginCard> {
     Navigator.of(context).pushNamed(AppRoutes.cadastro);
   }
 
-  Future<void> submitForm(BuildContext context) async {
+  Future<void> submitForm() async {
     final bool isValid = formKey.currentState?.validate() ?? false;
 
     if (!isValid) {
@@ -37,19 +42,30 @@ class _LoginCardState extends State<LoginCard> {
     widget.onLoadingChange(true);
 
     try {
-      await Provider.of<UserProvider>(context, listen: false).loginUser(
+      final Map<String, dynamic> response = await Provider.of<UserProvider>(
+        widget.context,
+        listen: false,
+      ).loginUser(
         emailController.text,
         passwordController.text,
       );
+
+      if (widget.context.mounted) {
+        Scripts.verifyResponse(widget.context, response);
+        Navigator.of(widget.context).pushReplacementNamed(AppRoutes.start);
+      }
+
     } catch (err) {
-      showModal(
-        context,
-        "Alerta!",
-        "Ocorreu um erro ao fazer login! Por favor, tente novamente mais tarde!",
-        [
-          {"icon": Icons.check, "label": "OK"}
-        ],
-      );
+      if (widget.context.mounted) {
+        showModal(
+          widget.context,
+          "Alerta!",
+          "Ocorreu um erro ao fazer login! Por favor, tente novamente mais tarde!",
+          [
+            {"icon": Icons.check, "label": "OK"}
+          ],
+        );
+      }
     } finally {
       widget.onLoadingChange(false);
     }
@@ -118,7 +134,7 @@ class _LoginCardState extends State<LoginCard> {
             child: Column(
               children: [
                 ElevatedButton(
-                  onPressed: () => submitForm(context),
+                  onPressed: submitForm,
                   style: getButtonStyle(),
                   child: Text(
                     'LOGIN',

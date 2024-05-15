@@ -24,12 +24,12 @@ Future<void> showModal(BuildContext context, String title, String msg,
               onPressed: () => Navigator.of(context).pop(),
               icon: Icon(
                 e["icon"],
-                color: MyColors.yellow_500,
+                color: MyColors.yellow_700,
               ),
               label: Text(
                 e["label"],
                 style: MyTextStyle(
-                  color: MyColors.yellow_500,
+                  color: MyColors.yellow_700,
                   fontWeight: FontWeight.w700,
                 ),
               ),

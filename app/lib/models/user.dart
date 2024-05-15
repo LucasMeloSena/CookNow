@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:cooknow/utils/cache.dart';
 import 'package:cooknow/utils/constants.dart';
 import 'package:cooknow/utils/scripts.dart';
 import 'package:dio/dio.dart';
@@ -16,6 +18,7 @@ class User {
   String email;
   String senha;
   File? imageProfile;
+  String? imageProfileUrl;
   String dtCadastro;
   String dtAtualizacao;
 
@@ -25,21 +28,30 @@ class User {
     required this.celular,
     required this.email,
     required this.senha,
-    required this.imageProfile,
+    this.imageProfile,
+    this.imageProfileUrl,
     required this.dtCadastro,
     required this.dtAtualizacao,
   });
 }
 
 class UserProvider with ChangeNotifier {
-  final String platform = Platform.operatingSystem;
-  String url = "";
+  final String _platform = Platform.operatingSystem;
+  String _url = "";
+  User? user;
+  String? _token;
+  String? _expiresIn;
+  Timer? _logOutTimer;
 
-  void loadEnv() {
-    if (platform == "ios") {
-      url = dotenv.env["LOOPBACK_IOS"] ?? "";
-    } else if (platform == "android") {
-      url = dotenv.env["LOOPBACK_ANDROID"] ?? "";
+  bool get auth {
+    return _token != null;
+  }
+
+  void _loadEnv() {
+    if (_platform == "ios") {
+      _url = dotenv.env["LOOPBACK_IOS"] ?? "";
+    } else if (_platform == "android") {
+      _url = dotenv.env["LOOPBACK_ANDROID"] ?? "";
     }
   }
 
@@ -49,7 +61,7 @@ class UserProvider with ChangeNotifier {
     String fileType,
   ) async {
     try {
-      loadEnv();
+      _loadEnv();
 
       FormData formData = FormData.fromMap({
         'file': await MultipartFile.fromFile(
@@ -60,7 +72,7 @@ class UserProvider with ChangeNotifier {
       });
 
       final response = await Dio().post(
-        'http://$url:3001/upload/user/image/',
+        'http://$_url:3001/upload/user/image/',
         data: formData,
       );
 
@@ -72,11 +84,11 @@ class UserProvider with ChangeNotifier {
 
   Future<void> removeImage(String fileName) async {
     try {
-      loadEnv();
+      _loadEnv();
 
       await http.delete(
         Uri.parse(
-          "http://$url:3001/upload/user/image",
+          "http://$_url:3001/upload/user/image",
         ),
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +102,7 @@ class UserProvider with ChangeNotifier {
 
   Future<Map<String, dynamic>> createUser(User user) async {
     try {
-      loadEnv();
+      _loadEnv();
 
       String fileName =
           "${(user.nome).trim().toLowerCase()}-${Random().nextDouble().toString()}";
@@ -109,7 +121,7 @@ class UserProvider with ChangeNotifier {
 
       final response = await http.post(
         Uri.parse(
-          "http://$url:3001/user/register/",
+          "http://$_url:3001/user/register/",
         ),
         headers: {
           'Content-Type': 'application/json',
@@ -126,6 +138,7 @@ class UserProvider with ChangeNotifier {
       );
 
       final result = jsonDecode(response.body);
+
       if (response.statusCode == 500) {
         removeImage(fileName);
         Map<String, dynamic> retorno = {
@@ -146,13 +159,13 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<void> loginUser(String email, String pass) async {
+  Future<Map<String, dynamic>> loginUser(String email, String pass) async {
     try {
-      loadEnv();
+      _loadEnv();
 
       final response = await http.post(
         Uri.parse(
-          "http://$url:3001/user/login/",
+          "http://$_url:3001/user/login/",
         ),
         headers: {
           'Content-Type': 'application/json',
@@ -168,22 +181,81 @@ class UserProvider with ChangeNotifier {
       final result = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        final user = User(
-          id: result['id'],
-          nome: result['nome'],
-          celular: result['celular'],
-          email: result['email'],
-          senha: result['senha'],
-          imageProfile: result['img_profile'],
-          dtCadastro: result['dt_cadastro'],
-          dtAtualizacao: result['dt_atualizacao'],
+        user = User(
+          id: result['user']['id'],
+          nome: result['user']['nome'],
+          celular: result['user']['celular'],
+          email: result['user']['email'],
+          senha: result['user']['senha'],
+          imageProfileUrl: result['user']['img_profile'],
+          dtCadastro: result['user']['dt_cadastro'],
+          dtAtualizacao: result['user']['dt_atualizacao'],
         );
+        _token = result['token'];
+        _expiresIn = result['expiresIn'];
+
+        final Map<String, dynamic> retorno = {
+          'message': result['message'],
+          'status': StatusResponse.success
+        };
+
+        _saveUserCache();
+
         notifyListeners();
+        return retorno;
       } else {
-        throw Exception(result['message']);
+        final Map<String, dynamic> retorno = {
+          'message': result['message'],
+          'status': StatusResponse.error
+        };
+        return retorno;
       }
     } catch (err) {
       throw Exception(err);
     }
+  }
+
+  Future<void> _saveUserCache() async {
+    await Storage.setMap('user', {
+      'token': _token,
+      'expiresIn': _expiresIn
+    });
+
+    _autoLogOut();
+    notifyListeners();
+  }
+
+  Future<void> autoLogin() async {
+    if (auth) return;
+
+    final userLogued = await Storage.getMap('user');
+    if (userLogued.isEmpty) return; 
+
+    final expirationDate = userLogued['expiresIn'];
+    if (DateTime.parse(expirationDate).isBefore(DateTime.now())) return;
+
+    _token = userLogued['token'];
+    _expiresIn = userLogued['expiresIn'];
+
+    _autoLogOut();
+    notifyListeners();
+  }
+
+  void _clearAutoLogoutTimer() {
+    _logOutTimer?.cancel();
+    _logOutTimer = null;
+  }
+
+  void _autoLogOut() {
+    _clearAutoLogoutTimer();
+    int? time = DateTime.parse(_expiresIn!).difference(DateTime.now()).inSeconds;
+    _logOutTimer = Timer(Duration(seconds: time), () => logOut());
+  }
+
+  void logOut() {
+    _token = null;
+    _expiresIn = null;
+    _clearAutoLogoutTimer();
+    Storage.remove('user').then((_) => notifyListeners());
   }
 }

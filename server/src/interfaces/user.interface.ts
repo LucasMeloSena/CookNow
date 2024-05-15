@@ -1,5 +1,16 @@
 import { z } from "zod";
 
+export type User = {
+  id: string;
+  nome: string;
+  email: string;
+  celular: string;
+  img_profile: string;
+  senha: string;
+  dt_cadastro: Date;
+  dt_atualizacao: Date;
+} | null;
+
 export const createUserRegisterShema = z.object({
   id: z.string().optional(),
   nome: z.string().min(1, "O nome não é válido!"),
@@ -11,7 +22,7 @@ export const createUserRegisterShema = z.object({
   dt_atualizacao: z.string().datetime({ offset: true }),
 });
 
-export type User = z.infer<typeof createUserRegisterShema>;
+export type UserRegister = z.infer<typeof createUserRegisterShema>;
 
 export const createUserLoginShema = z.object({
   email: z.string().email("Email inválido!"),

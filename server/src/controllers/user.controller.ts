@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "src/infra/database";
-import { User, UserLogin, createUserLoginShema, createUserRegisterShema } from "src/interfaces/user.interface";
+import { User, UserRegister, UserLogin, createUserLoginShema, createUserRegisterShema } from "src/interfaces/user.interface";
 import { comparePass, cryptPass } from "src/utils/hash";
+import { generateToken, getExpirationDate } from "src/utils/token";
 import { validarCampoExistenteUserSchema } from "src/utils/validator";
-import { boolean, z } from "zod";
+import { z } from "zod";
 
 export const createUserController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user: User = createUserRegisterShema.parse(req.body);
+    const user: UserRegister = createUserRegisterShema.parse(req.body);
     await validarCampoExistenteUserSchema(user);
     user.senha = await cryptPass(user.senha);
 
@@ -34,28 +35,30 @@ export const createUserController = async (req: Request, res: Response, next: Ne
 
 export const loginUserController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userLogin : UserLogin = createUserLoginShema.parse(req.body);
+    const userLogin: UserLogin = createUserLoginShema.parse(req.body);
 
-    const user = await prisma.user.findUnique({
+    const user: User = await prisma.user.findUnique({
       where: {
         email: userLogin.email,
-      }
-    })
+      },
+    });
 
     if (!user) {
-      res.status(404).json({message: "Email incorreto!"})
-      return
+      res.status(404).json({ message: "Email incorreto!" });
+      return;
     }
 
-    const correctPass: boolean = await comparePass(user.senha, userLogin.senha)
+    const correctPass: boolean = await comparePass(user.senha, userLogin.senha);
 
     if (!correctPass) {
-      res.status(404).json({message: "Senha incorreta!"});
-      return
+      res.status(404).json({ message: "Senha incorreta!" });
+      return;
     }
 
     if (user && correctPass) {
-      res.status(200).json({message: "Login efetudo com sucesso!", user: user})
+      const token: string = generateToken(user);
+      const expirationDate = getExpirationDate(token)
+      res.status(200).json({ message: "Login efetudo com sucesso!", user: user, token: token, expiresIn: expirationDate });
     }
   } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar cadastrar o usuário! Por favor, tente novamente mais tarde!";

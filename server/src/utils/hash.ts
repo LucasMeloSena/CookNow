@@ -1,8 +1,4 @@
-import bcryptjs from 'bcryptjs';
-
-export const hashCode = () => {};
-
-export const unHashCode = () => {};
+import bcryptjs from "bcryptjs";
 
 export const cryptPass = async (pass: string): Promise<string> => {
   try {
@@ -16,9 +12,9 @@ export const cryptPass = async (pass: string): Promise<string> => {
 
 export const comparePass = async (dbPass: string, pass: string) => {
   try {
-    const loginSuccess: boolean = await bcryptjs.compare(pass, dbPass)
+    const loginSuccess: boolean = await bcryptjs.compare(pass, dbPass);
     return loginSuccess;
   } catch (err) {
-    throw Error("Senha incorreta!")
+    throw Error("Senha incorreta!");
   }
 };
