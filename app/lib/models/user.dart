@@ -47,6 +47,10 @@ class UserProvider with ChangeNotifier {
     return _token != null;
   }
 
+  User? get getUser {
+    return user;
+  }
+
   void _loadEnv() {
     if (_platform == "ios") {
       _url = dotenv.env["LOOPBACK_IOS"] ?? "";
@@ -62,6 +66,8 @@ class UserProvider with ChangeNotifier {
   ) async {
     try {
       _loadEnv();
+
+      if (fileType == 'unknown') throw Exception("Imagem inválida!");
 
       FormData formData = FormData.fromMap({
         'file': await MultipartFile.fromFile(
@@ -88,7 +94,7 @@ class UserProvider with ChangeNotifier {
 
       await http.delete(
         Uri.parse(
-          "http://$_url:3001/upload/user/image",
+          "http://$_url:3001/upload/user/image/",
         ),
         headers: {
           'Content-Type': 'application/json',
@@ -110,7 +116,7 @@ class UserProvider with ChangeNotifier {
 
       if (user.imageProfile == null) {
         imgUser =
-            'https://firebasestorage.googleapis.com/v0/b/cooknow-cdaf5.appspot.com/o/users%2Fdefault_avatar.jpg?alt=media&token=0ff1cc96-8793-4999-9f8a-23cdb48a379b';
+            "https://firebasestorage.googleapis.com/v0/b/cooknow-cdaf5.appspot.com/o/users%2Fdefault_avatar.jpg?alt=media&token=c1e5a346-e69b-4bbf-a5c3-e3add1a21fcf";
       } else {
         imgUser = await uploadImage(
           user.imageProfile!,
@@ -199,7 +205,7 @@ class UserProvider with ChangeNotifier {
           'status': StatusResponse.success
         };
 
-        _saveUserCache();
+        _saveUserCache(result['user']['id']);
 
         notifyListeners();
         return retorno;
@@ -215,11 +221,46 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  Future<void> _saveUserCache() async {
-    await Storage.setMap('user', {
-      'token': _token,
-      'expiresIn': _expiresIn
-    });
+  Future<void> searchUser(String id) async {
+    try {
+      _loadEnv();
+
+      final response = await http.get(Uri.parse(
+        "http://$_url:3001/user/?id=$id",
+      ));
+
+      final result = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        user = User(
+          id: result['user']['id'],
+          nome: result['user']['nome'],
+          celular: result['user']['celular'],
+          email: result['user']['email'],
+          senha: result['user']['senha'],
+          imageProfileUrl: result['user']['img_profile'],
+          dtCadastro: result['user']['dt_cadastro'],
+          dtAtualizacao: result['user']['dt_atualizacao'],
+        );
+      } else {
+        throw Exception();
+      }
+    } catch (err) {
+      throw Exception(err);
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> _saveUserCache(String id) async {
+    await Storage.setMap(
+      'user',
+      {
+        'token': _token,
+        'expiresIn': _expiresIn,
+        'id': id,
+      },
+    );
 
     _autoLogOut();
     notifyListeners();
@@ -229,13 +270,15 @@ class UserProvider with ChangeNotifier {
     if (auth) return;
 
     final userLogued = await Storage.getMap('user');
-    if (userLogued.isEmpty) return; 
+    if (userLogued.isEmpty) return;
 
     final expirationDate = userLogued['expiresIn'];
     if (DateTime.parse(expirationDate).isBefore(DateTime.now())) return;
 
     _token = userLogued['token'];
     _expiresIn = userLogued['expiresIn'];
+    final String id = userLogued['id'];
+    await searchUser(id);
 
     _autoLogOut();
     notifyListeners();
@@ -248,7 +291,8 @@ class UserProvider with ChangeNotifier {
 
   void _autoLogOut() {
     _clearAutoLogoutTimer();
-    int? time = DateTime.parse(_expiresIn!).difference(DateTime.now()).inSeconds;
+    int? time =
+        DateTime.parse(_expiresIn!).difference(DateTime.now()).inSeconds;
     _logOutTimer = Timer(Duration(seconds: time), () => logOut());
   }
 

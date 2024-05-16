@@ -30,3 +30,9 @@ export const createUserLoginShema = z.object({
 });
 
 export type UserLogin = z.infer<typeof createUserLoginShema>;
+
+export const createUserIdSchema = z.object({
+  id: z.string().min(24, "Id inválido!"),
+});
+
+export type UserId = z.infer<typeof createUserIdSchema>;

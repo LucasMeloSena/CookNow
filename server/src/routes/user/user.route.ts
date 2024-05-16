@@ -1,5 +1,5 @@
 import express from "express";
-import { createUserController, loginUserController } from "src/controllers/user.controller";
+import { createUserController, loginUserController, searchUserByIdController } from "src/controllers/user.controller";
 import { userPath } from "src/utils/constants";
 
 const userRoute = express.Router();
@@ -8,6 +8,7 @@ const userRoute = express.Router();
 // timeout
 // hash em req get
 
+userRoute.get(userPath.getUserById, searchUserByIdController);
 userRoute.post(userPath.getUser, loginUserController);
 userRoute.post(userPath.createUser, createUserController);
 

@@ -82,6 +82,8 @@ class _CadastroFormState extends State<CadastroForm> {
           widget.context,
           response,
         );
+
+        //Navigator.of(widget.context).pushReplacementNamed(AppRoutes.login);
       }
     } catch (err) {
       if (widget.context.mounted) {

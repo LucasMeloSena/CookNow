@@ -18,11 +18,12 @@ export const auth = getAuth(firebaseApp);
 export enum userPath {
   createUser = "/register/",
   getUser = "/login/",
+  getUserById = "/",
 }
 
 export enum uploadPath {
-  uploadUserImage = "/user/image",
-  removeUserImage = "/user/image",
+  uploadUserImage = "/user/image/",
+  removeUserImage = "/user/image/",
 }
 
 export enum fileTypes {

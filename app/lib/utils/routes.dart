@@ -5,4 +5,6 @@ class AppRoutes {
   static const String login = '/login';
   static const String cadastro = '/cadastro';
   static const String home = '/home';
+  static const String favorites = '/favorites';
+  static const String user = '/user';
 }

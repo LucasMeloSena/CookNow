@@ -5,13 +5,13 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 export const getExpirationDate = (token: string) => {
-  const decoded = jwt.decode(token, {complete: true})
-  const payload = decoded!.payload
-  if (typeof payload == 'object') {
+  const decoded = jwt.decode(token, { complete: true });
+  const payload = decoded!.payload;
+  if (typeof payload == "object") {
     const expirationDate: Date = new Date(payload.exp! * 1000);
-    return expirationDate
+    return expirationDate;
   }
-}
+};
 
 export const generateToken = (user: User) => {
   const key: string = process.env.JWT_KEY ?? "";
@@ -26,7 +26,7 @@ export const generateToken = (user: User) => {
   };
 
   const token: string = jwt.sign(paylod, key, options);
-  return token
+  return token;
 };
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
