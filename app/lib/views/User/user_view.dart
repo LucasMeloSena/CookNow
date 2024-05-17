@@ -1,7 +1,6 @@
 import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:cooknow/models/user.dart';
 import 'package:cooknow/utils/constants.dart';
-import 'package:cooknow/utils/routes.dart';
 import 'package:cooknow/widgets/Common/app_bar.dart';
 import 'package:cooknow/widgets/Common/footer.dart';
 import 'package:cooknow/widgets/User/header.dart';
