@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cooknow/assets/styles/colors.dart';
 import 'package:cooknow/models/user.dart';
 import 'package:cooknow/utils/constants.dart';
 import 'package:cooknow/utils/routes.dart';
@@ -37,7 +38,6 @@ class _CadastroFormState extends State<CadastroForm> {
       "#": RegExp(r'[0-9]'),
     },
   );
-
   File? imageProfile;
 
   void handleClickCriarConta() {
@@ -78,12 +78,48 @@ class _CadastroFormState extends State<CadastroForm> {
       ).createUser(user);
 
       if (widget.context.mounted) {
-        Scripts.verifyResponse(
+        final bool successResponse = await Scripts.verifyResponse(
           widget.context,
           response,
         );
 
-        //Navigator.of(widget.context).pushReplacementNamed(AppRoutes.login);
+        if (successResponse) {
+          await showDialog(
+            context: widget.context,
+            builder: (ctx) {
+              return AlertDialog.adaptive(
+                title: Text(
+                  "Sucesso!",
+                  style: MyTextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                content: Text(
+                  "Cadastro realizado com sucesso!",
+                  style: MyTextStyle(),
+                ),
+                actions: [
+                  TextButton.icon(
+                    label: Text(
+                      "OK",
+                      style: MyTextStyle(
+                        color: MyColors.yellow_700,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    onPressed: () => Navigator.of(widget.context)
+                        .pushReplacementNamed(AppRoutes.login),
+                    icon: const Icon(
+                      Icons.check,
+                      color: MyColors.yellow_700,
+                    ),
+                  )
+                ],
+              );
+            },
+          );
+        }
       }
     } catch (err) {
       if (widget.context.mounted) {

@@ -19,7 +19,7 @@ class Scripts {
     }
   }
 
-  static void verifyResponse(
+  static Future<bool> verifyResponse(
     BuildContext context,
     Map<String, dynamic> response,
   ) async {
@@ -32,6 +32,10 @@ class Scripts {
           {"icon": Icons.check, "label": "OK"}
         ],
       );
+      return false;
+    }
+    else {
+      return true;
     }
   }
 }

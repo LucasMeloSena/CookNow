@@ -1,6 +1,7 @@
 import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:cooknow/models/user.dart';
 import 'package:cooknow/utils/constants.dart';
+import 'package:cooknow/utils/routes.dart';
 import 'package:cooknow/widgets/Common/app_bar.dart';
 import 'package:cooknow/widgets/Common/footer.dart';
 import 'package:cooknow/widgets/User/header.dart';
@@ -26,25 +27,41 @@ class _UserViewState extends State<UserView> {
           children: [
             Text(
               "Perfil",
-              style: MyTextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w700
-              ),
+              style: MyTextStyle(fontSize: 24, fontWeight: FontWeight.w700),
             ),
-            const SizedBox(height: 20,),
-            HeaderUser(user: user.getUser)
+            const SizedBox(
+              height: 20,
+            ),
+            HeaderUser(user: user.getUser),
+            SizedBox(
+              height: 100,
+              child: ListView.builder(
+                itemCount: 1,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    onTap: () {
+                      user.logOut();
+                      Navigator.of(context)
+                          .pushReplacementNamed(AppRoutes.start);
+                    },
+                    leading: const Icon(
+                      Icons.logout,
+                    ),
+                    title: Text(
+                      "Logout",
+                      style: MyTextStyle(),
+                    ),
+                    trailing: const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 15,
+                    ),
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),
-      // body: Center(
-      //   child: OutlinedButton(
-      //     onPressed: () {
-      //       user.logOut();
-      //       Navigator.of(context).pushReplacementNamed(AppRoutes.start);
-      //     },
-      //     child: const Text('Logout'),
-      //   ),
-      // ),
       bottomNavigationBar: Footer(
         selectedIndex: FooterIndex.user,
       ),

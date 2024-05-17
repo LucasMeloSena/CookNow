@@ -51,10 +51,11 @@ class _LoginCardState extends State<LoginCard> {
       );
 
       if (widget.context.mounted) {
-        Scripts.verifyResponse(widget.context, response);
-        Navigator.of(widget.context).pushReplacementNamed(AppRoutes.start);
+        final isValid = await Scripts.verifyResponse(widget.context, response);
+        if (isValid) {
+          Navigator.of(widget.context).pushReplacementNamed(AppRoutes.start);
+        }
       }
-
     } catch (err) {
       if (widget.context.mounted) {
         showModal(

@@ -29,7 +29,7 @@ class _HeaderUserState extends State<HeaderUser> {
         userInfo.email,
         style: MyTextStyle(),
       ),
-      trailing: IconButton(icon: Icon(Icons.settings), onPressed: (){}),
+      trailing: IconButton(icon: const Icon(Icons.settings), onPressed: (){}),
     );
   }
 }

@@ -77,10 +77,16 @@ class UserProvider with ChangeNotifier {
         ),
       });
 
-      final response = await Dio().post(
-        'http://$_url:3001/upload/user/image/',
-        data: formData,
-      );
+      final response = await Dio()
+          .post(
+            'http://$_url:3001/upload/user/image/',
+            data: formData,
+          )
+          .timeout(
+            const Duration(
+              seconds: 60,
+            ),
+          );
 
       return response.data['image'];
     } catch (err) {
@@ -92,15 +98,21 @@ class UserProvider with ChangeNotifier {
     try {
       _loadEnv();
 
-      await http.delete(
-        Uri.parse(
-          "http://$_url:3001/upload/user/image/",
-        ),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({'fileName': fileName}),
-      );
+      await http
+          .delete(
+            Uri.parse(
+              "http://$_url:3001/upload/user/image/",
+            ),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({'fileName': fileName}),
+          )
+          .timeout(
+            const Duration(
+              seconds: 60,
+            ),
+          );
     } catch (err) {
       throw Exception(err);
     }
@@ -125,23 +137,29 @@ class UserProvider with ChangeNotifier {
         );
       }
 
-      final response = await http.post(
-        Uri.parse(
-          "http://$_url:3001/user/register/",
-        ),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'nome': user.nome,
-          'email': user.email,
-          'celular': user.celular,
-          'img_profile': imgUser,
-          'senha': user.senha,
-          'dt_cadastro': user.dtCadastro,
-          'dt_atualizacao': user.dtAtualizacao
-        }),
-      );
+      final response = await http
+          .post(
+            Uri.parse(
+              "http://$_url:3001/user/register/",
+            ),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'nome': user.nome,
+              'email': user.email,
+              'celular': user.celular,
+              'img_profile': imgUser,
+              'senha': user.senha,
+              'dt_cadastro': user.dtCadastro,
+              'dt_atualizacao': user.dtAtualizacao
+            }),
+          )
+          .timeout(
+            const Duration(
+              seconds: 60,
+            ),
+          );
 
       final result = jsonDecode(response.body);
 
@@ -169,20 +187,26 @@ class UserProvider with ChangeNotifier {
     try {
       _loadEnv();
 
-      final response = await http.post(
-        Uri.parse(
-          "http://$_url:3001/user/login/",
-        ),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(
-          {
-            'email': email,
-            'senha': pass,
-          },
-        ),
-      );
+      final response = await http
+          .post(
+            Uri.parse(
+              "http://$_url:3001/user/login/",
+            ),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(
+              {
+                'email': email,
+                'senha': pass,
+              },
+            ),
+          )
+          .timeout(
+            const Duration(
+              seconds: 60,
+            ),
+          );
 
       final result = jsonDecode(response.body);
 
@@ -225,9 +249,15 @@ class UserProvider with ChangeNotifier {
     try {
       _loadEnv();
 
-      final response = await http.get(Uri.parse(
-        "http://$_url:3001/user/?id=$id",
-      ));
+      final response = await http
+          .get(Uri.parse(
+            "http://$_url:3001/user/?id=$id",
+          ))
+          .timeout(
+            const Duration(
+              seconds: 60,
+            ),
+          );
 
       final result = jsonDecode(response.body);
 

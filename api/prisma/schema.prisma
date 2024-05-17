@@ -8,38 +8,46 @@ datasource db {
 }
 
 model receita {
-  id Int @id @default(autoincrement())
-  nome String
-  url_image String
-  ingredientes ingredientes[]
-  modo_preparoId Int @unique
-  categoriaId Int @unique
-  tempo_medio Int
-  custo Int
-  dificuldade Int
-  localizacao String
-  avaliacao Float
-  dt_cadastro DateTime
+  id             Int                   @id @default(autoincrement())
+  nome           String
+  url_image      String
+  tempo_medio    Int
+  custo          Int
+  dificuldade    Int
+  localizacao    String
+  avaliacao      Float
+  dt_cadastro    DateTime
   dt_atualizacao DateTime
-
-  modo_preparo modo_preparo @relation(fields: [modo_preparoId], references: [id])
-  categoria categoria @relation(fields: [categoriaId], references: [id]) 
-}
-
-model ingredientes {
-  id Int @id @default(autoincrement())
-  nome String
-  receita receita[]
+  categoria      categoria?
+  modo_preparo   modo_preparo[]
+  ingredientes   receita_ingrediente[]
 }
 
 model modo_preparo {
-  id Int @id @default(autoincrement())
-  nome String
-  receita receita?
+  id        Int     @id @default(autoincrement())
+  nome      String
+  receitaId Int
+  receita   receita @relation(fields: [receitaId], references: [id])
 }
 
 model categoria {
-  id Int @id @default(autoincrement())
+  id        Int     @id @default(autoincrement())
+  nome      String
+  receitaId Int     @unique
+  receita   receita @relation(fields: [receitaId], references: [id])
+}
+
+model receita_ingrediente {
+  receitaId     Int
+  ingredienteId Int
+  receita       receita @relation(fields: [receitaId], references: [id])
+  ingrediente ingrediente @relation(fields: [ingredienteId], references: [id])
+
+  @@id([receitaId, ingredienteId])
+}
+
+model ingrediente {
+  id   Int    @id @default(autoincrement())
   nome String
-  receita receita?
+  ingredientes receita_ingrediente[]
 }

@@ -5,8 +5,6 @@ import { userPath } from "src/utils/constants";
 const userRoute = express.Router();
 
 // limite de tentativas de login
-// timeout
-// hash em req get
 
 userRoute.get(userPath.getUserById, searchUserByIdController);
 userRoute.post(userPath.getUser, loginUserController);

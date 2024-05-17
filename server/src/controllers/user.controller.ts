@@ -1,7 +1,8 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "src/infra/database";
 import { User, UserRegister, UserLogin, createUserLoginShema, createUserRegisterShema, createUserIdSchema, UserId } from "src/interfaces/user.interface";
-import { comparePass, cryptPass } from "src/utils/hash";
+import { comparePass, cryptPass, hashString, unHashString } from "src/utils/hash";
 import { generateToken, getExpirationDate } from "src/utils/token";
 import { validarCampoExistenteUserSchema } from "src/utils/validator";
 import { z } from "zod";
@@ -58,6 +59,7 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
     if (user && correctPass) {
       const token: string = generateToken(user);
       const expirationDate = getExpirationDate(token);
+      user.id = hashString(user.id)
       res.status(200).json({ message: "Login efetudo com sucesso!", user: user, token: token, expiresIn: expirationDate });
     }
   } catch (err) {
@@ -79,24 +81,29 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
 export const searchUserByIdController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId: UserId = createUserIdSchema.parse(req.query);
+    const id: string = unHashString(userId.id)
 
     const user: User = await prisma.user.findUnique({
       where: {
-        id: userId.id,
+        id: id,
       },
     });
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado!" });
     } else {
+      user.id = hashString(user.id)
       return res.status(200).json({ message: "Usuário encontrado com sucesso!", user: user });
     }
   } catch (err) {
-    const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar cadastrar o usuário! Por favor, tente novamente mais tarde!";
+    const msg: string = "Ocorreu um erro ao tentar encontrar o usuário! Por favor, tente novamente mais tarde!";
+    const errMessage: string = (err as Error).message ?? msg;
 
     if (err instanceof z.ZodError) {
-      res.status(500).json({ message: err.issues[0].message });
-      return;
+      return res.status(500).json({ message: err.issues[0].message });
+    }
+    else if (err instanceof PrismaClientKnownRequestError) {
+      return res.status(500).json({message: msg})
     }
 
     res.status(500).json({
