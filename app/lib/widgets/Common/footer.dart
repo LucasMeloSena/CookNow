@@ -18,13 +18,13 @@ class _FooterState extends State<Footer> {
     setState(() {
       switch (index) {
         case 0:
-          Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+          Navigator.of(context).pushNamed(AppRoutes.home);
           break;
         case 1:
-          Navigator.of(context).pushReplacementNamed(AppRoutes.favorites);
+          Navigator.of(context).pushNamed(AppRoutes.favorites);
           break;
         case 2:
-          Navigator.of(context).pushReplacementNamed(AppRoutes.user);
+          Navigator.of(context).pushNamed(AppRoutes.user);
           break;
       }
     });

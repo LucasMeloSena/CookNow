@@ -23,7 +23,7 @@ class HomeView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Header(
+              HeaderHome(
                 user: user.getUser,
               ),
               const SizedBox(height: 10,),

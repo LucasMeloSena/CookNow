@@ -2,16 +2,16 @@ import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:cooknow/models/user.dart';
 import 'package:flutter/material.dart';
 
-class Header extends StatefulWidget {
+class HeaderHome extends StatefulWidget {
   final User? user;
 
-  Header({required this.user});
+  HeaderHome({required this.user});
 
   @override
-  State<Header> createState() => _HeaderState();
+  State<HeaderHome> createState() => _HeaderHomeState();
 }
 
-class _HeaderState extends State<Header> {
+class _HeaderHomeState extends State<HeaderHome> {
   @override
   Widget build(BuildContext context) {
     return Row(
