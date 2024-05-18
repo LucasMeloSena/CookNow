@@ -1,4 +1,5 @@
 export enum recipePath {
-  getAllRecipes = '/',
-  getRecipeById = '/'
+  getAllRecipes = "/recipes/",
+  getRecipeById = "/recipe/",
+  createRecipe = "/recipe/create/",
 }

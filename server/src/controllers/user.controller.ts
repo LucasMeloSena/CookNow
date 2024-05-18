@@ -1,7 +1,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "src/infra/database";
-import { User, UserRegister, UserLogin, createUserLoginShema, createUserRegisterShema, createUserIdSchema, UserId } from "src/interfaces/user.interface";
+import { User, UserRegister, UserLogin, createUserLoginShema, createUserRegisterShema, createUserIdSchema, UserId, createUserRecipeSchema, UserRecipe } from "src/interfaces/user.interface";
 import { comparePass, cryptPass, hashString, unHashString } from "src/utils/hash";
 import { generateToken, getExpirationDate } from "src/utils/token";
 import { validarCampoExistenteUserSchema } from "src/utils/validator";
@@ -59,7 +59,7 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
     if (user && correctPass) {
       const token: string = generateToken(user);
       const expirationDate = getExpirationDate(token);
-      user.id = hashString(user.id)
+      user.id = hashString(user.id);
       res.status(200).json({ message: "Login efetudo com sucesso!", user: user, token: token, expiresIn: expirationDate });
     }
   } catch (err) {
@@ -81,7 +81,7 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
 export const searchUserByIdController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId: UserId = createUserIdSchema.parse(req.query);
-    const id: string = unHashString(userId.id)
+    const id: string = unHashString(userId.id);
 
     const user: User = await prisma.user.findUnique({
       where: {
@@ -92,7 +92,7 @@ export const searchUserByIdController = async (req: Request, res: Response, next
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado!" });
     } else {
-      user.id = hashString(user.id)
+      user.id = hashString(user.id);
       return res.status(200).json({ message: "Usuário encontrado com sucesso!", user: user });
     }
   } catch (err) {
@@ -101,9 +101,38 @@ export const searchUserByIdController = async (req: Request, res: Response, next
 
     if (err instanceof z.ZodError) {
       return res.status(500).json({ message: err.issues[0].message });
+    } else if (err instanceof PrismaClientKnownRequestError) {
+      return res.status(500).json({ message: msg });
     }
-    else if (err instanceof PrismaClientKnownRequestError) {
-      return res.status(500).json({message: msg})
+
+    res.status(500).json({
+      message: errMessage,
+    });
+  } finally {
+    prisma.$disconnect;
+  }
+};
+
+export const favoriteRecipeController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userRecipe: UserRecipe = createUserRecipeSchema.parse(req.body);
+
+    await prisma.user_recipe.create({
+      data: {
+        userId: userRecipe.userid,
+        recipeId: userRecipe.recipeId,
+      },
+    });
+
+    return res.status(201).json({ message: "Receita favoritada com sucesso!" });
+  } catch (err) {
+    const msg: string = "Ocorreu um erro ao tentar encontrar o usuário! Por favor, tente novamente mais tarde!";
+    const errMessage: string = (err as Error).message ?? msg;
+
+    if (err instanceof z.ZodError) {
+      return res.status(500).json({ message: err.issues[0].message });
+    } else if (err instanceof PrismaClientKnownRequestError) {
+      return res.status(500).json({ message: msg });
     }
 
     res.status(500).json({

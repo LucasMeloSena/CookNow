@@ -16,4 +16,15 @@ model user {
   senha          String
   dt_atualizacao DateTime @db.Date
   dt_cadastro    DateTime @db.Date
+
+  user_recipe user_recipe[]
+}
+
+model user_recipe {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  recipeId Int
+  dt_cadastro DateTime @default(now())
+
+  user user @relation(fields: [userId], references: [id])
 }

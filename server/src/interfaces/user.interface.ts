@@ -21,18 +21,21 @@ export const createUserRegisterShema = z.object({
   dt_cadastro: z.string().datetime({ offset: true }),
   dt_atualizacao: z.string().datetime({ offset: true }),
 });
-
 export type UserRegister = z.infer<typeof createUserRegisterShema>;
 
 export const createUserLoginShema = z.object({
   email: z.string().email("Email inválido!"),
   senha: z.string().min(6, "A senha possui no mínimo 6 caracteres!"),
 });
-
 export type UserLogin = z.infer<typeof createUserLoginShema>;
 
 export const createUserIdSchema = z.object({
   id: z.string().min(24, "Id inválido!"),
 });
-
 export type UserId = z.infer<typeof createUserIdSchema>;
+
+export const createUserRecipeSchema = z.object({
+  userid: z.string().min(24, "Id do usuário inválida!"),
+  recipeId: z.number().min(1, "Id da receita inválida!"),
+});
+export type UserRecipe = z.infer<typeof createUserRecipeSchema>;

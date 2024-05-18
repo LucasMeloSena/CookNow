@@ -7,7 +7,7 @@ const port = 3002;
 
 app.use(express.json());
 app.use(cors());
-app.use('/recipe', recipeRoute)
+app.use(recipeRoute);
 
 app.use((req: Request, res: Response) => {
   res.status(403).json({
