@@ -1,3 +1,4 @@
+import 'package:cooknow/models/recipe.dart';
 import 'package:cooknow/models/user.dart';
 import 'package:cooknow/utils/routes.dart';
 import 'package:cooknow/views/Cadastro/cadastro_view.dart';
@@ -11,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
-Future<void> main() async{
+Future<void> main() async {
   await dotenv.load(fileName: ".env");
   runApp(MyApp());
 }
@@ -19,8 +20,15 @@ Future<void> main() async{
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => UserProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => RecipeProvider(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: AppRoutes.start,

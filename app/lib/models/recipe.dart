@@ -14,26 +14,25 @@ class Recipe {
   String localidade;
   double avaliacao;
   String categoria;
-  List<String> ingredientes;
-  List<String> modoPreparo;
+  List<dynamic> ingredientes;
+  List<dynamic> modoPreparo;
   String dtCadastro;
   String dtAtualizacao;
 
-  Recipe({
-    required this.id,
-    required this.nome,
-    required this.urlImage,
-    required this.tempoMedio,
-    required this.custo,
-    required this.dificuldade,
-    required this.localidade,
-    required this.avaliacao,
-    required this.categoria,
-    required this.ingredientes,
-    required this.modoPreparo,
-    required this.dtCadastro,
-    required this.dtAtualizacao
-  });
+  Recipe(
+      {required this.id,
+      required this.nome,
+      required this.urlImage,
+      required this.tempoMedio,
+      required this.custo,
+      required this.dificuldade,
+      required this.localidade,
+      required this.avaliacao,
+      required this.categoria,
+      required this.ingredientes,
+      required this.modoPreparo,
+      required this.dtCadastro,
+      required this.dtAtualizacao});
 }
 
 class RecipeProvider extends ChangeNotifier {
@@ -47,7 +46,7 @@ class RecipeProvider extends ChangeNotifier {
   }
 
   List<Recipe> get getThreeRecipes {
-    return [..._lstRecipes.sublist(0,3)];
+    return _lstRecipes.sublist(0, 3);
   }
 
   Recipe? get getFeaturedRecipe {
@@ -66,19 +65,38 @@ class RecipeProvider extends ChangeNotifier {
     _loadEnv();
 
     final response = await http
-          .get(Uri.parse(
-            "http://$_url:3002/recipes/",
-          ))
-          .timeout(
-            const Duration(
-              seconds: 60,
+        .get(Uri.parse(
+          "http://$_url:3002/recipes/",
+        ))
+        .timeout(
+          const Duration(
+            seconds: 60,
+          ),
+        );
+
+    final result = jsonDecode(response.body);
+
+    if (response.statusCode == 200) {
+      List<dynamic> lstRecipesTemp = result['recipes'];
+      _lstRecipes = lstRecipesTemp
+          .map(
+            (item) => Recipe(
+              id: item['id'].toString(),
+              nome: item['nome'],
+              urlImage: item['url_image'],
+              tempoMedio: item['tempo_medio'],
+              custo: item['custo'],
+              dificuldade: item['dificuldade'],
+              localidade: item['localizacao'],
+              avaliacao: item['avaliacao'],
+              categoria: item['categoria'],
+              ingredientes: item['ingredientes'],
+              modoPreparo: item['modo_preparo'],
+              dtCadastro: item['dt_cadastro'],
+              dtAtualizacao: item['dt_atualizacao'],
             ),
-          );
-
-      final result = jsonDecode(response.body);
-
-      if (response.statusCode == 200) {
-        _lstRecipes = result['recipes'];
-      }
+          )
+          .toList();
+    }
   }
 }
