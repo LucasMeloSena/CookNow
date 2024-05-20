@@ -39,11 +39,13 @@ export const getRecipesController = async (req: Request, res: Response, next: Ne
   } catch (err) {
     res.status(500).json({ message: "Ocorreu um erro ao buscar as receitas! Por favor, tente novamente mais tarde!" });
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
   }
 };
 
-export const getRecipeByIdController = async (req: Request, res: Response, next: NextFunction) => {};
+export const getRecipeByIdController = async (req: Request, res: Response, next: NextFunction) => {
+  
+};
 
 export const createRecipeController = async (req: Request, res: Response, next: NextFunction) => {
   try {

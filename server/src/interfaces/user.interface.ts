@@ -35,7 +35,7 @@ export const createUserIdSchema = z.object({
 export type UserId = z.infer<typeof createUserIdSchema>;
 
 export const createUserRecipeSchema = z.object({
-  userid: z.string().min(24, "Id do usuário inválida!"),
-  recipeId: z.number().min(1, "Id da receita inválida!"),
+  userId: z.string().min(24, "Id do usuário inválido!"),
+  recipeId: z.number().min(1, "Id da receita inválido!"),
 });
 export type UserRecipe = z.infer<typeof createUserRecipeSchema>;

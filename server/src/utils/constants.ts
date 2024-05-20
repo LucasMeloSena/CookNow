@@ -19,7 +19,9 @@ export enum userPath {
   createUser = "/register/",
   getUser = "/login/",
   getUserById = "/",
-  favoriteRecipe = "/favorite/recipe/",
+  crateFavoriteRecipe = "/favorite/recipe/",
+  searchFavoriteRecipe = "/favorite/recipe/",
+  deleteFavoriteRecipe = "/favorite/recipe/"
 }
 
 export enum uploadPath {

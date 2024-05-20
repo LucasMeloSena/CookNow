@@ -10,11 +10,14 @@ import 'package:cooknow/views/Receita/receita_view.dart';
 import 'package:cooknow/views/Start/start_view.dart';
 import 'package:cooknow/views/User/user_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }
 

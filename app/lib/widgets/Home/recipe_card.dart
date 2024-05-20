@@ -7,10 +7,14 @@ import 'package:flutter/material.dart';
 
 class RecipeCard extends StatelessWidget {
   final Recipe recipe;
-  const RecipeCard({super.key, required this.recipe});
+  final List<dynamic> recipeId;
+  const RecipeCard({super.key, required this.recipe, required this.recipeId});
 
   void handleClickRecipe(BuildContext context, Recipe recipe) {
-    Navigator.of(context).pushNamed(AppRoutes.recipe, arguments: recipe);
+    Navigator.of(context).pushNamed(AppRoutes.recipe, arguments: {
+      'recipe': recipe,
+      'recipeId': recipeId
+    });
   }
 
   @override

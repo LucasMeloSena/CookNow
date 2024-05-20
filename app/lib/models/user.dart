@@ -42,6 +42,7 @@ class UserProvider with ChangeNotifier {
   String? _token;
   String? _expiresIn;
   Timer? _logOutTimer;
+  List<dynamic> lstRecipeId = [];
 
   bool get auth {
     return _token != null;
@@ -331,5 +332,94 @@ class UserProvider with ChangeNotifier {
     _expiresIn = null;
     _clearAutoLogoutTimer();
     Storage.remove('user').then((_) => notifyListeners());
+  }
+
+  Future<void> favoriteRecipe(int idReceita) async {
+    try {
+      _loadEnv();
+
+      final Map<String, dynamic> user = await Storage.getMap("user");
+      final String userId = user['id'];
+
+      if (userId.isEmpty) {
+        return;
+      }
+
+      await http.post(
+        Uri.parse("http://$_url:3001/user/favorite/recipe/"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(
+          {
+            'recipeId': idReceita,
+            'userId': userId,
+          },
+        ),
+      );
+
+      notifyListeners();
+    } catch (err) {
+      throw Exception();
+    }
+  }
+
+  Future<List<dynamic>> searchFavoriteRecipes() async {
+    try {
+      _loadEnv();
+
+      final Map<String, dynamic> user = await Storage.getMap("user");
+      final String userId = user['id'];
+
+      if (userId.isEmpty) {
+        return [];
+      }
+
+      final response = await http.get(
+        Uri.parse("http://$_url:3001/user/favorite/recipe/?id=$userId"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+
+      final result = jsonDecode(response.body);
+      List<dynamic>? tempLst = result['recipes'];
+      if (tempLst != null) {
+        lstRecipeId = tempLst;
+      }
+      return lstRecipeId;
+    } catch (err) {
+      throw Exception();
+    }
+  }
+
+  Future<void> deleteFavoriteRecipe(int idReceita) async {
+    try {
+      _loadEnv();
+
+      final Map<String, dynamic> user = await Storage.getMap("user");
+      final String userId = user['id'];
+
+      if (userId.isEmpty) {
+        return;
+      }
+
+      await http.delete(
+        Uri.parse("http://$_url:3001/user/favorite/recipe/"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(
+          {
+            'recipeId': idReceita,
+            'userId': userId,
+          },
+        ),
+      );
+
+      notifyListeners();
+    } catch (err) {
+      throw Exception();
+    }
   }
 }

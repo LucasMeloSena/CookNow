@@ -34,7 +34,7 @@ export const uploadUserImageController = async (req: Request, res: Response, nex
 
     res.status(201).json({ image: image });
   } catch (err) {
-    const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar cadastrar o usuário! Por favor, tente novamente mais tarde!";
+    const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar fazer o upload da imagem! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
       res.status(500).json({ message: err.issues[0].message });
@@ -62,7 +62,7 @@ export const removeUserImageController = async (req: Request, res: Response, nex
     await deleteObject(storageRef);
     res.status(200).json({ message: "Imagem excluída com sucesso!" });
   } catch (err) {
-    const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar cadastrar o usuário! Por favor, tente novamente mais tarde!";
+    const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar remover a imagem! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
       res.status(500).json({ message: err.issues[0].message });

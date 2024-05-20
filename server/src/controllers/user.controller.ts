@@ -30,7 +30,7 @@ export const createUserController = async (req: Request, res: Response, next: Ne
       message: errMessage,
     });
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
   }
 };
 
@@ -63,7 +63,7 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
       res.status(200).json({ message: "Login efetudo com sucesso!", user: user, token: token, expiresIn: expirationDate });
     }
   } catch (err) {
-    const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar cadastrar o usuário! Por favor, tente novamente mais tarde!";
+    const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar realizar o login! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
       res.status(500).json({ message: err.issues[0].message });
@@ -74,7 +74,7 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
       message: errMessage,
     });
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
   }
 };
 
@@ -109,24 +109,35 @@ export const searchUserByIdController = async (req: Request, res: Response, next
       message: errMessage,
     });
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
   }
 };
 
-export const favoriteRecipeController = async (req: Request, res: Response, next: NextFunction) => {
+export const favoriteUserRecipeController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userRecipe: UserRecipe = createUserRecipeSchema.parse(req.body);
+    const userId: string = unHashString(userRecipe.userId);
+
+    const favoriteRecipes = await prisma.user_recipe.findMany({
+      where: {
+        userId: userId,
+        recipeId: userRecipe.recipeId
+      }
+    })
+    if (favoriteRecipes.length != 0) {
+      return res.status(404).json({message: "Esta receita já está como favorita no seu usuário!"})
+    }
 
     await prisma.user_recipe.create({
       data: {
-        userId: userRecipe.userid,
+        userId: userId,
         recipeId: userRecipe.recipeId,
       },
     });
 
     return res.status(201).json({ message: "Receita favoritada com sucesso!" });
   } catch (err) {
-    const msg: string = "Ocorreu um erro ao tentar encontrar o usuário! Por favor, tente novamente mais tarde!";
+    const msg: string = "Ocorreu um erro ao tentar favoritar esta receita! Por favor, tente novamente mais tarde!";
     const errMessage: string = (err as Error).message ?? msg;
 
     if (err instanceof z.ZodError) {
@@ -139,6 +150,75 @@ export const favoriteRecipeController = async (req: Request, res: Response, next
       message: errMessage,
     });
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
   }
 };
+
+export const searchFavoriteUserRecipesController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId: UserId = createUserIdSchema.parse(req.query);
+    const id: string = unHashString(userId.id);
+
+    const userFavoriteUserRecipes = await prisma.user_recipe.findMany({
+      where: {
+        userId: id,
+      }
+    })
+    if (!userFavoriteUserRecipes) {
+      return res.status(404).json({ message: "Receitas não encontradas!" });
+    } else {
+      const recipesId: number[] = userFavoriteUserRecipes.map((item) => item.recipeId)
+      res.status(200).json({message: "Dados encontrados com sucesso!", recipes: recipesId})
+    }
+}
+  catch (err) {
+    const msg: string = "Ocorreu um erro ao tentar localizar as receitas! Por favor, tente novamente mais tarde!";
+    const errMessage: string = (err as Error).message ?? msg;
+
+    if (err instanceof z.ZodError) {
+      return res.status(500).json({ message: err.issues[0].message });
+    } else if (err instanceof PrismaClientKnownRequestError) {
+      return res.status(500).json({ message: msg });
+    }
+
+    res.status(500).json({
+      message: errMessage,
+    });
+  }
+  finally {
+    prisma.$disconnect();
+  }
+}
+
+export const deleteFavoriteUserRecipeController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userRecipe: UserRecipe = createUserRecipeSchema.parse(req.body);
+    const userId: string = unHashString(userRecipe.userId);
+
+    await prisma.user_recipe.deleteMany({
+      where: {
+        userId: userId,
+        recipeId: userRecipe.recipeId,
+      },
+    });
+
+    return res.status(201).json({ message: "Receita removida dos favoritos com sucesso!" });
+  }
+  catch (err) {
+    const msg: string = "Ocorreu um erro ao tentar remover as receitas dos favoritos! Por favor, tente novamente mais tarde!";
+    const errMessage: string = (err as Error).message ?? msg;
+
+    if (err instanceof z.ZodError) {
+      return res.status(500).json({ message: err.issues[0].message });
+    } else if (err instanceof PrismaClientKnownRequestError) {
+      return res.status(500).json({ message: msg });
+    }
+
+    res.status(500).json({
+      message: errMessage,
+    });
+  }
+  finally {
+    prisma.$disconnect();
+  }
+}

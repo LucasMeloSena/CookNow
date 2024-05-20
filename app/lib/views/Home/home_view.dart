@@ -17,15 +17,22 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   bool _isLoading = true;
+  bool loaded = false;
 
   @override
   void initState() {
     super.initState();
-    Provider.of<RecipeProvider>(context, listen: false).searchRecipes().then((value) {
-      setState(() {
-        _isLoading = false;
+    if (loaded == false) {
+      Provider.of<UserProvider>(context, listen: false).searchFavoriteRecipes();
+      Provider.of<RecipeProvider>(context, listen: false)
+          .searchRecipes()
+          .then((value) {
+        setState(() {
+          _isLoading = false;
+        });
       });
-    });
+      loaded = true;
+    }
   }
 
   @override
@@ -66,6 +73,7 @@ class _HomeViewState extends State<HomeView> {
                         children: recipe.getThreeRecipes.map((item) {
                           return RecipeCard(
                             recipe: item,
+                            recipeId: user.lstRecipeId,
                           );
                         }).toList(),
                       )

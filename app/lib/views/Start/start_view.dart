@@ -19,9 +19,14 @@ class StartView extends StatelessWidget {
                 child: CircularProgressIndicator.adaptive(),
               );
             } else if (snapshot.error != null) {
-              return const Center(
-                child: Text(
-                  "Ocorreu um erro ao iniciar o app! Por favor, tente mais tarde!",
+              return Center(
+                child: Column(
+                  children: [
+                    const Text(
+                      "Ocorreu um erro ao iniciar o app! Por favor, tente mais tarde!",
+                    ),
+                    OutlinedButton(onPressed: user.logOut, child: const Text('sair'))
+                  ],
                 ),
               );
             } else {

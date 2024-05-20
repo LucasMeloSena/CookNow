@@ -103,17 +103,4 @@ class RecipeProvider extends ChangeNotifier {
       throw Exception(err);
     }
   }
-
-  Future<void> favoriteRecipe(int idReceita) async {
-    _loadEnv();
-    final response = await http.post(
-      Uri.parse("http://$_url:3001/user/favorite/recipe/"),
-      body: jsonEncode(
-        {
-          'idReceita': 1,
-          'idUsuario:': 2,
-        },
-      ),
-    );
-  }
 }
