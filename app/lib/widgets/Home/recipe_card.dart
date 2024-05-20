@@ -1,17 +1,22 @@
 import 'package:cooknow/assets/styles/colors.dart';
 import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:cooknow/models/recipe.dart';
+import 'package:cooknow/utils/routes.dart';
+import 'package:cooknow/widgets/Common/categoria.dart';
 import 'package:flutter/material.dart';
 
 class RecipeCard extends StatelessWidget {
   final Recipe recipe;
-
   const RecipeCard({super.key, required this.recipe});
+
+  void handleClickRecipe(BuildContext context, Recipe recipe) {
+    Navigator.of(context).pushNamed(AppRoutes.recipe, arguments: recipe);
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => handleClickRecipe(context, recipe),
       child: Container(
         padding: const EdgeInsets.only(right: 10),
         margin: const EdgeInsets.only(bottom: 20),
@@ -59,24 +64,7 @@ class RecipeCard extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5,
-                    ),
-                    decoration: BoxDecoration(
-                      color: MyColors.yellow_500,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Text(
-                      recipe.categoria,
-                      style: MyTextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                  )
+                  Categoria(text: recipe.categoria)
                 ],
               ),
             const Spacer(),

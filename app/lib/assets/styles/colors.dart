@@ -4,6 +4,7 @@ class MyColors {
   static const Color yellow_500 = Color.fromRGBO(236, 208, 155, 1);
   static const Color yellow_700 = Color.fromRGBO(223, 177, 92, 1);
   static const Color yellow_200 = Color.fromRGBO(255, 248, 235, 1);
+  static const Color grey_800 = Color.fromARGB(206, 143, 143, 143);
   static const Color grey_600 = Color.fromRGBO(211, 211, 211, 1);
   static const Color grey_300 = Color.fromRGBO(171, 171, 171, 0.6);
   static const Color grey_100 = Color.fromARGB(27, 171, 171, 171);

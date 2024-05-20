@@ -7,6 +7,7 @@ class MyTextStyle extends TextStyle {
   final double fontSize;
   final Color color;
   final double? height;
+  final TextDecoration decoration;
 
   MyTextStyle({
     this.fontFamily = 'Poppins',
@@ -14,5 +15,6 @@ class MyTextStyle extends TextStyle {
     this.fontSize = 14,
     this.color = MyColors.black_600,
     this.height,
+    this.decoration = TextDecoration.none
   });
 }

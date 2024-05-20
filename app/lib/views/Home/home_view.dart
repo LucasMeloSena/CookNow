@@ -21,9 +21,10 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-        Provider.of<RecipeProvider>(context).searchRecipes();
-    setState(() {
-      _isLoading = false;
+    Provider.of<RecipeProvider>(context, listen: false).searchRecipes().then((value) {
+      setState(() {
+        _isLoading = false;
+      });
     });
   }
 

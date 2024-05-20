@@ -62,41 +62,58 @@ class RecipeProvider extends ChangeNotifier {
   }
 
   Future<void> searchRecipes() async {
-    _loadEnv();
+    try {
+      _loadEnv();
 
-    final response = await http
-        .get(Uri.parse(
-          "http://$_url:3002/recipes/",
-        ))
-        .timeout(
-          const Duration(
-            seconds: 60,
-          ),
-        );
-
-    final result = jsonDecode(response.body);
-
-    if (response.statusCode == 200) {
-      List<dynamic> lstRecipesTemp = result['recipes'];
-      _lstRecipes = lstRecipesTemp
-          .map(
-            (item) => Recipe(
-              id: item['id'].toString(),
-              nome: item['nome'],
-              urlImage: item['url_image'],
-              tempoMedio: item['tempo_medio'],
-              custo: item['custo'],
-              dificuldade: item['dificuldade'],
-              localidade: item['localizacao'],
-              avaliacao: item['avaliacao'],
-              categoria: item['categoria'],
-              ingredientes: item['ingredientes'],
-              modoPreparo: item['modo_preparo'],
-              dtCadastro: item['dt_cadastro'],
-              dtAtualizacao: item['dt_atualizacao'],
+      final response = await http
+          .get(Uri.parse(
+            "http://$_url:3002/recipes/",
+          ))
+          .timeout(
+            const Duration(
+              seconds: 60,
             ),
-          )
-          .toList();
+          );
+
+      final result = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        List<dynamic> lstRecipesTemp = result['recipes'];
+        _lstRecipes = lstRecipesTemp
+            .map(
+              (item) => Recipe(
+                id: item['id'].toString(),
+                nome: item['nome'],
+                urlImage: item['url_image'],
+                tempoMedio: item['tempo_medio'],
+                custo: item['custo'],
+                dificuldade: item['dificuldade'],
+                localidade: item['localizacao'],
+                avaliacao: item['avaliacao'],
+                categoria: item['categoria'],
+                ingredientes: item['ingredientes'],
+                modoPreparo: item['modo_preparo'],
+                dtCadastro: item['dt_cadastro'],
+                dtAtualizacao: item['dt_atualizacao'],
+              ),
+            )
+            .toList();
+      }
+    } catch (err) {
+      throw Exception(err);
     }
+  }
+
+  Future<void> favoriteRecipe(int idReceita) async {
+    _loadEnv();
+    final response = await http.post(
+      Uri.parse("http://$_url:3001/user/favorite/recipe/"),
+      body: jsonEncode(
+        {
+          'idReceita': 1,
+          'idUsuario:': 2,
+        },
+      ),
+    );
   }
 }

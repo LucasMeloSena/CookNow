@@ -82,7 +82,7 @@ export const searchUserByIdController = async (req: Request, res: Response, next
   try {
     const userId: UserId = createUserIdSchema.parse(req.query);
     const id: string = unHashString(userId.id);
-    
+
     const user: User = await prisma.user.findUnique({
       where: {
         id: id,
