@@ -22,8 +22,11 @@ export const createUserController = async (req: Request, res: Response, next: Ne
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar cadastrar o usuário! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
-      res.status(500).json({ message: err.issues[0].message });
-      return;
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
+      }
+      return res.status(500).json({ message: errMsg });
     }
 
     res.status(500).json({
@@ -66,8 +69,11 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar realizar o login! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
-      res.status(500).json({ message: err.issues[0].message });
-      return;
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
+      }
+      return res.status(500).json({ message: errMsg });
     }
 
     res.status(500).json({
@@ -100,7 +106,11 @@ export const searchUserByIdController = async (req: Request, res: Response, next
     const errMessage: string = (err as Error).message ?? msg;
 
     if (err instanceof z.ZodError) {
-      return res.status(500).json({ message: err.issues[0].message });
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
+      }
+      return res.status(500).json({ message: errMsg });
     } else if (err instanceof PrismaClientKnownRequestError) {
       return res.status(500).json({ message: msg });
     }
@@ -141,7 +151,11 @@ export const favoriteUserRecipeController = async (req: Request, res: Response, 
     const errMessage: string = (err as Error).message ?? msg;
 
     if (err instanceof z.ZodError) {
-      return res.status(500).json({ message: err.issues[0].message });
+      let errMsg: string = err.issues[0].message
+      if (errMsg == 'Required') {
+        errMsg = "Dados ausentes ou inválidos!"
+      }
+      return res.status(500).json({ message: errMsg });
     } else if (err instanceof PrismaClientKnownRequestError) {
       return res.status(500).json({ message: msg });
     }
@@ -175,7 +189,11 @@ export const searchFavoriteUserRecipesController = async (req: Request, res: Res
     const errMessage: string = (err as Error).message ?? msg;
 
     if (err instanceof z.ZodError) {
-      return res.status(500).json({ message: err.issues[0].message });
+      let errMsg: string = err.issues[0].message
+      if (errMsg == 'Required') {
+        errMsg = "Dados ausentes ou inválidos!"
+      }
+      return res.status(500).json({ message: errMsg });
     } else if (err instanceof PrismaClientKnownRequestError) {
       return res.status(500).json({ message: msg });
     }
@@ -206,7 +224,11 @@ export const deleteFavoriteUserRecipeController = async (req: Request, res: Resp
     const errMessage: string = (err as Error).message ?? msg;
 
     if (err instanceof z.ZodError) {
-      return res.status(500).json({ message: err.issues[0].message });
+      let errMsg: string = err.issues[0].message
+      if (errMsg == 'Required') {
+        errMsg = "Dados ausentes ou inválidos!"
+      }
+      return res.status(500).json({ message: errMsg });
     } else if (err instanceof PrismaClientKnownRequestError) {
       return res.status(500).json({ message: msg });
     }

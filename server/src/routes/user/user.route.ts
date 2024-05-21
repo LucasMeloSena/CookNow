@@ -8,16 +8,17 @@ import {
   searchUserByIdController,
 } from "../..//controllers/user.controller";
 import { userPath } from "../..//utils/constants";
+import { verifyToken } from "../../utils/token";
 
 const userRoute = express.Router();
 
 // limite de tentativas de login
 
-userRoute.get(userPath.getUserById, searchUserByIdController);
 userRoute.post(userPath.getUser, loginUserController);
 userRoute.post(userPath.createUser, createUserController);
-userRoute.post(userPath.crateFavoriteRecipe, favoriteUserRecipeController);
-userRoute.get(userPath.searchFavoriteRecipe, searchFavoriteUserRecipesController);
-userRoute.delete(userPath.deleteFavoriteRecipe, deleteFavoriteUserRecipeController);
+userRoute.get(userPath.getUserById, verifyToken, searchUserByIdController);
+userRoute.post(userPath.crateFavoriteRecipe, verifyToken, favoriteUserRecipeController);
+userRoute.get(userPath.searchFavoriteRecipe, verifyToken, searchFavoriteUserRecipesController);
+userRoute.delete(userPath.deleteFavoriteRecipe, verifyToken, deleteFavoriteUserRecipeController);
 
 export { userRoute };

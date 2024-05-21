@@ -43,6 +43,7 @@ class UserProvider with ChangeNotifier {
   String? _expiresIn;
   Timer? _logOutTimer;
   List<dynamic> lstRecipeId = [];
+  String? _firebaseEmail;
 
   bool get auth {
     return _token != null;
@@ -58,6 +59,7 @@ class UserProvider with ChangeNotifier {
     } else if (_platform == "android") {
       _url = dotenv.env["LOOPBACK_ANDROID"] ?? "";
     }
+    _firebaseEmail = dotenv.env["FIREBASE_EMAIL"];
   }
 
   Future<String> uploadImage(
@@ -76,6 +78,7 @@ class UserProvider with ChangeNotifier {
           filename: fileName,
           contentType: MediaType("image", fileType),
         ),
+        'email': _firebaseEmail
       });
 
       final response = await Dio()
@@ -250,15 +253,18 @@ class UserProvider with ChangeNotifier {
     try {
       _loadEnv();
 
-      final response = await http
-          .get(Uri.parse(
-            "http://$_url:3001/user/?id=$id",
-          ))
-          .timeout(
-            const Duration(
-              seconds: 60,
-            ),
-          );
+      final response = await http.get(
+        Uri.parse(
+          "http://$_url:3001/user/?id=$id",
+        ),
+        headers: {
+          'Authorization': 'Bearer $_token'
+        },
+      ).timeout(
+        const Duration(
+          seconds: 60,
+        ),
+      );
 
       final result = jsonDecode(response.body);
 
@@ -349,6 +355,7 @@ class UserProvider with ChangeNotifier {
         Uri.parse("http://$_url:3001/user/favorite/recipe/"),
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token'
         },
         body: jsonEncode(
           {
@@ -379,6 +386,7 @@ class UserProvider with ChangeNotifier {
         Uri.parse("http://$_url:3001/user/favorite/recipe/?id=$userId"),
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token'
         },
       );
 
@@ -408,6 +416,7 @@ class UserProvider with ChangeNotifier {
         Uri.parse("http://$_url:3001/user/favorite/recipe/"),
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token'
         },
         body: jsonEncode(
           {

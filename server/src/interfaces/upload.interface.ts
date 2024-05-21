@@ -12,5 +12,9 @@ export type Upload = {
 export const createFileSchema = z.object({
   fileName: z.string().min(4, "O arquivo é inválido!"),
 });
-
 export type File = z.infer<typeof createFileSchema>;
+
+export const createAuthSchema = z.object({
+  email: z.string().min(20, "Email de autenticação inválido!"),
+});
+export type Auth = z.infer<typeof createAuthSchema>;

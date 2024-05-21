@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { File, Upload, createFileSchema } from "../interfaces/upload.interface";
+import { Auth, File, Upload, createAuthSchema, createFileSchema } from "../interfaces/upload.interface";
 import { validarUploadArquivo } from "../utils/validator";
 import { z } from "zod";
 import { auth } from "../utils/constants";
@@ -11,6 +11,8 @@ dotenv.config();
 
 export const uploadUserImageController = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const authInfo: Auth = createAuthSchema.parse(req.body);
+
     const storage = getStorage();
     const upload: Upload = {
       file: req.file,
@@ -23,10 +25,10 @@ export const uploadUserImageController = async (req: Request, res: Response, nex
     validarUploadArquivo(upload);
 
     const authFields = {
-      email: process.env.FIREBASE_EMAIL,
+      email: authInfo.email,
       senha: process.env.FIREBASE_SENHA,
     };
-    await signInWithEmailAndPassword(auth, authFields.email!, authFields.senha!);
+    await signInWithEmailAndPassword(auth, authFields.email, authFields.senha!);
 
     const storageRef = ref(storage, `users/${upload.fileName}`);
     await uploadBytesResumable(storageRef, upload.buffer!, upload.metadata);
@@ -37,8 +39,14 @@ export const uploadUserImageController = async (req: Request, res: Response, nex
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar fazer o upload da imagem! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
-      res.status(500).json({ message: err.issues[0].message });
-      return;
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
+      }
+      return res.status(500).json({ message: errMsg });
+    }
+    if (err instanceof FirebaseError) {
+      return res.status(500).json({ message: "Dados de autenticação inválidos!" });
     }
 
     res.status(500).json({
@@ -65,12 +73,14 @@ export const removeUserImageController = async (req: Request, res: Response, nex
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar remover a imagem! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
-      res.status(500).json({ message: err.issues[0].message });
-      return;
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
+      }
+      return res.status(500).json({ message: errMsg });
     }
     if (err instanceof FirebaseError) {
-      res.status(500).json({ message: "Arquivo não encontrado!" });
-      return;
+      return res.status(500).json({ message: "Arquivo não encontrado!" });
     }
 
     res.status(500).json({

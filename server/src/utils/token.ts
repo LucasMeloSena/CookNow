@@ -30,7 +30,7 @@ export const generateToken = (user: User) => {
 };
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  const token: string | undefined = req.headers.authorization;
+  const token: string | undefined = req.headers.authorization?.split(" ")[1];
   const key: string = process.env.JWT_KEY ?? "";
 
   if (!token) {
@@ -39,9 +39,8 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
 
   jwt.verify(token, key, (err, decoded) => {
     if (err) {
-      return res.status(403).json({ message: "Token inváldio!" });
+      return res.status(403).json({ message: "Token inválido!" });
     }
-    //req.user = decoded
     next();
   });
 };
