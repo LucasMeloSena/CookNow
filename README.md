@@ -14,6 +14,7 @@ This is project is an app of the user can see a lot of revenues and favorite the
 - CI | CD
 - Docker
 - MongoDB
+- Postgres
 - Prisma ORM
 - Estilização de código - Prettier
 - TDD
