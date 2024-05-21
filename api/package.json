@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "prisma generate && tsx watch ./src/server.ts",
+    "build": "tsx watch ./src/server.ts",
     "dev": "npm run lint:fix && tsx watch ./src/server.ts",
     "prisma:generate": "",
     "lint:check": "prettier --check .",
