@@ -1,4 +1,3 @@
-import { fileTypes } from "src/utils/constants";
 import { z } from "zod";
 
 export type Upload = {
