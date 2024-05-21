@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Request, Response, NextFunction } from "express";
-import { prisma } from "src/infra/database";
+import { prisma } from "../infra/database";
 
 export const getRecipesController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -43,9 +43,7 @@ export const getRecipesController = async (req: Request, res: Response, next: Ne
   }
 };
 
-export const getRecipeByIdController = async (req: Request, res: Response, next: NextFunction) => {
-  
-};
+export const getRecipeByIdController = async (req: Request, res: Response, next: NextFunction) => {};
 
 export const createRecipeController = async (req: Request, res: Response, next: NextFunction) => {
   try {

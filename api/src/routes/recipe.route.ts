@@ -1,6 +1,6 @@
 import express from "express";
-import { createRecipeController, getRecipeByIdController, getRecipesController } from "src/controllers/recipe.controller";
-import { recipePath } from "src/utils/constants";
+import { createRecipeController, getRecipeByIdController, getRecipesController } from "../controllers/recipe.controller";
+import { recipePath } from "../utils/constants";
 
 const recipeRoute = express.Router();
 
