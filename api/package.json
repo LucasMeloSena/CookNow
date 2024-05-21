@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsx watch ./src/server.ts",
     "dev": "npm run lint:fix && tsx watch ./src/server.ts",
+    "prisma:generate": "prisma generate",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "test": "jest --runInBand",
