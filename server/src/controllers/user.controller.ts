@@ -121,11 +121,11 @@ export const favoriteUserRecipeController = async (req: Request, res: Response, 
     const favoriteRecipes = await prisma.user_recipe.findMany({
       where: {
         userId: userId,
-        recipeId: userRecipe.recipeId
-      }
-    })
+        recipeId: userRecipe.recipeId,
+      },
+    });
     if (favoriteRecipes.length != 0) {
-      return res.status(404).json({message: "Esta receita já está como favorita no seu usuário!"})
+      return res.status(404).json({ message: "Esta receita já está como favorita no seu usuário!" });
     }
 
     await prisma.user_recipe.create({
@@ -162,16 +162,15 @@ export const searchFavoriteUserRecipesController = async (req: Request, res: Res
     const userFavoriteUserRecipes = await prisma.user_recipe.findMany({
       where: {
         userId: id,
-      }
-    })
+      },
+    });
     if (!userFavoriteUserRecipes) {
       return res.status(404).json({ message: "Receitas não encontradas!" });
     } else {
-      const recipesId: number[] = userFavoriteUserRecipes.map((item) => item.recipeId)
-      res.status(200).json({message: "Dados encontrados com sucesso!", recipes: recipesId})
+      const recipesId: number[] = userFavoriteUserRecipes.map((item) => item.recipeId);
+      res.status(200).json({ message: "Dados encontrados com sucesso!", recipes: recipesId });
     }
-}
-  catch (err) {
+  } catch (err) {
     const msg: string = "Ocorreu um erro ao tentar localizar as receitas! Por favor, tente novamente mais tarde!";
     const errMessage: string = (err as Error).message ?? msg;
 
@@ -184,11 +183,10 @@ export const searchFavoriteUserRecipesController = async (req: Request, res: Res
     res.status(500).json({
       message: errMessage,
     });
-  }
-  finally {
+  } finally {
     prisma.$disconnect();
   }
-}
+};
 
 export const deleteFavoriteUserRecipeController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -203,8 +201,7 @@ export const deleteFavoriteUserRecipeController = async (req: Request, res: Resp
     });
 
     return res.status(201).json({ message: "Receita removida dos favoritos com sucesso!" });
-  }
-  catch (err) {
+  } catch (err) {
     const msg: string = "Ocorreu um erro ao tentar remover as receitas dos favoritos! Por favor, tente novamente mais tarde!";
     const errMessage: string = (err as Error).message ?? msg;
 
@@ -217,8 +214,7 @@ export const deleteFavoriteUserRecipeController = async (req: Request, res: Resp
     res.status(500).json({
       message: errMessage,
     });
-  }
-  finally {
+  } finally {
     prisma.$disconnect();
   }
-}
+};

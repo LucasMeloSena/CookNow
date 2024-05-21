@@ -21,7 +21,7 @@ export enum userPath {
   getUserById = "/",
   crateFavoriteRecipe = "/favorite/recipe/",
   searchFavoriteRecipe = "/favorite/recipe/",
-  deleteFavoriteRecipe = "/favorite/recipe/"
+  deleteFavoriteRecipe = "/favorite/recipe/",
 }
 
 export enum uploadPath {

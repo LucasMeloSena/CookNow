@@ -1,5 +1,12 @@
 import express from "express";
-import { createUserController, deleteFavoriteUserRecipeController, favoriteUserRecipeController, loginUserController, searchFavoriteUserRecipesController, searchUserByIdController } from "src/controllers/user.controller";
+import {
+  createUserController,
+  deleteFavoriteUserRecipeController,
+  favoriteUserRecipeController,
+  loginUserController,
+  searchFavoriteUserRecipesController,
+  searchUserByIdController,
+} from "src/controllers/user.controller";
 import { userPath } from "src/utils/constants";
 
 const userRoute = express.Router();
@@ -11,6 +18,6 @@ userRoute.post(userPath.getUser, loginUserController);
 userRoute.post(userPath.createUser, createUserController);
 userRoute.post(userPath.crateFavoriteRecipe, favoriteUserRecipeController);
 userRoute.get(userPath.searchFavoriteRecipe, searchFavoriteUserRecipesController);
-userRoute.delete(userPath.deleteFavoriteRecipe, deleteFavoriteUserRecipeController)
+userRoute.delete(userPath.deleteFavoriteRecipe, deleteFavoriteUserRecipeController);
 
 export { userRoute };
