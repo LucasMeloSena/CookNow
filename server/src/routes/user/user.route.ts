@@ -6,8 +6,8 @@ import {
   loginUserController,
   searchFavoriteUserRecipesController,
   searchUserByIdController,
-} from "src/controllers/user.controller";
-import { userPath } from "src/utils/constants";
+} from "../..//controllers/user.controller";
+import { userPath } from "../..//utils/constants";
 
 const userRoute = express.Router();
 

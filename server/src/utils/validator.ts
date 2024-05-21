@@ -1,6 +1,6 @@
-import { prisma } from "src/infra/database";
-import { Upload } from "src/interfaces/upload.interface";
-import { UserRegister } from "src/interfaces/user.interface";
+import { prisma } from "../infra/database";
+import { Upload } from "../interfaces/upload.interface";
+import { UserRegister } from "../interfaces/user.interface";
 
 export const validarCampoExistenteUserSchema = async (user: UserRegister) => {
   const hasCelularCadastrado = await prisma.user.findUnique({

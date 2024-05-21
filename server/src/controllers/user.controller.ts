@@ -1,10 +1,10 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { NextFunction, Request, Response } from "express";
-import { prisma } from "src/infra/database";
-import { User, UserRegister, UserLogin, createUserLoginShema, createUserRegisterShema, createUserIdSchema, UserId, createUserRecipeSchema, UserRecipe } from "src/interfaces/user.interface";
-import { comparePass, cryptPass, hashString, unHashString } from "src/utils/hash";
-import { generateToken, getExpirationDate } from "src/utils/token";
-import { validarCampoExistenteUserSchema } from "src/utils/validator";
+import { prisma } from "../infra/database";
+import { User, UserRegister, UserLogin, createUserLoginShema, createUserRegisterShema, createUserIdSchema, UserId, createUserRecipeSchema, UserRecipe } from "../interfaces/user.interface";
+import { comparePass, cryptPass, hashString, unHashString } from "../utils/hash";
+import { generateToken, getExpirationDate } from "../utils/token";
+import { validarCampoExistenteUserSchema } from "../utils/validator";
 import { z } from "zod";
 
 export const createUserController = async (req: Request, res: Response, next: NextFunction) => {
