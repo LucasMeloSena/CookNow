@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { User } from "../interfaces/user.interface";
+import { User } from "src/interfaces/user.interface";
 const dotenv = require("dotenv");
 dotenv.config();
 

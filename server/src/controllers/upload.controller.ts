@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { File, Upload, createFileSchema } from "../interfaces/upload.interface";
-import { validarUploadArquivo } from "../utils/validator";
+import { File, Upload, createFileSchema } from "src/interfaces/upload.interface";
+import { validarUploadArquivo } from "src/utils/validator";
 import { z } from "zod";
-import { auth } from "../utils/constants";
+import { auth } from "src/utils/constants";
 import { FirebaseError } from "firebase/app";
 const dotenv = require("dotenv");
 dotenv.config();
