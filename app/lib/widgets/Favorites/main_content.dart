@@ -1,12 +1,29 @@
+import 'package:cooknow/assets/styles/colors.dart';
+import 'package:cooknow/assets/styles/text_style.dart';
+import 'package:cooknow/models/recipe.dart';
+import 'package:cooknow/utils/routes.dart';
+import 'package:cooknow/widgets/Common/categoria.dart';
+import 'package:cooknow/widgets/Favorites/recipe_card.dart';
 import 'package:flutter/material.dart';
 
-class MainContentFavorites extends StatelessWidget {
+class MainContentFavorites extends StatefulWidget {
+  List<Recipe> lstRecipes;
+  List<dynamic> lstIdsRecipes;
+  MainContentFavorites(
+      {super.key, required this.lstRecipes, required this.lstIdsRecipes});
+
+  @override
+  State<MainContentFavorites> createState() => _MainContentFavoritesState();
+}
+
+class _MainContentFavoritesState extends State<MainContentFavorites> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: MediaQuery.of(context).size.height * 0.08,
+      top: MediaQuery.of(context).size.height * 0.1,
       bottom: 0,
       child: Container(
+        padding: const EdgeInsets.all(20),
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -17,12 +34,26 @@ class MainContentFavorites extends StatelessWidget {
             bottomRight: Radius.circular(0.0),
           ),
         ),
-        child: const SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
-            children: [
-              Text("Teste"),
-              Text("Teste"),
-            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: widget.lstRecipes.isEmpty
+                ? [
+                    Center(
+                      child: Text(
+                        "Não há receitas favoritas no momento!",
+                        style: MyTextStyle(),
+                      ),
+                    ),
+                  ]
+                : widget.lstRecipes
+                    .map((item) => RecipeCardFavorites(
+                          context: context,
+                          recipe: item,
+                          lstIdsRecipes: widget.lstIdsRecipes,
+                        ))
+                    .toList(),
           ),
         ),
       ),

@@ -18,6 +18,7 @@ export const auth = getAuth(firebaseApp);
 export enum userPath {
   createUser = "/register/",
   getUser = "/login/",
+  updateUser = "/update/",
   getUserById = "/",
   crateFavoriteRecipe = "/favorite/recipe/",
   searchFavoriteRecipe = "/favorite/recipe/",
@@ -27,6 +28,7 @@ export enum userPath {
 export enum uploadPath {
   uploadUserImage = "/user/image/",
   removeUserImage = "/user/image/",
+  updateUserImage = "/update/user/image/"
 }
 
 export enum fileTypes {

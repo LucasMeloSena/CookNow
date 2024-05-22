@@ -19,6 +19,7 @@ class User {
   String senha;
   File? imageProfile;
   String? imageProfileUrl;
+  String? imageFileName;
   String dtCadastro;
   String dtAtualizacao;
 
@@ -30,6 +31,7 @@ class User {
     required this.senha,
     this.imageProfile,
     this.imageProfileUrl,
+    this.imageFileName,
     required this.dtCadastro,
     required this.dtAtualizacao,
   });
@@ -44,6 +46,7 @@ class UserProvider with ChangeNotifier {
   Timer? _logOutTimer;
   List<dynamic> lstRecipeId = [];
   String? _firebaseEmail;
+  String _imageFileName = "";
 
   bool get auth {
     return _token != null;
@@ -126,7 +129,7 @@ class UserProvider with ChangeNotifier {
     try {
       _loadEnv();
 
-      String fileName =
+      _imageFileName =
           "${(user.nome).trim().toLowerCase()}-${Random().nextDouble().toString()}";
       String imgUser = "";
 
@@ -136,7 +139,7 @@ class UserProvider with ChangeNotifier {
       } else {
         imgUser = await uploadImage(
           user.imageProfile!,
-          fileName,
+          _imageFileName,
           Scripts.getFileType(user.imageProfile!),
         );
       }
@@ -168,7 +171,7 @@ class UserProvider with ChangeNotifier {
       final result = jsonDecode(response.body);
 
       if (response.statusCode == 500) {
-        removeImage(fileName);
+        removeImage(_imageFileName);
         Map<String, dynamic> retorno = {
           'status': StatusResponse.error,
           'message': result['message']
@@ -429,6 +432,121 @@ class UserProvider with ChangeNotifier {
       notifyListeners();
     } catch (err) {
       throw Exception();
+    }
+  }
+
+  Future<String> updateImage(
+    String oldFile,
+    File file,
+    String fileName,
+    String fileType,
+  ) async {
+    try {
+      _loadEnv();
+
+      if (fileType == 'unknown') throw Exception("Imagem inválida!");
+
+      FormData formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+          contentType: MediaType("image", fileType),
+        ),
+        'email': _firebaseEmail,
+        'oldFile': oldFile
+      });
+
+      final response = await Dio()
+          .post(
+            'http://$_url:3001/upload/update/user/image/',
+            data: formData,
+          )
+          .timeout(
+            const Duration(
+              seconds: 60,
+            ),
+          );
+
+      if (response.statusCode == 200) {
+        _imageFileName = fileName;
+      }
+      return response.data['image'];
+    } catch (err) {
+      throw Exception();
+    }
+  }
+
+  Future<Map<String, dynamic>> updateUser(User user) async {
+    try {
+      _loadEnv();
+
+      String fileName =
+          "${(user.nome).trim().toLowerCase()}-${Random().nextDouble().toString()}";
+      String imgUser = user.imageProfileUrl!;
+
+      if (user.imageProfile != null) {
+        imgUser = await updateImage(
+          _imageFileName,
+          user.imageProfile!,
+          fileName,
+          Scripts.getFileType(user.imageProfile!),
+        );
+      }
+
+      final response = await http
+          .put(
+            Uri.parse(
+              "http://$_url:3001/user/update/",
+            ),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $_token'
+            },
+            body: jsonEncode({
+              'id': user.id,
+              'nome': user.nome,
+              'email': user.email,
+              'celular': user.celular,
+              'img_profile': imgUser,
+              'senha': user.senha,
+              'dt_atualizacao': user.dtAtualizacao
+            }),
+          )
+          .timeout(
+            const Duration(
+              seconds: 60,
+            ),
+          );
+
+      final result = jsonDecode(response.body);
+
+      if (response.statusCode == 500) {
+        removeImage(fileName);
+        Map<String, dynamic> retorno = {
+          'status': StatusResponse.error,
+          'message': result['message']
+        };
+        return retorno;
+      } else {
+        user = User(
+          id: result['user']['id'],
+          nome: result['user']['nome'],
+          celular: result['user']['celular'],
+          email: result['user']['email'],
+          senha: result['user']['senha'],
+          imageProfileUrl: result['user']['img_profile'],
+          dtCadastro: result['user']['dt_cadastro'],
+          dtAtualizacao: result['user']['dt_atualizacao'],
+        );
+        Map<String, dynamic> retorno = {
+          'status': StatusResponse.success,
+          'message': result['message']
+        };
+        notifyListeners();
+        return retorno;
+      }
+    } catch (err) {
+      throw Exception(err);
     }
   }
 }

@@ -8,4 +8,5 @@ class AppRoutes {
   static const String favorites = '/favorites';
   static const String user = '/user';
   static const String recipe = '/recipe';
+  static const String userConfig = '/user-config';
 }

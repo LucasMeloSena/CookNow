@@ -6,8 +6,9 @@ import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
   final Function(File image) onSelectedImage;
+  final String? src;
 
-  ImageInput({required this.onSelectedImage});
+  ImageInput({required this.onSelectedImage, this.src});
 
   @override
   State<ImageInput> createState() => _ImageInputState();
@@ -50,7 +51,14 @@ class _ImageInputState extends State<ImageInput> {
                       image!,
                     ),
                   )
-                : null,
+                : widget.src != null
+                    ? CircleAvatar(
+                        radius: 100,
+                        backgroundImage: NetworkImage(
+                          widget.src!,
+                        ),
+                      )
+                    : null,
           ),
           Positioned(
             bottom: 0,

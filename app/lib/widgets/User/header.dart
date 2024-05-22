@@ -1,5 +1,6 @@
 import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:cooknow/models/user.dart';
+import 'package:cooknow/utils/routes.dart';
 import 'package:flutter/material.dart';
 
 class HeaderUser extends StatefulWidget {
@@ -29,7 +30,11 @@ class _HeaderUserState extends State<HeaderUser> {
         userInfo.email,
         style: MyTextStyle(),
       ),
-      trailing: IconButton(icon: const Icon(Icons.settings), onPressed: (){}),
+      trailing: IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.of(context).pushNamed(AppRoutes.userConfig, arguments: userInfo);
+          }),
     );
   }
 }

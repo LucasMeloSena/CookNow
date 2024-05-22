@@ -6,6 +6,7 @@ import {
   loginUserController,
   searchFavoriteUserRecipesController,
   searchUserByIdController,
+  updateUserController,
 } from "../..//controllers/user.controller";
 import { userPath } from "../..//utils/constants";
 import { verifyToken } from "../../utils/token";
@@ -20,5 +21,6 @@ userRoute.get(userPath.getUserById, verifyToken, searchUserByIdController);
 userRoute.post(userPath.crateFavoriteRecipe, verifyToken, favoriteUserRecipeController);
 userRoute.get(userPath.searchFavoriteRecipe, verifyToken, searchFavoriteUserRecipesController);
 userRoute.delete(userPath.deleteFavoriteRecipe, verifyToken, deleteFavoriteUserRecipeController);
+userRoute.put(userPath.updateUser, verifyToken, updateUserController)
 
 export { userRoute };

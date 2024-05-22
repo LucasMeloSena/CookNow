@@ -1,7 +1,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../infra/database";
-import { User, UserRegister, UserLogin, createUserLoginShema, createUserRegisterShema, createUserIdSchema, UserId, createUserRecipeSchema, UserRecipe } from "../interfaces/user.interface";
+import { User, UserRegister, UserLogin, createUserLoginShema, createUserRegisterShema, createUserIdSchema, UserId, createUserRecipeSchema, UserRecipe, UserUpdate, createUserUpdateShema } from "../interfaces/user.interface";
 import { comparePass, cryptPass, hashString, unHashString } from "../utils/hash";
 import { generateToken, getExpirationDate } from "../utils/token";
 import { validarCampoExistenteUserSchema } from "../utils/validator";
@@ -240,3 +240,53 @@ export const deleteFavoriteUserRecipeController = async (req: Request, res: Resp
     prisma.$disconnect();
   }
 };
+
+export const updateUserController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user: UserUpdate = createUserUpdateShema.parse(req.body);
+    user.id = unHashString(user.id)
+
+    let userInfo = await prisma.user.findUnique({
+      where: {
+        id: user.id
+      }
+    })
+
+    if (userInfo?.senha != user.senha) {
+      user.senha = await cryptPass(user.senha);
+    }
+
+
+    userInfo = await prisma.user.update({
+      where: {
+        id: user.id
+      },
+      data: {
+        nome: user.nome,
+        celular: user.celular,
+        email: user.email,
+        senha: user.senha,
+        img_profile: user.img_profile,
+        dt_atualizacao: user.dt_atualizacao
+      }
+    })
+
+    res.status(201).json({ message: "Usuário atualizado com sucesso!", user: userInfo });
+  } catch (err) {
+    const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar atualizar o usuário! Por favor, tente novamente mais tarde!";
+
+    if (err instanceof z.ZodError) {
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
+      }
+      return res.status(500).json({ message: errMsg });
+    }
+
+    res.status(500).json({
+      message: errMessage,
+    });
+  } finally {
+    prisma.$disconnect();
+  }
+}
