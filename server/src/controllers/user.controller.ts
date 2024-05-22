@@ -151,9 +151,9 @@ export const favoriteUserRecipeController = async (req: Request, res: Response, 
     const errMessage: string = (err as Error).message ?? msg;
 
     if (err instanceof z.ZodError) {
-      let errMsg: string = err.issues[0].message
-      if (errMsg == 'Required') {
-        errMsg = "Dados ausentes ou inválidos!"
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
       }
       return res.status(500).json({ message: errMsg });
     } else if (err instanceof PrismaClientKnownRequestError) {
@@ -189,9 +189,9 @@ export const searchFavoriteUserRecipesController = async (req: Request, res: Res
     const errMessage: string = (err as Error).message ?? msg;
 
     if (err instanceof z.ZodError) {
-      let errMsg: string = err.issues[0].message
-      if (errMsg == 'Required') {
-        errMsg = "Dados ausentes ou inválidos!"
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
       }
       return res.status(500).json({ message: errMsg });
     } else if (err instanceof PrismaClientKnownRequestError) {
@@ -224,9 +224,9 @@ export const deleteFavoriteUserRecipeController = async (req: Request, res: Resp
     const errMessage: string = (err as Error).message ?? msg;
 
     if (err instanceof z.ZodError) {
-      let errMsg: string = err.issues[0].message
-      if (errMsg == 'Required') {
-        errMsg = "Dados ausentes ou inválidos!"
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
       }
       return res.status(500).json({ message: errMsg });
     } else if (err instanceof PrismaClientKnownRequestError) {
