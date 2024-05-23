@@ -1,7 +1,6 @@
 import 'package:cooknow/assets/styles/colors.dart';
 import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:cooknow/models/user.dart';
-import 'package:cooknow/widgets/Cadastro/cadastro_form.dart';
 import 'package:cooknow/widgets/Common/app_bar.dart';
 import 'package:cooknow/widgets/User/edicao_form.dart';
 import 'package:flutter/material.dart';

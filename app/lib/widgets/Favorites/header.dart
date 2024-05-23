@@ -1,6 +1,5 @@
 import 'package:cooknow/assets/styles/colors.dart';
 import 'package:cooknow/assets/styles/text_style.dart';
-import 'package:cooknow/utils/routes.dart';
 import 'package:flutter/material.dart';
 
 class HeaderFavorites extends StatelessWidget {

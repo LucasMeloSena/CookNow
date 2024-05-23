@@ -1,6 +1,8 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { Request, Response, NextFunction } from "express";
 import { prisma } from "../infra/database";
+import { Recipe, RecipeId, createRecipeSchema } from "../interfaces/recipe.interface";
+import { ZodError } from "zod";
 
 export const getRecipesController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -43,7 +45,62 @@ export const getRecipesController = async (req: Request, res: Response, next: Ne
   }
 };
 
-export const getRecipeByIdController = async (req: Request, res: Response, next: NextFunction) => {};
+export const getRecipeByIdController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const recipeId: RecipeId = createRecipeSchema.parse(req.query);
+    
+    const recipe = await prisma.receita.findUnique({
+      where: {
+        id: parseInt(recipeId.id)
+      },
+      include: {
+        modo_preparo: {
+          select: {
+            nome: true,
+          },
+        },
+        categoria: {
+          select: {
+            nome: true,
+          },
+        },
+        ingredientes: {
+          include: {
+            ingrediente: {
+              select: {
+                nome: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    const formattedReceitas = ({
+      ...recipe,
+      categoria: recipe!.categoria!.nome,
+      modo_preparo: recipe?.modo_preparo.map((m) => m.nome),
+      ingredientes: recipe?.ingredientes.map((i) => i.ingrediente.nome),
+    });
+
+    res.status(200).json({message: 'Receita encontrada com sucesso!', recipe: formattedReceitas})
+  } catch (err) {
+    const errorMessage: string = "Ocorreu um erro ao buscar a receita! Por favor, tente novamente mais tarde!";
+    
+    if (err instanceof ZodError) {
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
+      }
+      return res.status(500).json({ message: errMsg });
+    }
+    else {
+      return res.status(500).json({ message: errorMessage });
+    }
+  } finally {
+    prisma.$disconnect();
+  }
+};
 
 export const createRecipeController = async (req: Request, res: Response, next: NextFunction) => {
   try {

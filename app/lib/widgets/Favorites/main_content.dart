@@ -1,8 +1,5 @@
-import 'package:cooknow/assets/styles/colors.dart';
 import 'package:cooknow/assets/styles/text_style.dart';
 import 'package:cooknow/models/recipe.dart';
-import 'package:cooknow/utils/routes.dart';
-import 'package:cooknow/widgets/Common/categoria.dart';
 import 'package:cooknow/widgets/Favorites/recipe_card.dart';
 import 'package:flutter/material.dart';
 
