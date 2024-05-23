@@ -11,6 +11,7 @@ model receita {
   id             Int                   @id @default(autoincrement())
   nome           String
   url_image      String
+  categoriaId    Int
   tempo_medio    Int
   custo          Int
   dificuldade    Int
@@ -18,9 +19,10 @@ model receita {
   avaliacao      Float
   dt_cadastro    DateTime
   dt_atualizacao DateTime
-  categoria      categoria?
   modo_preparo   modo_preparo[]
   ingredientes   receita_ingrediente[]
+
+  categoria categoria @relation(fields: [categoriaId], references: [id])
 }
 
 model modo_preparo {
@@ -33,8 +35,7 @@ model modo_preparo {
 model categoria {
   id        Int     @id @default(autoincrement())
   nome      String
-  receitaId Int     @unique
-  receita   receita @relation(fields: [receitaId], references: [id])
+  receita receita[]
 }
 
 model receita_ingrediente {
