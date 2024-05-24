@@ -21,6 +21,6 @@ userRoute.get(userPath.getUserById, verifyToken, searchUserByIdController);
 userRoute.post(userPath.crateFavoriteRecipe, verifyToken, favoriteUserRecipeController);
 userRoute.get(userPath.searchFavoriteRecipe, verifyToken, searchFavoriteUserRecipesController);
 userRoute.delete(userPath.deleteFavoriteRecipe, verifyToken, deleteFavoriteUserRecipeController);
-userRoute.put(userPath.updateUser, verifyToken, updateUserController)
+userRoute.put(userPath.updateUser, verifyToken, updateUserController);
 
 export { userRoute };

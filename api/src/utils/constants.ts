@@ -5,7 +5,6 @@ export enum recipePath {
   getRecipeById = "/recipe/:id",
   getRecipesByCategory = "/recipes/categoria/:categoria",
   getRecipesByLocation = "/recipes/location/:location",
-  createRecipe = "/recipe/create/",
 }
 
 export enum ingredientesPath {

@@ -12,7 +12,7 @@ class Recipe {
   int custo;
   int dificuldade;
   String localidade;
-  double avaliacao;
+  String avaliacao;
   String categoria;
   List<dynamic> ingredientes;
   List<dynamic> modoPreparo;
@@ -89,7 +89,7 @@ class RecipeProvider extends ChangeNotifier {
                 custo: item['custo'],
                 dificuldade: item['dificuldade'],
                 localidade: item['localizacao'],
-                avaliacao: item['avaliacao'],
+                avaliacao: item['avaliacao'].toString(),
                 categoria: item['categoria'],
                 ingredientes: item['ingredientes'],
                 modoPreparo: item['modo_preparo'],

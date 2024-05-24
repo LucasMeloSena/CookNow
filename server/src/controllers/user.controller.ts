@@ -1,7 +1,19 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { NextFunction, Request, Response } from "express";
 import { prisma } from "../infra/database";
-import { User, UserRegister, UserLogin, createUserLoginShema, createUserRegisterShema, createUserIdSchema, UserId, createUserRecipeSchema, UserRecipe, UserUpdate, createUserUpdateShema } from "../interfaces/user.interface";
+import {
+  User,
+  UserRegister,
+  UserLogin,
+  createUserLoginShema,
+  createUserRegisterShema,
+  createUserIdSchema,
+  UserId,
+  createUserRecipeSchema,
+  UserRecipe,
+  UserUpdate,
+  createUserUpdateShema,
+} from "../interfaces/user.interface";
 import { comparePass, cryptPass, hashString, unHashString } from "../utils/hash";
 import { generateToken, getExpirationDate } from "../utils/token";
 import { validarCampoExistenteUserSchema } from "../utils/validator";
@@ -244,22 +256,21 @@ export const deleteFavoriteUserRecipeController = async (req: Request, res: Resp
 export const updateUserController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user: UserUpdate = createUserUpdateShema.parse(req.body);
-    user.id = unHashString(user.id)
+    user.id = unHashString(user.id);
 
     let userInfo = await prisma.user.findUnique({
       where: {
-        id: user.id
-      }
-    })
+        id: user.id,
+      },
+    });
 
     if (userInfo?.senha != user.senha) {
       user.senha = await cryptPass(user.senha);
     }
 
-
     userInfo = await prisma.user.update({
       where: {
-        id: user.id
+        id: user.id,
       },
       data: {
         nome: user.nome,
@@ -267,9 +278,9 @@ export const updateUserController = async (req: Request, res: Response, next: Ne
         email: user.email,
         senha: user.senha,
         img_profile: user.img_profile,
-        dt_atualizacao: user.dt_atualizacao
-      }
-    })
+        dt_atualizacao: user.dt_atualizacao,
+      },
+    });
 
     res.status(201).json({ message: "Usuário atualizado com sucesso!", user: userInfo });
   } catch (err) {
@@ -289,4 +300,4 @@ export const updateUserController = async (req: Request, res: Response, next: Ne
   } finally {
     prisma.$disconnect();
   }
-}
+};

@@ -95,21 +95,20 @@ export const getRecipesByCategoryController = async (req: Request, res: Response
 
 export const getRecipesByLocationController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const location = createLocationSchema.parse(req.params)
+    const location = createLocationSchema.parse(req.params);
     const recipes = await prisma.receita.findMany({
       where: {
-        localizacao: location.location
+        localizacao: location.location,
       },
-      include: defaultPrismaQuery
-    })
+      include: defaultPrismaQuery,
+    });
 
     if (!recipes) {
-      return res.status(404).json({message: "Não foi encontrada nenhuma receita que tem origem nesta localidade!"})
+      return res.status(404).json({ message: "Não foi encontrada nenhuma receita que tem origem nesta localidade!" });
     }
-    const formattedReceitas = formatRecipeArrayResult(recipes)
-    return res.status(200).json({recipes: formattedReceitas})
-  }
-  catch (err) {
+    const formattedReceitas = formatRecipeArrayResult(recipes);
+    return res.status(200).json({ recipes: formattedReceitas });
+  } catch (err) {
     const errorMessage: string = "Ocorreu um erro ao buscar a receita! Por favor, tente novamente mais tarde!";
 
     if (err instanceof ZodError) {
@@ -121,21 +120,7 @@ export const getRecipesByLocationController = async (req: Request, res: Response
     } else {
       return res.status(500).json({ message: errorMessage });
     }
-  }
-  finally {
-    prisma.$disconnect()
-  }
-}
-
-export const createRecipeController = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    
-
-    res.status(201).json({ message: "Receita criada com sucesso!" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Ocorreu um erro ao cadastrar a receita! Por favor, tente novamente mais tarde!" });
   } finally {
-    prisma.$disconnect;
+    prisma.$disconnect();
   }
 };

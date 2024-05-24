@@ -136,4 +136,4 @@ export const updateUserImageController = async (req: Request, res: Response, nex
       message: errMessage,
     });
   }
-}
+};

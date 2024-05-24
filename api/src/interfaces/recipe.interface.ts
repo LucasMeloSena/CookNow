@@ -26,6 +26,6 @@ export type Recipe = {
 };
 
 export const createLocationSchema = z.object({
-  location: z.string().min(3, "Localização inválida!")
+  location: z.string().min(3, "Localização inválida!"),
 });
-export type Location = z.infer<typeof createLocationSchema>
+export type Location = z.infer<typeof createLocationSchema>;

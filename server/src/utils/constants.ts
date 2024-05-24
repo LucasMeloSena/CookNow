@@ -28,7 +28,7 @@ export enum userPath {
 export enum uploadPath {
   uploadUserImage = "/user/image/",
   removeUserImage = "/user/image/",
-  updateUserImage = "/update/user/image/"
+  updateUserImage = "/update/user/image/",
 }
 
 export enum fileTypes {
