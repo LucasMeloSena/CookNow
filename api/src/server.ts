@@ -9,8 +9,8 @@ const port = 3002;
 app.use(express.json());
 app.use(cors());
 
-app.use(recipeRoute);
-app.use(ingredientesRoute);
+app.use("/v1", recipeRoute);
+app.use("/v1", ingredientesRoute);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Seja bem-vindo à API Pública do CookNow!" });
