@@ -23,7 +23,7 @@ This is project is an app of the user can see a lot of revenues and favorite the
 - Dart
 
 ## 🔗 Integration
-You can see the API documentation <a href="#"> here </a>
+You can see the API documentation <a href="https://cook-now.vercel.app/api-docs/"> here </a>
 
 ## 💻 Usage
-You can access the project from this <a href="#"> link </a>
+You can access the project from this <a href="https://cook-now-client.vercel.app/"> link </a>
