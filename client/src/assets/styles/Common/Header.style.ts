@@ -28,6 +28,6 @@ export const PagesContainer = styled.div `
 `
 
 export const Pages = styled.h4 `
-  color: #FFF;
+  color: #1b2029;
   font-weight: 300;
 `

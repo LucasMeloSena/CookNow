@@ -19,36 +19,36 @@ export const PresentationContainer = styled.div `
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  gap: 15px;
 `
 
 export const Title = styled.h1 `
   font-family: "Bebas Neue", sans-serif;
-  color: #FFF;
+  color: #1b2029;
   font-size: 52px;
-  line-height: 1;
+  line-height: 0.8;
 `
 
 export const SubTitle = styled.h5 `
   border-radius: 10px;
   font-family: Poppins;
-  color: #D3D3D3;
-  font-weight: 400;
+  color: #1b2029;
+  font-weight: 300;
 `
 
 export const BtnDownload = styled.button `
-  margin-top: 20px;
   border-radius: 10px;
   font-family: Poppins;
-  background-color: #FFF;
-  color: #1b2029;
+  background-color: #1b2029;
+  color: #fff;
   border: none;
   padding: 10px 40px;
   transition: all 0.5s;
   &:hover {
     cursor: pointer;
     transition: all 0.5s;
-    background-color: #1b20297e;
-    color: #FFF;
+    background-color: #1b202920;
+    color: #1b2029;
   }
 `
 
