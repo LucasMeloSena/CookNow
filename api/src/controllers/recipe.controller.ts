@@ -103,10 +103,11 @@ export const getRecipesByLocationController = async (req: Request, res: Response
       include: defaultPrismaQuery,
     });
 
-    if (!recipes) {
+    const formattedReceitas = formatRecipeArrayResult(recipes);
+    if (formattedReceitas.length == 0) {
       return res.status(404).json({ message: "Não foi encontrada nenhuma receita que tem origem nesta localidade!" });
     }
-    const formattedReceitas = formatRecipeArrayResult(recipes);
+
     return res.status(200).json({ recipes: formattedReceitas });
   } catch (err) {
     const errorMessage: string = "Ocorreu um erro ao buscar a receita! Por favor, tente novamente mais tarde!";
