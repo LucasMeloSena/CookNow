@@ -1,0 +1,282 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Receitas",
+    "description": "API que disponibiliza 10 receitas com dados completos para sua próxima aplicação!",
+    "termsOfService": "",
+    "contact": {
+      "email": "melolucasena@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://cook-now.vercel.app/v1/",
+      "description": "production"
+    }
+  ],
+  "paths": {
+    "/recipes/": {
+      "get": {
+        "summary": "Busca de Todas as Receitas",
+        "description": "Busca de todas as receitas cadastradas sem filtro.",
+        "tags": ["Recipes"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rota não encontrada ou Método não permitido!"
+          },
+          "500": {
+            "description": "Ocorreu um erro no servidor ao tentar buscar a receita!"
+          }
+        }
+      }
+    },
+    "/recipe/{id}": {
+      "get": {
+        "summary": "Busca de Receitas pelo Id",
+        "description": "Busca da receita cadastrada de acordo com um determindo Id.",
+        "tags": ["Recipes"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id da receita",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rota não encontrada ou Método não permitido!"
+          },
+          "404": {
+            "description": "Receita não encontrada!"
+          },
+          "500": {
+            "description": "Ocorreu um erro no servidor ao tentar buscar a receita!"
+          }
+        }
+      }
+    },
+    "/recipes/categoria/{categoria}": {
+      "get": {
+        "summary": "Busca de Receitas pela Categoria",
+        "description": "Busca de todas as receitas cadastradas de acordo com uma determinda Categoria.",
+        "tags": ["Recipes"],
+        "parameters": [
+          {
+            "name": "categoria",
+            "in": "path",
+            "description": "Categoria da receita",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rota não encontrada ou Método não permitido!"
+          },
+          "404": {
+            "description": "Receita não encontrada!"
+          },
+          "500": {
+            "description": "Ocorreu um erro no servidor ao tentar buscar a receita!"
+          }
+        }
+      }
+    },
+    "/recipes/location/{location}": {
+      "get": {
+        "summary": "Busca de Receitas pela Localização",
+        "description": "Busca de todas as receitas cadastradas de acordo com uma determinda Localização.",
+        "tags": ["Recipes"],
+        "parameters": [
+          {
+            "name": "location",
+            "in": "path",
+            "description": "Localização da receita",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rota não encontrada ou Método não permitido!"
+          },
+          "404": {
+            "description": "Receita não encontrada!"
+          },
+          "500": {
+            "description": "Ocorreu um erro no servidor ao tentar buscar a receita!"
+          }
+        }
+      }
+    },
+    "/ingredientes/": {
+      "get": {
+        "summary": "Busca de Todos os Ingredientes",
+        "description": "Busca de todos os ingredientes sem filtro.",
+        "tags": ["Ingredientes"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Ingrediente"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rota não encontrada ou Método não permitido!"
+          },
+          "500": {
+            "description": "Ocorreu um erro no servidor ao tentar buscar o ingrediente!"
+          }
+        }
+      }
+    },
+    "/ingrediente/{id}": {
+      "get": {
+        "summary": "Busca de Ingrediente pelo Id",
+        "description": "Busca de ingrediente cadastrado de acordo com um determindo Id.",
+        "tags": ["Ingredientes"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do ingrediente",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Ingrediente"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rota não encontrada ou Método não permitido!"
+          },
+          "404": {
+            "description": "Ingrediente não encontrado!"
+          },
+          "500": {
+            "description": "Ocorreu um erro no servidor ao tentar buscar o ingrediente!"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Recipe": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "nome": {
+            "type": "string"
+          },
+          "url_image": {
+            "type": "string"
+          },
+          "categoriaId": {
+            "type": "number"
+          },
+          "tempo_medio": {
+            "type": "number"
+          },
+          "custo": {
+            "type": "number"
+          },
+          "dificuldade": {
+            "type": "number"
+          },
+          "localizacao": {
+            "type": "string"
+          },
+          "avaliacao": {
+            "type": "number"
+          },
+          "dt_cadastro": {
+            "type": "string"
+          },
+          "dt_atualizacao": {
+            "type": "string"
+          },
+          "categoria": {
+            "type": "string"
+          },
+          "ingredientes": {
+            "type": "object"
+          },
+          "modo_preparo": {
+            "type": "object"
+          }
+        }
+      },
+      "Ingrediente": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "nome": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
