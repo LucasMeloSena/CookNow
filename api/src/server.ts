@@ -2,8 +2,8 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import { recipeRoute } from "./routes/recipe.route";
 import { ingredientesRoute } from "./routes/ingredientes.route";
-import swaggerUI from "swagger-ui-express";
 import swaggerDocs from "../swagger.json";
+const swaggerUI = require('swagger-ui-express');
 
 const app = express();
 const port = 3002;
@@ -13,7 +13,8 @@ app.use(cors());
 
 app.use("/v1", recipeRoute);
 app.use("/v1", ingredientesRoute);
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+const swaggerCss = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs, { customCssUrl: swaggerCss }));
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Seja bem-vindo à API Pública do CookNow!" });
