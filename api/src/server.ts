@@ -5,6 +5,7 @@ import { ingredientesRoute } from "./routes/ingredientes.route";
 import swaggerDocs from "../swagger.json";
 const swaggerUI = require('swagger-ui-express');
 const dotenv = require('dotenv')
+dotenv.config()
 
 const app = express();
 const port = process.env.PORT || 3002;
