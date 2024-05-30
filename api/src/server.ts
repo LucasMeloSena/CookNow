@@ -4,9 +4,10 @@ import { recipeRoute } from "./routes/recipe.route";
 import { ingredientesRoute } from "./routes/ingredientes.route";
 import swaggerDocs from "../swagger.json";
 const swaggerUI = require('swagger-ui-express');
+const dotenv = require('dotenv')
 
 const app = express();
-const port = 3002;
+const port = process.env.PORT || 3002;
 
 app.use(express.json());
 app.use(cors());
