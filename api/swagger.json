@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://cook-now.vercel.app/",
+      "url": "https://cook-now.vercel.app/v1/",
       "description": "production"
     }
   ],

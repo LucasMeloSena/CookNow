@@ -15,8 +15,12 @@ app.use(cors());
 
 app.use("/v1", recipeRoute);
 app.use("/v1", ingredientesRoute);
+
 const swaggerCss = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs, { customCssUrl: swaggerCss }));
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs, {     
+  customCss: '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
+  customCssUrl: swaggerCss 
+}));
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Seja bem-vindo à API Pública do CookNow!" });
