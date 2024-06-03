@@ -1,10 +1,13 @@
-import { Header, Initial } from "@/CooknowUI";
+import { Presentation, Footer, Initial, Moments, Previous } from "@/CooknowUI";
 
 export function Home() {
   return (
     <>
-      <Header/>
       <Initial/>
+      <Presentation/>
+      <Moments/>
+      <Previous/>
+      <Footer/>
     </>
   )
 }

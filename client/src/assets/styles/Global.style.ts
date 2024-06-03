@@ -9,7 +9,10 @@ export const GlobalStyle = createGlobalStyle`
 body {
   margin: 0 !important;
   padding: 0 !important;
-  background: #fff
+  background-color: #ecd09b3b;
+  /* background-image: url("https://media.gazetadopovo.com.br/sites/2/2021/03/08185953/influencia-cozinhas-cozinhando-fome-960x540.jpg");
+  background-repeat: no-repeat;
+  background-size: cover; */
 }
 
 body::-webkit-scrollbar {

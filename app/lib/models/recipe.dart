@@ -67,7 +67,7 @@ class RecipeProvider extends ChangeNotifier {
 
       final response = await http
           .get(Uri.parse(
-            "http://$_url:3002/recipes/",
+            "http://$_url:3002/v1/recipes/",
           ))
           .timeout(
             const Duration(
