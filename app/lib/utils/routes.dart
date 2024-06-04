@@ -9,4 +9,5 @@ class AppRoutes {
   static const String user = '/user';
   static const String recipe = '/recipe';
   static const String userConfig = '/user-config';
+  static const String recipes = '/recipes';
 }

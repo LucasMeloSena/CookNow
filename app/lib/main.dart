@@ -7,6 +7,7 @@ import 'package:cooknow/views/Home/home_view.dart';
 import 'package:cooknow/views/Introduce/introduce_view.dart';
 import 'package:cooknow/views/Login/login_view.dart';
 import 'package:cooknow/views/Receita/receita_view.dart';
+import 'package:cooknow/views/Receitas/receitas_view.dart';
 import 'package:cooknow/views/Start/start_view.dart';
 import 'package:cooknow/views/User/user_config.dart';
 import 'package:cooknow/views/User/user_view.dart';
@@ -47,7 +48,8 @@ class MyApp extends StatelessWidget {
           AppRoutes.favorites: (_) => FavoritesView(),
           AppRoutes.user: (_) => UserView(),
           AppRoutes.recipe: (_) => ReceitaView(),
-          AppRoutes.userConfig: (_) => UserConfig()
+          AppRoutes.userConfig: (_) => UserConfig(),
+          AppRoutes.recipes: (_) => ReceitasView()
         },
       ),
     );

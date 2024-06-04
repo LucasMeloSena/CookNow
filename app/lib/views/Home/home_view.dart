@@ -7,6 +7,7 @@ import 'package:cooknow/widgets/Home/destaque.dart';
 import 'package:cooknow/widgets/Home/header.dart';
 import 'package:cooknow/widgets/Home/input_pesquisa.dart';
 import 'package:cooknow/widgets/Home/recipe_card.dart';
+import 'package:cooknow/widgets/Home/ver_mais.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -68,6 +69,7 @@ class _HomeViewState extends State<HomeView> {
                       const SizedBox(
                         height: 20,
                       ),
+                      VerMaisButton(),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: recipe.getThreeRecipes.map((item) {
