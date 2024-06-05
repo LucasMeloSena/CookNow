@@ -50,3 +50,8 @@ export const createUserUpdateShema = z.object({
   dt_atualizacao: z.string().datetime({ offset: true }),
 });
 export type UserUpdate = z.infer<typeof createUserUpdateShema>;
+
+export const createUserEmailSchema = z.object({
+  email: z.string().min(8, "Email inválido!"),
+});
+export type UserEmail = z.infer<typeof createUserEmailSchema>;

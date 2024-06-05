@@ -74,6 +74,9 @@ flutter:
     - lib/assets/img/introduce_picture.png
     - lib/assets/img/login_picture.png
     - lib/assets/img/default_avatar.jpg
+    - lib/assets/img/error_image.png
+    - lib/assets/img/forgot_pass.png
+    - lib/assets/img/check_email.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

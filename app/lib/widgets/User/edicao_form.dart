@@ -135,7 +135,7 @@ class _UpdateFormState extends State<UpdateForm> {
         await showModal(
           widget.context,
           "Alerta!",
-          "Ocorreu um erro ao fazer o cadastro! Por favor, tente novamente mais tarde!",
+          "Ocorreu um erro ao fazer a atualização! Por favor, tente novamente mais tarde!",
           [
             {"icon": Icons.check, "label": "OK"}
           ],

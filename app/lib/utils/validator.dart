@@ -13,6 +13,15 @@ class Validator {
     }
   }
 
+  static String? validateNumber(String text) {
+    if (text.trim() == '') {
+      return "";
+    }
+    else {
+      return null;
+    }
+  }
+
   static String? validatePass(String pass, String confirm) {
     if (pass != confirm) {
       return "As senhas não são iguais!";

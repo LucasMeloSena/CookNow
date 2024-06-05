@@ -49,3 +49,9 @@ export function unHashString(hashId: string): string {
     throw Error("Hash inválido!");
   }
 }
+
+export function generate4DigitCode(): string {
+  const randomNumber = Math.floor(Math.random() * 10000);
+  const code = randomNumber.toString().padStart(4, '0');
+  return code;
+}

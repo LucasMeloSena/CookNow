@@ -264,9 +264,7 @@ class UserProvider with ChangeNotifier {
         Uri.parse(
           "http://$_url:3001/user/?id=$id",
         ),
-        headers: {
-          'Authorization': 'Bearer $_token'
-        },
+        headers: {'Authorization': 'Bearer $_token'},
       ).timeout(
         const Duration(
           seconds: 60,
@@ -549,6 +547,49 @@ class UserProvider with ChangeNotifier {
         };
         notifyListeners();
         return retorno;
+      }
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
+  Future<Map<String, dynamic>> authCode(String email) async {
+    try {
+      _loadEnv();
+      
+      final response = await http
+          .post(
+            Uri.parse(
+              "http://$_url:3001/user/auth/pass/",
+            ),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'email': email,
+            }),
+          )
+          .timeout(
+            const Duration(
+              seconds: 60,
+            ),
+          );
+
+      final result = jsonDecode(response.body);
+      if (response.statusCode == 404) {
+        return {
+          "status": StatusResponse.error,
+          "message": result["message"],
+          "emailValid": false,
+          "code": 0,
+        };
+      }
+      else {
+        final code = result["code"];
+        return {
+          "emailValid": true,
+          "code": code,
+        };
       }
     } catch (err) {
       throw Exception(err);

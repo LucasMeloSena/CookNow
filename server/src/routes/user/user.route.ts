@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  authCodeController,
   createUserController,
   deleteFavoriteUserRecipeController,
   favoriteUserRecipeController,
@@ -17,6 +18,7 @@ const userRoute = express.Router();
 
 userRoute.post(userPath.getUser, loginUserController);
 userRoute.post(userPath.createUser, createUserController);
+userRoute.post(userPath.authCode, authCodeController);
 userRoute.get(userPath.getUserById, verifyToken, searchUserByIdController);
 userRoute.post(userPath.crateFavoriteRecipe, verifyToken, favoriteUserRecipeController);
 userRoute.get(userPath.searchFavoriteRecipe, verifyToken, searchFavoriteUserRecipesController);

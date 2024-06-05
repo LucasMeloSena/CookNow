@@ -92,7 +92,7 @@ export const removeUserImageController = async (req: Request, res: Response, nex
 export const updateUserImageController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authInfo: Auth = createAuthSchema.parse(req.body);
-    const oldFile: UpdateFile = createFileUpdateSchema.parse(req.body)
+    const oldFile: UpdateFile = createFileUpdateSchema.parse(req.body);
 
     const storage = getStorage();
     const storageRef = ref(storage, oldFile.oldFileName);

@@ -1,4 +1,5 @@
 import 'package:cooknow/models/user.dart';
+import 'package:cooknow/views/Error/error_view.dart';
 import 'package:cooknow/views/Home/home_view.dart';
 import 'package:cooknow/views/Introduce/introduce_view.dart';
 import 'package:cooknow/widgets/Common/app_bar.dart';
@@ -19,16 +20,7 @@ class StartView extends StatelessWidget {
                 child: CircularProgressIndicator.adaptive(),
               );
             } else if (snapshot.error != null) {
-              return Center(
-                child: Column(
-                  children: [
-                    const Text(
-                      "Ocorreu um erro ao iniciar o app! Por favor, tente mais tarde!",
-                    ),
-                    OutlinedButton(onPressed: user.logOut, child: const Text('sair'))
-                  ],
-                ),
-              );
+              return ErrorView();
             } else {
               return user.auth ? HomeView() : IntroduceView();
             }

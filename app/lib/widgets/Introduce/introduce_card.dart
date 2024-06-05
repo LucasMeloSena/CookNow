@@ -1,3 +1,4 @@
+import 'package:cooknow/assets/styles/colors.dart';
 import 'package:cooknow/utils/routes.dart';
 import 'package:cooknow/assets/styles/button_style.dart';
 import 'package:cooknow/assets/styles/text_style.dart';
@@ -26,7 +27,7 @@ class _IntroduceCardState extends State<IntroduceCard> {
     super.initState();
 
     setState(() {
-      title = "Bem-vindo ao Cook Now! Cozinhar nunca foi tão fácil!";
+      title = "Bem-vindo ao Cook Now!";
       subTitle =
           "O app que está aqui para te ajudar a cozinhar, como você nunca antes imaginou! Estamos aqui para te fornecer receitas, dicas e muito mais para que você possa economizar tempo!";
       buttonText = "VAMOS LÁ";
@@ -43,6 +44,7 @@ class _IntroduceCardState extends State<IntroduceCard> {
           title,
           textAlign: TextAlign.left,
           style: MyTextStyle(
+            color: MyColors.black_400,
             fontWeight: FontWeight.bold,
             fontSize: 24,
             height: 1,

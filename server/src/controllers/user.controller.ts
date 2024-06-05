@@ -13,11 +13,14 @@ import {
   UserRecipe,
   UserUpdate,
   createUserUpdateShema,
+  createUserEmailSchema,
+  UserEmail,
 } from "../interfaces/user.interface";
-import { comparePass, cryptPass, hashString, unHashString } from "../utils/hash";
+import { comparePass, cryptPass, generate4DigitCode, hashString, unHashString } from "../utils/hash";
 import { generateToken, getExpirationDate } from "../utils/token";
 import { validarCampoExistenteUserSchema } from "../utils/validator";
 import { z } from "zod";
+import { transporter } from "../infra/email";
 
 export const createUserController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -283,6 +286,52 @@ export const updateUserController = async (req: Request, res: Response, next: Ne
     });
 
     res.status(201).json({ message: "Usuário atualizado com sucesso!", user: userInfo });
+  } catch (err) {
+    const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar atualizar o usuário! Por favor, tente novamente mais tarde!";
+
+    if (err instanceof z.ZodError) {
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
+      }
+      return res.status(500).json({ message: errMsg });
+    }
+
+    res.status(500).json({
+      message: errMessage,
+    });
+  } finally {
+    prisma.$disconnect();
+  }
+};
+
+export const authCodeController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user: UserEmail = createUserEmailSchema.parse(req.body);
+    const codigo: string = generate4DigitCode()
+
+    const conta: User = await prisma.user.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
+
+    if (!conta) {
+      res.status(404).json({ message: "Nenhuma conta com este email foi encontrada" });
+    } else {
+      await transporter.sendMail({
+        from: `"Cook Now!" <${process.env.EMAIL_USER}>`,
+        to: user.email,
+        subject: "Recuperação de Senha",
+        text: "Recuperar senha usuário",
+        html: `Olá ${conta.nome}! <br> Digite este código: ${codigo} <br> Para prosseguir com a recuperação de sua senha. <br> Se você não realizou essa solicitação, por favor desconsidere este email.`,
+      });
+
+      res.status(200).json({
+        message: "Email enviado com sucesso!",
+        code: codigo
+      });
+    }
   } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar atualizar o usuário! Por favor, tente novamente mais tarde!";
 
