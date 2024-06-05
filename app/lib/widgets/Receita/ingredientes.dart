@@ -43,12 +43,23 @@ class _IngredientesState extends State<Ingredientes> {
                   int index = item.key;
                   return Row(
                     children: [
-                      Checkbox.adaptive(value: _checkValues[index], onChanged: (value) {
-                        setState(() {
-                          _checkValues[index] = value!;
-                        });
-                      }),
-                      Text(item.value, style: _checkValues[index] ? MyTextStyle(decoration: TextDecoration.lineThrough) : MyTextStyle(),)
+                      Checkbox.adaptive(
+                          value: _checkValues[index],
+                          onChanged: (value) {
+                            setState(() {
+                              _checkValues[index] = value!;
+                            });
+                          }),
+                      Expanded(
+                        child: Text(
+                          item.value,
+                          style: _checkValues[index]
+                              ? MyTextStyle(
+                                  decoration: TextDecoration.lineThrough)
+                              : MyTextStyle(),
+                              softWrap: true,
+                        ),
+                      )
                     ],
                   );
                 }).toList(),

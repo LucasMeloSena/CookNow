@@ -16,7 +16,7 @@ class UserView extends StatefulWidget {
 class _UserViewState extends State<UserView> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context);
+    final user = Provider.of<UserProvider>(context, listen: true);
     return Scaffold(
       appBar: MyAppBar(),
       body: Container(
@@ -32,7 +32,7 @@ class _UserViewState extends State<UserView> {
             const SizedBox(
               height: 20,
             ),
-            HeaderUser(user: user.getUser),
+            HeaderUser(user: user),
             SizedBox(
               height: 100,
               child: ListView.builder(

@@ -41,6 +41,8 @@ class _ModoPreparoState extends State<ModoPreparo> {
             ),
             child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: widget.modoPreparo.asMap().entries.map((item) {
                   int index = item.key;
                   return Column(

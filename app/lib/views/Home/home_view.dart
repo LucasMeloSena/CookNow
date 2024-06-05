@@ -5,7 +5,6 @@ import 'package:cooknow/widgets/Common/app_bar.dart';
 import 'package:cooknow/widgets/Common/footer.dart';
 import 'package:cooknow/widgets/Home/destaque.dart';
 import 'package:cooknow/widgets/Home/header.dart';
-import 'package:cooknow/widgets/Home/input_pesquisa.dart';
 import 'package:cooknow/widgets/Home/recipe_card.dart';
 import 'package:cooknow/widgets/Home/ver_mais.dart';
 import 'package:flutter/material.dart';
@@ -58,10 +57,6 @@ class _HomeViewState extends State<HomeView> {
                       HeaderHome(
                         user: user.getUser,
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      InputPesquisa(),
                       const SizedBox(
                         height: 30,
                       ),

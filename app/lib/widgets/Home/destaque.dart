@@ -32,7 +32,7 @@ class Destaque extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.network(
-                  "https://www.sabornamesa.com.br/media/k2/items/cache/b5b56b2ae93d3dc958cf0c21c9383b18_XL.jpg",
+                  "https://firebasestorage.googleapis.com/v0/b/cooknow-cdaf5.appspot.com/o/recipes%2Fmacarrao.jpg?alt=media&token=92f9d9ef-6d4c-47d2-a7bb-ebe08e905008",
                   fit: BoxFit.cover,
                 ),
               ),

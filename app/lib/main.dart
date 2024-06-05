@@ -40,8 +40,7 @@ class MyApp extends StatelessWidget {
         initialRoute: AppRoutes.start,
         routes: {
           AppRoutes.start: (_) => StartView(),
-          AppRoutes.introduceOne: (_) => IntroduceView(),
-          AppRoutes.introduceTwo: (_) => IntroduceView(),
+          AppRoutes.introduce: (_) => IntroduceView(),
           AppRoutes.login: (_) => LoginView(),
           AppRoutes.cadastro: (_) => CadastroView(),
           AppRoutes.home: (_) => HomeView(),

@@ -33,9 +33,16 @@ class Scripts {
         ],
       );
       return false;
-    }
-    else {
+    } else {
       return true;
     }
+  }
+
+  static String getFileNameFromUrl(String url) {
+    Uri parsedUrl = Uri.parse(url);
+    String path = parsedUrl.path;
+    String fileName = path.split('/').last;
+    String decodedFileName = Uri.decodeComponent(fileName);
+    return decodedFileName;
   }
 }

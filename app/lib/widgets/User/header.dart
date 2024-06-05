@@ -4,7 +4,7 @@ import 'package:cooknow/utils/routes.dart';
 import 'package:flutter/material.dart';
 
 class HeaderUser extends StatefulWidget {
-  final User? user;
+  final UserProvider user;
 
   HeaderUser({required this.user});
 
@@ -15,19 +15,19 @@ class HeaderUser extends StatefulWidget {
 class _HeaderUserState extends State<HeaderUser> {
   @override
   Widget build(BuildContext context) {
-    final userInfo = widget.user!;
+    final userInfo = widget.user.getUser;
 
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: NetworkImage(userInfo.imageProfileUrl!),
+        backgroundImage: NetworkImage(userInfo?.imageProfileUrl ?? ""),
         radius: 30,
       ),
       title: Text(
-        userInfo.nome,
+        userInfo?.nome ?? "",
         style: MyTextStyle(fontSize: 16, fontWeight: FontWeight.w600),
       ),
       subtitle: Text(
-        userInfo.email,
+        userInfo?.email ?? "",
         style: MyTextStyle(),
       ),
       trailing: IconButton(

@@ -91,13 +91,14 @@ export const removeUserImageController = async (req: Request, res: Response, nex
 
 export const updateUserImageController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const file: UpdateFile = createFileUpdateSchema.parse(req.body);
+    const authInfo: Auth = createAuthSchema.parse(req.body);
+    const oldFile: UpdateFile = createFileUpdateSchema.parse(req.body)
 
     const storage = getStorage();
-    const storageRef = ref(storage, `users/${file.oldFileName}`);
+    const storageRef = ref(storage, oldFile.oldFileName);
 
     const authFields = {
-      email: file.email,
+      email: authInfo.email,
       senha: process.env.FIREBASE_SENHA,
     };
     await signInWithEmailAndPassword(auth, authFields.email!, authFields.senha!);

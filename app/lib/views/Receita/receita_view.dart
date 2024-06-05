@@ -39,6 +39,7 @@ class _ReceitaViewState extends State<ReceitaView> {
                     recipe.urlImage,
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width,
+                    height: 300,
                   ),
                   Positioned(
                     top: 20,

@@ -14,21 +14,6 @@ class FavoritesView extends StatefulWidget {
 }
 
 class _FavoritesViewState extends State<FavoritesView> {
-  List<Recipe> lstRecipes = [];
-  List<dynamic> lstIdsRecipes = [];
-
-  Future<void> loadInfo() async {
-    Provider.of<UserProvider>(context, listen: false)
-        .searchFavoriteRecipes()
-        .then((value) {
-      final recipe = Provider.of<RecipeProvider>(context, listen: false);
-      setState(() {
-        lstRecipes = getLstFavoritesRecipes(recipe, value);
-        lstIdsRecipes = value;
-      });
-    });
-  }
-
   List<Recipe> getLstFavoritesRecipes(
       RecipeProvider recipe, List<dynamic> lstIdsFavorites) {
     if (lstIdsFavorites.isEmpty) {
@@ -41,13 +26,11 @@ class _FavoritesViewState extends State<FavoritesView> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    loadInfo();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final recipe = Provider.of<RecipeProvider>(context);
+    final lstIdsRecipes = Provider.of<UserProvider>(context).getLstFavoritesRecipes;
+    final lstRecipes = getLstFavoritesRecipes(recipe, lstIdsRecipes);
+
     return Scaffold(
       appBar: MyAppBar(),
       body: SizedBox(

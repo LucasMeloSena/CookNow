@@ -26,15 +26,13 @@ class IntroduceView extends StatelessWidget {
               child: Image.asset(
                 height: 350,
                 width: 350,
-                route == AppRoutes.introduceOne
-                    ? "lib/assets/img/introduce_picture_1.png"
-                    : "lib/assets/img/introduce_picture_2.png",
+                "lib/assets/img/introduce_picture.png",
               ),
             ),
             Container(
               padding: const EdgeInsets.all(25),
               width: width * 1,
-              height: height * 0.35,
+              height: height * 0.4,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.white,

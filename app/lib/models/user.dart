@@ -56,6 +56,10 @@ class UserProvider with ChangeNotifier {
     return user;
   }
 
+  List<dynamic> get getLstFavoritesRecipes {
+    return lstRecipeId;
+  }
+
   void _loadEnv() {
     if (_platform == "ios") {
       _url = dotenv.env["LOOPBACK_IOS"] ?? "";
@@ -453,7 +457,7 @@ class UserProvider with ChangeNotifier {
           contentType: MediaType("image", fileType),
         ),
         'email': _firebaseEmail,
-        'oldFile': oldFile
+        'oldFileName': oldFile
       });
 
       final response = await Dio()
@@ -483,6 +487,7 @@ class UserProvider with ChangeNotifier {
       String fileName =
           "${(user.nome).trim().toLowerCase()}-${Random().nextDouble().toString()}";
       String imgUser = user.imageProfileUrl!;
+      _imageFileName = Scripts.getFileNameFromUrl(imgUser);
 
       if (user.imageProfile != null) {
         imgUser = await updateImage(
@@ -528,7 +533,7 @@ class UserProvider with ChangeNotifier {
         };
         return retorno;
       } else {
-        user = User(
+        this.user = User(
           id: result['user']['id'],
           nome: result['user']['nome'],
           celular: result['user']['celular'],
