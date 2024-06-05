@@ -44,7 +44,11 @@ class _EmailFormWidgetState extends State<EmailFormWidget> {
       }
 
       if (result["emailValid"]) {
-        Navigator.of(widget.context).pushReplacementNamed(AppRoutes.pasteCode, arguments: result["code"]);
+        Navigator.of(widget.context)
+            .pushReplacementNamed(AppRoutes.pasteCode, arguments: {
+          "code": result["code"],
+          "id": result["id"],
+        });
       }
     } catch (error) {
       if (widget.context.mounted) {

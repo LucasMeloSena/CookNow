@@ -55,3 +55,10 @@ export const createUserEmailSchema = z.object({
   email: z.string().min(8, "Email inválido!"),
 });
 export type UserEmail = z.infer<typeof createUserEmailSchema>;
+
+export const createUserPassSchema = z.object({
+  id: z.string().min(24, "Id inválido!"),
+  password: z.string().min(6, "A senha deve possui no mínimo 6 caracteres"),
+  dt_atualizacao: z.string().datetime({ offset: true }),
+})
+export type UserPass = z.infer<typeof createUserPassSchema>

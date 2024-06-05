@@ -77,6 +77,7 @@ flutter:
     - lib/assets/img/error_image.png
     - lib/assets/img/forgot_pass.png
     - lib/assets/img/check_email.png
+    - lib/assets/img/reset_password.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

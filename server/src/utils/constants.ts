@@ -21,6 +21,7 @@ export enum userPath {
   updateUser = "/update/",
   getUserById = "/",
   authCode = "/auth/pass/",
+  updatePass = "/update/pass/",
   crateFavoriteRecipe = "/favorite/recipe/",
   searchFavoriteRecipe = "/favorite/recipe/",
   deleteFavoriteRecipe = "/favorite/recipe/",

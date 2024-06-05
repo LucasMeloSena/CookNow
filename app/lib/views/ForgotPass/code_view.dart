@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 class CodeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final String code = ModalRoute.of(context)?.settings.arguments as String;
+    final data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    final String code = data["code"];
+    final String id = data["id"];
 
     return Scaffold(
       appBar: MyAppBar(),
@@ -22,7 +24,7 @@ class CodeView extends StatelessWidget {
               const SizedBox(height: 20,),
               MessageWidget(title: "Verifique seu email", subTitle: "Digite o código recebido abaixo"),
               const SizedBox(height: 50,),
-              CodeInput(code: code, context: context,)
+              CodeInput(code: code, context: context, userId: id,)
             ],
           ),
         ),

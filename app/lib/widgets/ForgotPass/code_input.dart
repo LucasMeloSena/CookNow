@@ -1,6 +1,7 @@
 import 'package:cooknow/assets/styles/button_style.dart';
 import 'package:cooknow/assets/styles/input_style.dart';
 import 'package:cooknow/assets/styles/text_style.dart';
+import 'package:cooknow/utils/routes.dart';
 import 'package:cooknow/utils/validator.dart';
 import 'package:cooknow/widgets/Common/modal.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,8 @@ import 'package:flutter/material.dart';
 class CodeInput extends StatelessWidget {
   final String code;
   final BuildContext context;
-  CodeInput({required this.code, required this.context});
+  final String userId;
+  CodeInput({required this.code, required this.context, required this.userId});
 
   final _numberOne = TextEditingController();
   final _numberTwo = TextEditingController();
@@ -35,7 +37,7 @@ class CodeInput extends StatelessWidget {
         );
     }
     else {
-      // tela para definir nova senha
+      Navigator.of(context).pushReplacementNamed(AppRoutes.resetPassword, arguments: userId);
     }
   }
 

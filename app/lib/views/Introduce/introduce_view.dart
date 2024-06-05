@@ -1,5 +1,4 @@
 import 'package:cooknow/assets/styles/colors.dart';
-import 'package:cooknow/utils/routes.dart';
 import 'package:cooknow/widgets/Common/app_bar.dart';
 import 'package:cooknow/widgets/Introduce/introduce_card.dart';
 import 'package:flutter/material.dart';

@@ -25,7 +25,10 @@ class Validator {
   static String? validatePass(String pass, String confirm) {
     if (pass != confirm) {
       return "As senhas não são iguais!";
-    } else {
+    } else if (pass.isEmpty) {
+      return "O campo senha está vazio";
+    } 
+    else {
       return null;
     }
   }

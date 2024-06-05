@@ -4,8 +4,8 @@ import 'package:cooknow/widgets/Favorites/recipe_card.dart';
 import 'package:flutter/material.dart';
 
 class MainContentFavorites extends StatefulWidget {
-  List<Recipe> lstRecipes;
-  List<dynamic> lstIdsRecipes;
+  final List<Recipe> lstRecipes;
+  final List<dynamic> lstIdsRecipes;
   MainContentFavorites(
       {super.key, required this.lstRecipes, required this.lstIdsRecipes});
 

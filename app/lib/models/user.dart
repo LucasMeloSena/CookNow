@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:intl/intl.dart';
 
 class User {
   String? id;
@@ -556,7 +557,7 @@ class UserProvider with ChangeNotifier {
   Future<Map<String, dynamic>> authCode(String email) async {
     try {
       _loadEnv();
-      
+
       final response = await http
           .post(
             Uri.parse(
@@ -583,16 +584,52 @@ class UserProvider with ChangeNotifier {
           "emailValid": false,
           "code": 0,
         };
-      }
-      else {
-        final code = result["code"];
+      } else {
         return {
           "emailValid": true,
-          "code": code,
+          "code": result["code"],
+          "id": result["id"]
         };
       }
     } catch (err) {
       throw Exception(err);
+    }
+  }
+
+  Future<bool> updateUserPass(String id, String pass) async {
+    try {
+      _loadEnv();
+
+      final response = await http
+          .post(
+            Uri.parse(
+              "http://$_url:3001/user/update/pass/",
+            ),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'id': id,
+              'password': pass,
+              'dt_atualizacao': DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(
+                DateTime.now(),
+              ),
+            }),
+          )
+          .timeout(
+            const Duration(
+              seconds: 60,
+            ),
+          );
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    } catch (err) {
+      throw Exception();
     }
   }
 }
