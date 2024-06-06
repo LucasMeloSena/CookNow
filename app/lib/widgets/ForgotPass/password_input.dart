@@ -51,6 +51,18 @@ class _PasswordFormWidgetState extends State<PasswordFormWidget> {
           Navigator.of(widget.context).pushReplacementNamed(AppRoutes.login);
         }
       }
+      else {
+        if (widget.context.mounted) {
+          await showModal(
+            widget.context,
+            "Alerta!",
+            "A senha digitada é inválida!",
+            [
+              {"icon": Icons.check, "label": "OK"}
+            ],
+          );
+        }
+      }
     } catch (error) {
       if (widget.context.mounted) {
         await showModal(
@@ -101,7 +113,7 @@ class _PasswordFormWidgetState extends State<PasswordFormWidget> {
             controller: confirmPasswordController,
             validator: (value) {
               String pass = value ?? "";
-              return Validator.validatePass(pass, passwordController.text);
+              return Validator.validateEmptyPass(pass, passwordController.text);
             },
           ),
           const SizedBox(

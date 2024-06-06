@@ -1,8 +1,23 @@
 import 'package:cooknow/assets/styles/colors.dart';
 import 'package:cooknow/assets/styles/text_style.dart';
+import 'package:cooknow/models/recipe.dart';
+import 'package:cooknow/models/user.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Destaque extends StatelessWidget {
+class Destaque extends StatefulWidget {
+  final Recipe? receitaDestaque;
+  final List<dynamic> recipeId;
+
+  Destaque({required this.receitaDestaque, required this.recipeId});
+
+  @override
+  State<Destaque> createState() => _DestaqueState();
+}
+
+class _DestaqueState extends State<Destaque> {
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,7 +47,7 @@ class Destaque extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.network(
-                  "https://firebasestorage.googleapis.com/v0/b/cooknow-cdaf5.appspot.com/o/recipes%2Fmacarrao.jpg?alt=media&token=92f9d9ef-6d4c-47d2-a7bb-ebe08e905008",
+                  widget.receitaDestaque?.urlImage ?? "",
                   fit: BoxFit.cover,
                 ),
               ),
@@ -56,7 +71,7 @@ class Destaque extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Spaghetti ao molho vermelho",
+                        widget.receitaDestaque?.nome ?? "",
                         style: MyTextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
@@ -70,7 +85,7 @@ class Destaque extends StatelessWidget {
                             color: MyColors.yellow_500,
                             borderRadius: BorderRadius.circular(5)),
                         child: Text(
-                          "Prato",
+                          widget.receitaDestaque?.categoria ?? "",
                           style: MyTextStyle(
                               color: Colors.white, fontWeight: FontWeight.w600),
                         ),
@@ -91,11 +106,50 @@ class Destaque extends StatelessWidget {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.favorite_border,
-                        color: Colors.white,
-                      ),
+                      onPressed: () async {
+                        if (isLoading) {
+                          return;
+                        }
+                        setState(() {
+                          isLoading = true;
+                        });
+                        if (widget.recipeId.contains(
+                            int.parse(widget.receitaDestaque?.id ?? ""))) {
+                          await Provider.of<UserProvider>(context,
+                                  listen: false)
+                              .deleteFavoriteRecipe(
+                                  int.parse(widget.receitaDestaque?.id ?? ""));
+                          setState(() {
+                            widget.recipeId.remove(
+                                int.parse(widget.receitaDestaque?.id ?? ""));
+                            isLoading = false;
+                          });
+                        } else {
+                          await Provider.of<UserProvider>(context,
+                                  listen: false)
+                              .favoriteRecipe(
+                                  int.parse(widget.receitaDestaque?.id ?? ""));
+                          setState(() {
+                            widget.recipeId.add(
+                                int.parse(widget.receitaDestaque?.id ?? ""));
+                            isLoading = false;
+                          });
+                        }
+                      },
+                      icon: isLoading
+                          ? const Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            )
+                          : widget.recipeId.contains(
+                                  int.parse(widget.receitaDestaque?.id ?? ""))
+                              ? const Icon(
+                                  Icons.favorite,
+                                  color: Colors.white,
+                                )
+                              : const Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.white,
+                                ),
                     ),
                   ),
                 ),
@@ -105,22 +159,28 @@ class Destaque extends StatelessWidget {
                 left: 20,
                 child: ClipRRect(
                   child: Container(
-                    width: 75,
+                    width: 70,
                     height: 50,
                     decoration: BoxDecoration(
                       color: MyColors.grey_300,
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(
                           Icons.star,
                           color: Colors.white,
                         ),
+                        const SizedBox(
+                          width: 5,
+                        ),
                         Text(
-                          "4.9",
-                          style: MyTextStyle(color: Colors.white),
+                          widget.receitaDestaque?.avaliacao ?? "",
+                          style: MyTextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),

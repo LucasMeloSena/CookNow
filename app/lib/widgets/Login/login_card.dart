@@ -123,7 +123,7 @@ class _LoginCardState extends State<LoginCard> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed(AppRoutes.forgotPass);
+                    Navigator.of(context).pushNamed(AppRoutes.forgotPass);
                   },
                   child: Text(
                     "Esqueceu sua senha?",

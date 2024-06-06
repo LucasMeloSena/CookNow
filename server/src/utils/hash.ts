@@ -52,6 +52,6 @@ export function unHashString(hashId: string): string {
 
 export function generate4DigitCode(): string {
   const randomNumber = Math.floor(Math.random() * 10000);
-  const code = randomNumber.toString().padStart(4, '0');
+  const code = randomNumber.toString().padStart(4, "0");
   return code;
 }

@@ -103,4 +103,44 @@ class RecipeProvider extends ChangeNotifier {
       throw Exception(err);
     }
   }
+
+  Future<void> searchFeaturedRecipes() async {
+    try {
+      _loadEnv();
+
+      final response = await http
+          .get(Uri.parse(
+            "http://$_url:3002/v1/recipes/destaques/",
+          ))
+          .timeout(
+            const Duration(
+              seconds: 60,
+            ),
+          );
+
+      final result = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        List<dynamic> lstRecipesTemp = result['recipes'];
+        final recipe = lstRecipesTemp.first as Map<String, dynamic>;
+        _featuredRecipe = Recipe(
+          id: recipe['id'].toString(),
+          nome: recipe['nome'],
+          urlImage: recipe['url_image'],
+          tempoMedio: recipe['tempo_medio'],
+          custo: recipe['custo'],
+          dificuldade: recipe['dificuldade'],
+          localidade: recipe['localizacao'],
+          avaliacao: recipe['avaliacao'].toString(),
+          categoria: recipe['categoria'],
+          ingredientes: recipe['ingredientes'],
+          modoPreparo: recipe['modo_preparo'],
+          dtCadastro: recipe['dt_cadastro'],
+          dtAtualizacao: recipe['dt_atualizacao'],
+        );
+      }
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
 }

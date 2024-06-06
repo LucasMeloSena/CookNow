@@ -310,7 +310,7 @@ export const updateUserController = async (req: Request, res: Response, next: Ne
 export const authCodeController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user: UserEmail = createUserEmailSchema.parse(req.body);
-    const codigo: string = generate4DigitCode()
+    const codigo: string = generate4DigitCode();
 
     const conta: User = await prisma.user.findUnique({
       where: {
@@ -332,7 +332,7 @@ export const authCodeController = async (req: Request, res: Response, next: Next
       res.status(200).json({
         message: "Email enviado com sucesso!",
         code: codigo,
-        id: conta.id
+        id: conta.id,
       });
     }
   } catch (err) {
@@ -356,22 +356,25 @@ export const authCodeController = async (req: Request, res: Response, next: Next
 
 export const updateUserPasswordController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user: UserPass = createUserPassSchema.parse(req.body)
-    user.password = await cryptPass(user.password)
+    const user: UserPass = createUserPassSchema.parse(req.body);
+    user.password = await cryptPass(user.password);
+
+    if (user.token != process.env.TOKEN) {
+      res.status(404).json({ message: "Token inválido!" });
+    }
 
     await prisma.user.update({
       where: {
-        id: user.id
+        id: user.id,
       },
       data: {
         senha: user.password,
-        dt_atualizacao: user.dt_atualizacao
-      }
-    })
+        dt_atualizacao: user.dt_atualizacao,
+      },
+    });
 
-    res.status(200).json({message: "Senha do usuário atualizada com sucesso!"})
-  }
-  catch (err) {
+    res.status(200).json({ message: "Senha do usuário atualizada com sucesso!" });
+  } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar atualizar o usuário! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
@@ -385,8 +388,7 @@ export const updateUserPasswordController = async (req: Request, res: Response, 
     res.status(500).json({
       message: errMessage,
     });
+  } finally {
+    prisma.$disconnect();
   }
-  finally {
-    prisma.$disconnect()
-  }
-}
+};

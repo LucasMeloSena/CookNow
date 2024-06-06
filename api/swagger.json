@@ -153,6 +153,35 @@
         }
       }
     },
+    "/recipes/destaques/": {
+      "get": {
+        "summary": "Busca de Receitas Destaque",
+        "description": "Busca de todas as receitas destaques. O retorno deste método é baseado em receitas 5 estrelas.",
+        "tags": ["Recipes"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Recipe"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Rota não encontrada ou Método não permitido!"
+          },
+          "404": {
+            "description": "Nenhuma receita destaque encontrada!"
+          },
+          "500": {
+            "description": "Ocorreu um erro no servidor ao tentar buscar a receita!"
+          }
+        }
+      }
+    },
     "/ingredientes/": {
       "get": {
         "summary": "Busca de Todos os Ingredientes",

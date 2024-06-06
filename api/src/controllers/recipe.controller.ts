@@ -9,6 +9,9 @@ export const getRecipesController = async (req: Request, res: Response, next: Ne
   try {
     const receitas = await prisma.receita.findMany({
       include: defaultPrismaQuery,
+      orderBy: {
+        id: "asc",
+      },
     });
 
     const formattedReceitas = formatRecipeArrayResult(receitas);
@@ -67,6 +70,9 @@ export const getRecipesByCategoryController = async (req: Request, res: Response
         },
       },
       include: defaultPrismaQuery,
+      orderBy: {
+        id: "asc",
+      },
     });
 
     const formattedReceitas = formatRecipeArrayResult(recipes);
@@ -101,11 +107,51 @@ export const getRecipesByLocationController = async (req: Request, res: Response
         localizacao: location.location,
       },
       include: defaultPrismaQuery,
+      orderBy: {
+        id: "asc",
+      },
     });
 
     const formattedReceitas = formatRecipeArrayResult(recipes);
     if (formattedReceitas.length == 0) {
       return res.status(404).json({ message: "Não foi encontrada nenhuma receita que tem origem nesta localidade!" });
+    }
+
+    return res.status(200).json({ recipes: formattedReceitas });
+  } catch (err) {
+    const errorMessage: string = "Ocorreu um erro ao buscar a receita! Por favor, tente novamente mais tarde!";
+
+    if (err instanceof ZodError) {
+      let errMsg: string = err.issues[0].message;
+      if (errMsg == "Required") {
+        errMsg = "Dados ausentes ou inválidos!";
+      }
+      return res.status(500).json({ message: errMsg });
+    } else {
+      return res.status(500).json({ message: errorMessage });
+    }
+  } finally {
+    prisma.$disconnect();
+  }
+};
+
+export const getFeaturedRecipesController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const featuredRecipes = await prisma.receita.findMany({
+      where: {
+        avaliacao: {
+          equals: 5,
+        },
+      },
+      include: defaultPrismaQuery,
+      orderBy: {
+        id: "asc",
+      },
+    });
+
+    const formattedReceitas = formatRecipeArrayResult(featuredRecipes);
+    if (formattedReceitas.length == 0) {
+      return res.status(404).json({ message: "Não foi encontrada nenhuma receita destaque!" });
     }
 
     return res.status(200).json({ recipes: formattedReceitas });

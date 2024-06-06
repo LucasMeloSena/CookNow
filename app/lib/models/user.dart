@@ -599,6 +599,7 @@ class UserProvider with ChangeNotifier {
   Future<bool> updateUserPass(String id, String pass) async {
     try {
       _loadEnv();
+      final String token = dotenv.env["TOKEN"] ?? "";
 
       final response = await http
           .post(
@@ -614,6 +615,7 @@ class UserProvider with ChangeNotifier {
               'dt_atualizacao': DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(
                 DateTime.now(),
               ),
+              'token': token
             }),
           )
           .timeout(

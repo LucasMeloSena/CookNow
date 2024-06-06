@@ -226,7 +226,7 @@ class _CadastroFormState extends State<CadastroForm> {
                 textInputAction: TextInputAction.done,
                 validator: (value) {
                   String senha = value ?? '';
-                  return Validator.validatePass(passwordController.text, senha);
+                  return Validator.validateEmptyPass(passwordController.text, senha);
                 },
               ),
               Center(
