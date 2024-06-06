@@ -5,7 +5,12 @@ import 'package:cooknow/widgets/Common/message.dart';
 import 'package:cooknow/widgets/ForgotPass/code_input.dart';
 import 'package:flutter/material.dart';
 
-class CodeView extends StatelessWidget {
+class CodeView extends StatefulWidget {
+  @override
+  State<CodeView> createState() => _CodeViewState();
+}
+
+class _CodeViewState extends State<CodeView> {
   @override
   Widget build(BuildContext context) {
     final data =
@@ -20,7 +25,6 @@ class CodeView extends StatelessWidget {
           children: [
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,

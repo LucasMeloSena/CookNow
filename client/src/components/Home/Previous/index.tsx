@@ -37,7 +37,7 @@ export default function Previous() {
 
   const handleLoadedPage = async () => {
     try {
-      const response = await fetch("http://localhost:3002/v1/recipes/")
+      const response = await fetch("https://cook-now.vercel.app/v1/recipes/")
       const result = await response.json()
       setRecipes(result.recipes)
     }

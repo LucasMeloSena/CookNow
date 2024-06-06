@@ -56,7 +56,7 @@ class _DestaqueState extends State<Destaque> {
                 right: 0,
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  height: 100,
+                  height: 110,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(0.0),

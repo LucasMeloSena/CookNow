@@ -18,18 +18,21 @@ class _HeaderHomeState extends State<HeaderHome> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Olá ${widget.user?.nome.split(' ')[0]}!",
-              style: MyTextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "Qual receita você gostaria de fazer hoje?",
-              style: MyTextStyle(),
-            )
-          ],
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.7,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Olá ${widget.user?.nome.split(' ')[0]}!",
+                style: MyTextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Qual receita você gostaria de fazer hoje?",
+                style: MyTextStyle(),
+              )
+            ],
+          ),
         ),
         const Spacer(),
         CircleAvatar(

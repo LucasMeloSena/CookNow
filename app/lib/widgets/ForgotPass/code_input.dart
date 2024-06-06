@@ -6,16 +6,25 @@ import 'package:cooknow/utils/validator.dart';
 import 'package:cooknow/widgets/Common/modal.dart';
 import 'package:flutter/material.dart';
 
-class CodeInput extends StatelessWidget {
+class CodeInput extends StatefulWidget {
   final String code;
   final BuildContext context;
   final String userId;
   CodeInput({required this.code, required this.context, required this.userId});
 
+  @override
+  State<CodeInput> createState() => _CodeInputState();
+}
+
+class _CodeInputState extends State<CodeInput> {
   final _numberOne = TextEditingController();
+
   final _numberTwo = TextEditingController();
+
   final _numberThree = TextEditingController();
+
   final _numberFour = TextEditingController();
+
   final formKey = GlobalKey<FormState>();
 
   void submitForm() async {
@@ -25,19 +34,20 @@ class CodeInput extends StatelessWidget {
       return;
     }
 
-    final userCode = "${_numberOne.text}${_numberTwo.text}${_numberThree.text}${_numberFour.text}";
-    if (userCode != code) {
+    final userCode =
+        "${_numberOne.text}${_numberTwo.text}${_numberThree.text}${_numberFour.text}";
+    if (userCode != widget.code) {
       await showModal(
-          context,
-          "Alerta!",
-          "O código digitado está incorreto!",
-          [
-            {"icon": Icons.check, "label": "OK"}
-          ],
-        );
-    }
-    else {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.resetPassword, arguments: userId);
+        widget.context,
+        "Alerta!",
+        "O código digitado está incorreto!",
+        [
+          {"icon": Icons.check, "label": "OK"}
+        ],
+      );
+    } else {
+      Navigator.of(widget.context)
+          .pushReplacementNamed(AppRoutes.resetPassword, arguments: widget.userId);
     }
   }
 
@@ -58,9 +68,7 @@ class CodeInput extends StatelessWidget {
                   width: 80,
                   child: TextFormField(
                     textAlign: TextAlign.center,
-                    style: MyTextStyle(
-                      fontSize: 25
-                    ),
+                    style: MyTextStyle(fontSize: 25),
                     decoration: getSmallInputDecoration(),
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
@@ -77,9 +85,7 @@ class CodeInput extends StatelessWidget {
                   width: 80,
                   child: TextFormField(
                     textAlign: TextAlign.center,
-                    style: MyTextStyle(
-                      fontSize: 25
-                    ),
+                    style: MyTextStyle(fontSize: 25),
                     decoration: getSmallInputDecoration(),
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
@@ -96,9 +102,7 @@ class CodeInput extends StatelessWidget {
                   width: 80,
                   child: TextFormField(
                     textAlign: TextAlign.center,
-                    style: MyTextStyle(
-                      fontSize: 25
-                    ),
+                    style: MyTextStyle(fontSize: 25),
                     decoration: getSmallInputDecoration(),
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.next,
@@ -115,9 +119,7 @@ class CodeInput extends StatelessWidget {
                   width: 80,
                   child: TextFormField(
                     textAlign: TextAlign.center,
-                    style: MyTextStyle(
-                      fontSize: 25
-                    ),
+                    style: MyTextStyle(fontSize: 25),
                     decoration: getSmallInputDecoration(),
                     keyboardType: TextInputType.number,
                     textInputAction: TextInputAction.done,

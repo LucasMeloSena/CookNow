@@ -53,7 +53,7 @@ class RecipeCardFavorites extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 160,
+                  width: 135,
                   child: Text(
                     recipe.nome,
                     softWrap: true,
@@ -70,7 +70,6 @@ class RecipeCardFavorites extends StatelessWidget {
                 Categoria(text: recipe.categoria)
               ],
             ),
-            const Spacer(),
             const Icon(
               Icons.arrow_forward_ios,
               size: 15,

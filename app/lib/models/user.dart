@@ -48,6 +48,8 @@ class UserProvider with ChangeNotifier {
   List<dynamic> lstRecipeId = [];
   String? _firebaseEmail;
   String _imageFileName = "";
+  String _developmentUrl = "";
+  final String _productionUrl = "https://cook-now-server.vercel.app";
 
   bool get auth {
     return _token != null;
@@ -68,6 +70,7 @@ class UserProvider with ChangeNotifier {
       _url = dotenv.env["LOOPBACK_ANDROID"] ?? "";
     }
     _firebaseEmail = dotenv.env["FIREBASE_EMAIL"];
+    _developmentUrl = "http://$_url:3001";
   }
 
   Future<String> uploadImage(
@@ -91,7 +94,7 @@ class UserProvider with ChangeNotifier {
 
       final response = await Dio()
           .post(
-            'http://$_url:3001/upload/user/image/',
+            '$_productionUrl/upload/user/image/',
             data: formData,
           )
           .timeout(
@@ -113,7 +116,7 @@ class UserProvider with ChangeNotifier {
       await http
           .delete(
             Uri.parse(
-              "http://$_url:3001/upload/user/image/",
+              "$_productionUrl/upload/user/image/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -152,7 +155,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "http://$_url:3001/user/register/",
+              "$_productionUrl/user/register/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -202,7 +205,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "http://$_url:3001/user/login/",
+              "$_productionUrl/user/login/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -263,7 +266,7 @@ class UserProvider with ChangeNotifier {
 
       final response = await http.get(
         Uri.parse(
-          "http://$_url:3001/user/?id=$id",
+          "$_productionUrl/user/?id=$id",
         ),
         headers: {'Authorization': 'Bearer $_token'},
       ).timeout(
@@ -358,7 +361,7 @@ class UserProvider with ChangeNotifier {
       }
 
       await http.post(
-        Uri.parse("http://$_url:3001/user/favorite/recipe/"),
+        Uri.parse("$_productionUrl/user/favorite/recipe/"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token'
@@ -389,7 +392,7 @@ class UserProvider with ChangeNotifier {
       }
 
       final response = await http.get(
-        Uri.parse("http://$_url:3001/user/favorite/recipe/?id=$userId"),
+        Uri.parse("$_productionUrl/user/favorite/recipe/?id=$userId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token'
@@ -419,7 +422,7 @@ class UserProvider with ChangeNotifier {
       }
 
       await http.delete(
-        Uri.parse("http://$_url:3001/user/favorite/recipe/"),
+        Uri.parse("$_productionUrl/user/favorite/recipe/"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token'
@@ -461,7 +464,7 @@ class UserProvider with ChangeNotifier {
 
       final response = await Dio()
           .post(
-            'http://$_url:3001/upload/update/user/image/',
+            '$_productionUrl/upload/update/user/image/',
             data: formData,
           )
           .timeout(
@@ -500,7 +503,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .put(
             Uri.parse(
-              "http://$_url:3001/user/update/",
+              "$_productionUrl/user/update/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -561,7 +564,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "http://$_url:3001/user/auth/pass/",
+              "$_productionUrl/user/auth/pass/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -604,7 +607,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "http://$_url:3001/user/update/pass/",
+              "$_productionUrl/user/update/pass/",
             ),
             headers: {
               'Content-Type': 'application/json',

@@ -29,6 +29,7 @@ class RecipeCard extends StatelessWidget {
           color: MyColors.grey_100,
         ),
         height: 90,
+        width: MediaQuery.of(context).size.width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -54,7 +55,7 @@ class RecipeCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 190,
+                    width: 165,
                     child: Text(
                       recipe.nome,
                       softWrap: true,
@@ -71,7 +72,6 @@ class RecipeCard extends StatelessWidget {
                   Categoria(text: recipe.categoria)
                 ],
               ),
-            const Spacer(),
             const Icon(
               Icons.arrow_forward_ios,
               size: 15,

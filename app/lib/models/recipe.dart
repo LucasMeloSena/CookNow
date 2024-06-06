@@ -40,6 +40,8 @@ class RecipeProvider extends ChangeNotifier {
   String _url = "";
   List<Recipe> _lstRecipes = [];
   Recipe? _featuredRecipe;
+  String _developmentUrl = "";
+  final String _productionUrl = "https://cook-now.vercel.app/v1";
 
   List<Recipe> get getRecipes {
     return [..._lstRecipes];
@@ -59,6 +61,7 @@ class RecipeProvider extends ChangeNotifier {
     } else if (_platform == "android") {
       _url = dotenv.env["LOOPBACK_ANDROID"] ?? "";
     }
+    _developmentUrl = "http://$_url:3002/v1";
   }
 
   Future<void> searchRecipes() async {
@@ -67,7 +70,7 @@ class RecipeProvider extends ChangeNotifier {
 
       final response = await http
           .get(Uri.parse(
-            "http://$_url:3002/v1/recipes/",
+            "$_productionUrl/recipes",
           ))
           .timeout(
             const Duration(
@@ -110,7 +113,7 @@ class RecipeProvider extends ChangeNotifier {
 
       final response = await http
           .get(Uri.parse(
-            "http://$_url:3002/v1/recipes/destaques/",
+            "$_productionUrl/recipes/destaques/",
           ))
           .timeout(
             const Duration(

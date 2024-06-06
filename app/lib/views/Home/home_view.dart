@@ -24,7 +24,8 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     if (loaded == false) {
       Provider.of<UserProvider>(context, listen: false).searchFavoriteRecipes();
-      Provider.of<RecipeProvider>(context, listen: false).searchFeaturedRecipes();
+      Provider.of<RecipeProvider>(context, listen: false)
+          .searchFeaturedRecipes();
       Provider.of<RecipeProvider>(context, listen: false)
           .searchRecipes()
           .then((value) {
@@ -61,7 +62,10 @@ class _HomeViewState extends State<HomeView> {
                       const SizedBox(
                         height: 30,
                       ),
-                      Destaque(receitaDestaque: recipe.getFeaturedRecipe, recipeId: user.getLstFavoritesRecipes,),
+                      Destaque(
+                        receitaDestaque: recipe.getFeaturedRecipe,
+                        recipeId: user.getLstFavoritesRecipes,
+                      ),
                       const SizedBox(
                         height: 20,
                       ),
