@@ -9,7 +9,7 @@ export default function Initial() {
   }
 
   const url = {
-    download: "",
+    download: "https://cdnlucasena.netlify.app/app/app-release.apk",
     code: "https://github.com/LucasMeloSena/CookNow?tab=readme-ov-file",
     api: "https://cook-now.vercel.app/api-docs/"
   }

@@ -9,7 +9,10 @@ export const MainContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10%;
-  padding: 40px 40px;
+  padding: 40px;
+  @media (max-width: 768px) {
+   padding: 15px;
+  }
 `;
 
 export const PresentationContainer = styled.div`
@@ -68,7 +71,7 @@ export const SubTitle = styled.h5`
   width: 40%;
   font-size: 16px;
   @media (max-width: 768px) {
-    font-size: 13px;
+    font-size: 14px;
     width: 100%;
     text-align: center;
   }
@@ -97,6 +100,7 @@ export const Btn = styled.button`
   border: none;
   padding: 10px 40px;
   transition: all 0.5s;
+  width: 230px;
   &:hover {
     cursor: pointer;
     transition: all 0.5s;

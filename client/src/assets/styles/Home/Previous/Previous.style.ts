@@ -21,13 +21,15 @@ export const ContainerRecipes = styled.div `
   justify-content: center;
   align-items: center;
   gap: 20px;
+  width: 80%;
   @media (max-width: 768px) {
     flex-wrap: nowrap;
     flex-direction: column;
   }
 `
 
-export const Title = styled.h2 `
-  font-weight: 600;
-  color: #1b2029;
+export const Title = styled.h1 `
+  @media (max-width: 768px) {
+   text-align: center;
+  }
 `

@@ -9,6 +9,9 @@ export const MainContainer = styled.footer `
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `
 
 export const Copywrite = styled.h3 `
@@ -17,6 +20,7 @@ export const Copywrite = styled.h3 `
    text-align: center;
    line-height: 1;
    margin-bottom: 5px !important;
+   font-size: 15px;
   }
 `
 
