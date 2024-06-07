@@ -72,6 +72,7 @@ class RecipeCard extends StatelessWidget {
                   Categoria(text: recipe.categoria)
                 ],
               ),
+            const Spacer(),
             const Icon(
               Icons.arrow_forward_ios,
               size: 15,

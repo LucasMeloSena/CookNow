@@ -30,6 +30,7 @@ class _LoginViewState extends State<LoginView> {
           : SingleChildScrollView(
               child: Container(
                 color: MyColors.yellow_200,
+                height: MediaQuery.of(context).size.height,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,

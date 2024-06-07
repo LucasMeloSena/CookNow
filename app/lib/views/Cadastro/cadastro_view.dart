@@ -30,6 +30,7 @@ class _CadastroViewState extends State<CadastroView> {
               child: Container(
                 padding: const EdgeInsets.all(25),
                 color: MyColors.yellow_200,
+                height: MediaQuery.of(context).size.height,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
