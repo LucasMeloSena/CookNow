@@ -39,6 +39,11 @@ export const PresentationContainer = styled.div`
     border-radius: 25px;
     z-index: -1;
   }
+  
+  @media (max-width: 768px) {
+    padding: 10px;
+    align-items: center;
+  }
 `;
 
 export const Title = styled.h1`
@@ -48,6 +53,11 @@ export const Title = styled.h1`
   line-height: 0.9;
   width: 40%;
   font-weight: 600;
+  @media (max-width: 768px) {
+   font-size: 24px;
+   width: 100%;
+   text-align: center;
+  }
 `;
 
 export const SubTitle = styled.h5`
@@ -57,6 +67,11 @@ export const SubTitle = styled.h5`
   font-weight: 400;
   width: 40%;
   font-size: 16px;
+  @media (max-width: 768px) {
+    font-size: 13px;
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 export const ContainerButtons = styled.div`
@@ -65,6 +80,13 @@ export const ContainerButtons = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   gap: 5px;
+  flex-wrap: wrap;
+  @media (max-width: 768px) {
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
 `;
 
 export const Btn = styled.button`

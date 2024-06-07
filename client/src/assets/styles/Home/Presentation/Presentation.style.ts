@@ -8,6 +8,11 @@ export const MainContainer = styled.div `
   align-items: center;
   gap: 10px;
   position: relative;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 20px;
+    text-align: center;
+  }
 `
 
 export const TextContainer = styled.div `
@@ -15,10 +20,15 @@ export const TextContainer = styled.div `
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  @media (max-width: 768px) {
+    gap: 10px;
+  }
 `
 
 export const Title = styled.h1 `
-
+  @media (max-width: 768px) {
+    line-height: 1;
+  }
 `
 
 export const SubTitle = styled.h4 `
@@ -28,9 +38,16 @@ export const SubTitle = styled.h4 `
 export const ExampleImage = styled.img `
 width: 500px;
 height: 500px;
+  @media (max-width: 768px) {
+    height: 100%;
+    width: 100%;
+  }
 `
 
 export const PassosImage = styled.img `
 position: absolute;
 z-index: -1;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `

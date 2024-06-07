@@ -54,13 +54,13 @@ dev_dependencies:
   flutter_launcher_icons: "^0.13.1"
 
 flutter_native_splash: 
-  image: "lib/assets/img/splash_screen.png"
   background_image: "lib/assets/img/splash_screen.png"
   android: true
   ios: true
 
 flutter_launcher_icons:
   android: "launcher_icon"
+  ios: false
   image_path: "lib/assets/img/logo.png"
 
 

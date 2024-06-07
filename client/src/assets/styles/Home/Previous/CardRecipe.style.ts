@@ -12,4 +12,8 @@ export const MainContainer = styled.div<BackgroundImageProps> `
   background-image: url(${props => props.imageUrl});
   background-size: cover;
   background-repeat: no-repeat;
+  @media (max-width: 768px) {
+    width: 350px;
+    height: 300px;
+  }
 `

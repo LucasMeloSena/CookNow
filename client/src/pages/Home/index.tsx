@@ -1,4 +1,4 @@
-import { Presentation, Footer, Initial, Moments, Previous } from "@/CooknowUI";
+import { Presentation, Footer, Initial, Moments, Previous, Video } from "@/CooknowUI";
 
 export function Home() {
   return (
@@ -6,6 +6,7 @@ export function Home() {
       <Initial/>
       <Presentation/>
       <Moments/>
+      <Video />
       <Previous/>
       <Footer/>
     </>

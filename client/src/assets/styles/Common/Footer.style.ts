@@ -13,6 +13,11 @@ export const MainContainer = styled.footer `
 
 export const Copywrite = styled.h3 `
   font-weight: 500;
+  @media (max-width: 768px) {
+   text-align: center;
+   line-height: 1;
+   margin-bottom: 5px !important;
+  }
 `
 
 export const Text = styled.h4 `

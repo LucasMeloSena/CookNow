@@ -9,6 +9,9 @@ export const MainContainer = styled.div `
   justify-content: center;
   align-items: center;
   gap: 20px;
+  @media (max-width: 768px) {
+    height: 100%;
+  }
 `
 
 export const ContainerRecipes = styled.div `
@@ -18,6 +21,10 @@ export const ContainerRecipes = styled.div `
   justify-content: center;
   align-items: center;
   gap: 20px;
+  @media (max-width: 768px) {
+    flex-wrap: nowrap;
+    flex-direction: column;
+  }
 `
 
 export const Title = styled.h2 `
