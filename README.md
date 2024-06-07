@@ -1,7 +1,9 @@
 # Cook Now!
-This is project is an app of the user can see a lot of recipes and favorite then in his account. The MVC Design Pattern was used. The app also uses services from Firebase, MongoDB, PostgreSQL and Rest API's. All available resources are working. If you see a different situation, please tell me.
+This is project is an app of the user can see a lot of recipes and favorite then in his account. The MVC Design Pattern was used. The app also uses services from Firebase, MongoDB, PostgreSQL and Rest API's. All available reso
 
-<video src="#" width="100%" controls></video>
+urces are working. If you see a different situation, please tell me.
+
+<video src="https://github.com/LucasMeloSena/CookNow/assets/93053816/75b4cdd4-04b9-435f-9c31-7829d3dd5482" width="100%" controls></video>
 
 ## 💻 Technologies used
 * [Flutter:](https://flutter.dev/) Google's SDK for building cross-platform apps from a single codebase.
