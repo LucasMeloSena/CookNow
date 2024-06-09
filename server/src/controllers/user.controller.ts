@@ -18,7 +18,7 @@ import {
   createUserPassSchema,
   UserPass,
 } from "../interfaces/user.interface";
-import { comparePass, cryptPass, generate4DigitCode, hashString, unHashString } from "../utils/hash";
+import { comparePass, cryptPass, generate4DigitCode } from "../utils/hash";
 import { generateToken, getExpirationDate } from "../utils/token";
 import { validarCampoExistenteUserSchema } from "../utils/validator";
 import { z } from "zod";
@@ -78,7 +78,6 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
     if (user && correctPass) {
       const token: string = generateToken(user);
       const expirationDate = getExpirationDate(token);
-      user.id = hashString(user.id);
       res.status(200).json({ message: "Login efetudo com sucesso!", user: user, token: token, expiresIn: expirationDate });
     }
   } catch (err) {
@@ -103,18 +102,16 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
 export const searchUserByIdController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId: UserId = createUserIdSchema.parse(req.query);
-    const id: string = unHashString(userId.id);
 
     const user: User = await prisma.user.findUnique({
       where: {
-        id: id,
+        id: userId.id,
       },
     });
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado!" });
     } else {
-      user.id = hashString(user.id);
       return res.status(200).json({ message: "Usuário encontrado com sucesso!", user: user });
     }
   } catch (err) {
@@ -142,11 +139,10 @@ export const searchUserByIdController = async (req: Request, res: Response, next
 export const favoriteUserRecipeController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userRecipe: UserRecipe = createUserRecipeSchema.parse(req.body);
-    const userId: string = unHashString(userRecipe.userId);
 
     const favoriteRecipes = await prisma.user_recipe.findMany({
       where: {
-        userId: userId,
+        userId: userRecipe.userId,
         recipeId: userRecipe.recipeId,
       },
     });
@@ -156,7 +152,7 @@ export const favoriteUserRecipeController = async (req: Request, res: Response, 
 
     await prisma.user_recipe.create({
       data: {
-        userId: userId,
+        userId: userRecipe.userId,
         recipeId: userRecipe.recipeId,
       },
     });
@@ -187,11 +183,10 @@ export const favoriteUserRecipeController = async (req: Request, res: Response, 
 export const searchFavoriteUserRecipesController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId: UserId = createUserIdSchema.parse(req.query);
-    const id: string = unHashString(userId.id);
 
     const userFavoriteUserRecipes = await prisma.user_recipe.findMany({
       where: {
-        userId: id,
+        userId: userId.id,
       },
     });
     if (!userFavoriteUserRecipes) {
@@ -225,11 +220,10 @@ export const searchFavoriteUserRecipesController = async (req: Request, res: Res
 export const deleteFavoriteUserRecipeController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userRecipe: UserRecipe = createUserRecipeSchema.parse(req.body);
-    const userId: string = unHashString(userRecipe.userId);
 
     await prisma.user_recipe.deleteMany({
       where: {
-        userId: userId,
+        userId: userRecipe.userId,
         recipeId: userRecipe.recipeId,
       },
     });
@@ -260,7 +254,6 @@ export const deleteFavoriteUserRecipeController = async (req: Request, res: Resp
 export const updateUserController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user: UserUpdate = createUserUpdateShema.parse(req.body);
-    user.id = unHashString(user.id);
 
     let userInfo = await prisma.user.findUnique({
       where: {
@@ -286,7 +279,6 @@ export const updateUserController = async (req: Request, res: Response, next: Ne
       },
     });
 
-    userInfo.id = hashString(userInfo.id)
     res.status(201).json({ message: "Usuário atualizado com sucesso!", user: userInfo });
   } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar atualizar o usuário! Por favor, tente novamente mais tarde!";

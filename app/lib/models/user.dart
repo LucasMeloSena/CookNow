@@ -486,7 +486,7 @@ class UserProvider with ChangeNotifier {
       }
       return response.data['image'];
     } catch (err) {
-      throw Exception();
+      throw Exception("A imagem possui um tipo de arquivo não suportado!");
     }
   }
 

@@ -1,6 +1,4 @@
 import bcryptjs from "bcryptjs";
-import CryptoJS from "crypto-js";
-import { randomBytes } from "crypto";
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -27,17 +25,4 @@ export function generate4DigitCode(): string {
   const randomNumber = Math.floor(Math.random() * 10000);
   const code = randomNumber.toString().padStart(4, "0");
   return code;
-}
-
-export function hashString(message: string): string {
-  const secretKey = process.env.HASH_KEY!
-  const encryptedMessage = CryptoJS.AES.encrypt(message, secretKey).toString();
-  return encryptedMessage;
-}
-
-export function unHashString(encryptedMessage: string): string {
-  const secretKey = process.env.HASH_KEY!
-  const bytes = CryptoJS.AES.decrypt(encryptedMessage, secretKey);
-  const decryptedMessage = bytes.toString(CryptoJS.enc.Utf8);
-  return decryptedMessage;
 }

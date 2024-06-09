@@ -65,7 +65,7 @@ export const removeUserImageController = async (req: Request, res: Response, nex
       email: process.env.FIREBASE_EMAIL,
       senha: process.env.FIREBASE_SENHA,
     };
-    
+
     await signInWithEmailAndPassword(auth, authFields.email!, authFields.senha!);
     await deleteObject(storageRef);
     res.status(200).json({ message: "Imagem excluída com sucesso!" });
