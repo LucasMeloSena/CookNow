@@ -4,7 +4,13 @@ class Validator {
   static String? validateString(String text, InputType type) {
     if (text.trim() == '' && type == InputType.email && text.isEmpty) {
       return "O Email não é válido!";
-    } else if (type == InputType.senha && text.length < 6 ||
+    } else if (type == InputType.nome && text.trim() == '') {
+      return "O Nome não é válido!";
+    } 
+    else if (type == InputType.celular && text.trim() == '') {
+      return "O Celular não é válido!";
+    }
+    else if (type == InputType.senha && text.length < 6 ||
         text.isEmpty ||
         text.trim() == "") {
       return "A Senha deve possuir no mínimo 6 caracteres!";
@@ -16,8 +22,7 @@ class Validator {
   static String? validateNumber(String text) {
     if (text.trim() == '') {
       return "";
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -35,11 +40,8 @@ class Validator {
       return "As senhas não são iguais!";
     } else if (pass.isEmpty) {
       return "O campo senha está vazio!";
-    } 
-    else {
+    } else {
       return null;
     }
   }
 }
-
-

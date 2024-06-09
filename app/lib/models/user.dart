@@ -94,7 +94,7 @@ class UserProvider with ChangeNotifier {
 
       final response = await Dio()
           .post(
-            '$_developmentUrl/upload/user/image/',
+            '$_productionUrl/upload/user/image/',
             data: formData,
           )
           .timeout(
@@ -116,7 +116,7 @@ class UserProvider with ChangeNotifier {
       await http
           .delete(
             Uri.parse(
-              "$_developmentUrl/upload/user/image/",
+              "$_productionUrl/upload/user/image/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "$_developmentUrl/user/register/",
+              "$_productionUrl/user/register/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "$_developmentUrl/user/login/",
+              "$_productionUrl/user/login/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -266,7 +266,7 @@ class UserProvider with ChangeNotifier {
 
       final response = await http.get(
         Uri.parse(
-          "$_developmentUrl/user/?id=$id",
+          "$_productionUrl/user/?id=$id",
         ),
         headers: {'Authorization': 'Bearer $_token'},
       ).timeout(
@@ -369,7 +369,7 @@ class UserProvider with ChangeNotifier {
       }
 
       await http.post(
-        Uri.parse("$_developmentUrl/user/favorite/recipe/"),
+        Uri.parse("$_productionUrl/user/favorite/recipe/"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token'
@@ -400,7 +400,7 @@ class UserProvider with ChangeNotifier {
       }
 
       final response = await http.get(
-        Uri.parse("$_developmentUrl/user/favorite/recipe/?id=$userId"),
+        Uri.parse("$_productionUrl/user/favorite/recipe/?id=$userId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token'
@@ -430,7 +430,7 @@ class UserProvider with ChangeNotifier {
       }
 
       await http.delete(
-        Uri.parse("$_developmentUrl/user/favorite/recipe/"),
+        Uri.parse("$_productionUrl/user/favorite/recipe/"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token'
@@ -472,7 +472,7 @@ class UserProvider with ChangeNotifier {
 
       final response = await Dio()
           .post(
-            '$_developmentUrl/upload/update/user/image/',
+            '$_productionUrl/upload/update/user/image/',
             data: formData,
           )
           .timeout(
@@ -511,7 +511,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .put(
             Uri.parse(
-              "$_developmentUrl/user/update/",
+              "$_productionUrl/user/update/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -572,7 +572,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "$_developmentUrl/user/auth/pass/",
+              "$_productionUrl/user/auth/pass/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -611,7 +611,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "$_developmentUrl/user/update/pass/",
+              "$_productionUrl/user/update/pass/",
             ),
             headers: {
               'Content-Type': 'application/json',

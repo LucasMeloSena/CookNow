@@ -186,8 +186,8 @@ class _CadastroFormState extends State<CadastroForm> {
                 controller: nomeController,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
-                  String email = value ?? '';
-                  return Validator.validateString(email, InputType.email);
+                  String nome = value ?? '';
+                  return Validator.validateString(nome, InputType.nome);
                 },
               ),
               Text(
@@ -202,8 +202,8 @@ class _CadastroFormState extends State<CadastroForm> {
                 controller: celularController,
                 textInputAction: TextInputAction.next,
                 validator: (value) {
-                  String email = value ?? '';
-                  return Validator.validateString(email, InputType.email);
+                  String celular = value ?? '';
+                  return Validator.validateString(celular, InputType.celular);
                 },
               ),
               Text(

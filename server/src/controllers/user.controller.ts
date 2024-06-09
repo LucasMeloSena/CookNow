@@ -57,7 +57,6 @@ export const createUserController = async (req: Request, res: Response, next: Ne
 export const loginUserController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userLogin: UserLogin = createUserLoginShema.parse(req.body);
-
     const user: User = await prisma.user.findUnique({
       where: {
         email: userLogin.email,
