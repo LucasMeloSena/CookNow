@@ -287,6 +287,7 @@ export const updateUserController = async (req: Request, res: Response, next: Ne
       },
     });
 
+    userInfo.id = hashString(userInfo.id)
     res.status(201).json({ message: "Usuário atualizado com sucesso!", user: userInfo });
   } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar atualizar o usuário! Por favor, tente novamente mais tarde!";

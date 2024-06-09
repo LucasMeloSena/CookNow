@@ -23,17 +23,22 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     if (loaded == false) {
-      Provider.of<UserProvider>(context, listen: false).searchFavoriteRecipes();
-      Provider.of<RecipeProvider>(context, listen: false)
-          .searchFeaturedRecipes();
-      Provider.of<RecipeProvider>(context, listen: false)
-          .searchRecipes()
-          .then((value) {
-        setState(() {
-          _isLoading = false;
+      Provider.of<UserProvider>(context, listen: false)
+          .searchFavoriteRecipes()
+          .then((_) {
+        Provider.of<RecipeProvider>(context, listen: false)
+            .searchFeaturedRecipes()
+            .then((_) {
+          Provider.of<RecipeProvider>(context, listen: false)
+              .searchRecipes()
+              .then((value) {
+            setState(() {
+              _isLoading = false;
+            });
+          });
+          loaded = true;
         });
       });
-      loaded = true;
     }
   }
 

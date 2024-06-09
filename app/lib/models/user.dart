@@ -94,7 +94,7 @@ class UserProvider with ChangeNotifier {
 
       final response = await Dio()
           .post(
-            '$_productionUrl/upload/user/image/',
+            '$_developmentUrl/upload/user/image/',
             data: formData,
           )
           .timeout(
@@ -116,7 +116,7 @@ class UserProvider with ChangeNotifier {
       await http
           .delete(
             Uri.parse(
-              "$_productionUrl/upload/user/image/",
+              "$_developmentUrl/upload/user/image/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -155,7 +155,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "$_productionUrl/user/register/",
+              "$_developmentUrl/user/register/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "$_productionUrl/user/login/",
+              "$_developmentUrl/user/login/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -266,7 +266,7 @@ class UserProvider with ChangeNotifier {
 
       final response = await http.get(
         Uri.parse(
-          "$_productionUrl/user/?id=$id",
+          "$_developmentUrl/user/?id=$id",
         ),
         headers: {'Authorization': 'Bearer $_token'},
       ).timeout(
@@ -342,9 +342,17 @@ class UserProvider with ChangeNotifier {
     _logOutTimer = Timer(Duration(seconds: time), () => logOut());
   }
 
-  void logOut() {
+  void cleanData() {
+    user = null;
     _token = null;
     _expiresIn = null;
+    _logOutTimer = null;
+    lstRecipeId = [];
+    _imageFileName = "";
+  }
+
+  void logOut() {
+    cleanData();
     _clearAutoLogoutTimer();
     Storage.remove('user').then((_) => notifyListeners());
   }
@@ -361,7 +369,7 @@ class UserProvider with ChangeNotifier {
       }
 
       await http.post(
-        Uri.parse("$_productionUrl/user/favorite/recipe/"),
+        Uri.parse("$_developmentUrl/user/favorite/recipe/"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token'
@@ -392,7 +400,7 @@ class UserProvider with ChangeNotifier {
       }
 
       final response = await http.get(
-        Uri.parse("$_productionUrl/user/favorite/recipe/?id=$userId"),
+        Uri.parse("$_developmentUrl/user/favorite/recipe/?id=$userId"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token'
@@ -422,7 +430,7 @@ class UserProvider with ChangeNotifier {
       }
 
       await http.delete(
-        Uri.parse("$_productionUrl/user/favorite/recipe/"),
+        Uri.parse("$_developmentUrl/user/favorite/recipe/"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token'
@@ -464,7 +472,7 @@ class UserProvider with ChangeNotifier {
 
       final response = await Dio()
           .post(
-            '$_productionUrl/upload/update/user/image/',
+            '$_developmentUrl/upload/update/user/image/',
             data: formData,
           )
           .timeout(
@@ -503,7 +511,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .put(
             Uri.parse(
-              "$_productionUrl/user/update/",
+              "$_developmentUrl/user/update/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -564,7 +572,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "$_productionUrl/user/auth/pass/",
+              "$_developmentUrl/user/auth/pass/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -588,11 +596,7 @@ class UserProvider with ChangeNotifier {
           "code": 0,
         };
       } else {
-        return {
-          "emailValid": true,
-          "code": result["code"],
-          "id": result["id"]
-        };
+        return {"emailValid": true, "code": result["code"], "id": result["id"]};
       }
     } catch (err) {
       throw Exception(err);
@@ -607,7 +611,7 @@ class UserProvider with ChangeNotifier {
       final response = await http
           .post(
             Uri.parse(
-              "$_productionUrl/user/update/pass/",
+              "$_developmentUrl/user/update/pass/",
             ),
             headers: {
               'Content-Type': 'application/json',
@@ -629,8 +633,7 @@ class UserProvider with ChangeNotifier {
 
       if (response.statusCode == 200) {
         return true;
-      }
-      else {
+      } else {
         return false;
       }
     } catch (err) {
