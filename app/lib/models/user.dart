@@ -640,4 +640,39 @@ class UserProvider with ChangeNotifier {
       throw Exception();
     }
   }
+
+  Future<void> storageRegisterUserData(User user) async {
+    try {
+      final nome = user.nome;
+      final celular = user.celular;
+      final email = user.email;
+      await Storage.setMap("registerFormData", {
+        'nome': nome,
+        'celular': celular,
+        'email': email
+      });
+    }
+    catch (err) {
+      throw Exception();
+    }
+  }
+
+  Future<Map<String, dynamic>> searchRegisterUserData() async {
+    try {
+      final registerUserData = await Storage.getMap("registerFormData");
+      return registerUserData;
+    }
+    catch (err) {
+      throw Exception();
+    }
+  }
+
+  Future<void> deleteRegisterUserData() async {
+    try {
+      await Storage.remove("registerFormData");
+    }
+    catch (err) {
+      throw Exception();
+    }
+  }
 }

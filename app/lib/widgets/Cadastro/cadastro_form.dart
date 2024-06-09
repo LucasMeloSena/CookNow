@@ -40,6 +40,19 @@ class _CadastroFormState extends State<CadastroForm> {
   );
   File? imageProfile;
 
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<UserProvider>(
+      widget.context,
+      listen: false,
+    ).searchRegisterUserData().then((previousData) {
+      nomeController.text = previousData['nome'];
+      celularController.text = previousData['celular'];
+      emailController.text = previousData['email'];
+    });
+  }
+
   void handleClickCriarConta() {
     Navigator.of(widget.context).pushReplacementNamed(AppRoutes.cadastro);
   }
@@ -72,6 +85,11 @@ class _CadastroFormState extends State<CadastroForm> {
     );
 
     try {
+      await Provider.of<UserProvider>(
+        widget.context,
+        listen: false,
+      ).storageRegisterUserData(user);
+
       final Map<String, dynamic> response = await Provider.of<UserProvider>(
         widget.context,
         listen: false,
@@ -84,6 +102,10 @@ class _CadastroFormState extends State<CadastroForm> {
         );
 
         if (successResponse) {
+          await Provider.of<UserProvider>(
+            widget.context,
+            listen: false,
+          ).deleteRegisterUserData();
           await showDialog(
             context: widget.context,
             builder: (ctx) {
@@ -226,7 +248,8 @@ class _CadastroFormState extends State<CadastroForm> {
                 textInputAction: TextInputAction.done,
                 validator: (value) {
                   String senha = value ?? '';
-                  return Validator.validateEmptyPass(passwordController.text, senha);
+                  return Validator.validateEmptyPass(
+                      passwordController.text, senha);
                 },
               ),
               Center(

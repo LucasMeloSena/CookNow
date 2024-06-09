@@ -70,6 +70,7 @@ export const removeUserImageController = async (req: Request, res: Response, nex
     await deleteObject(storageRef);
     res.status(200).json({ message: "Imagem excluída com sucesso!" });
   } catch (err) {
+    console.log('what?')
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar remover a imagem! Por favor, tente novamente mais tarde!";
 
     if (err instanceof z.ZodError) {
