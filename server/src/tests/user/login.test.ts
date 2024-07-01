@@ -1,7 +1,7 @@
 import request from "supertest";
 import orchestrator from "../orchestrator";
 import { app } from "../../app";
-import { prisma } from "../../infra/database";
+import { prisma } from "../../infra/database/database";
 import { returnMessage } from "../../utils/constants";
 
 describe("Login User Controller", () => {

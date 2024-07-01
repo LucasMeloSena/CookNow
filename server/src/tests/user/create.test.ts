@@ -1,7 +1,7 @@
 import request from "supertest";
 import orchestrator from "../orchestrator";
 import { app } from "../../app";
-import { prisma } from "../../infra/database";
+import { prisma } from "../../infra/database/database";
 import { returnMessage } from "../../utils/constants";
 
 describe("Create User Controller", () => {
@@ -25,7 +25,7 @@ describe("Create User Controller", () => {
       dt_cadastro: new Date().toISOString(),
       dt_atualizacao: new Date().toISOString(),
     });
-    expect(response.body.message).toBe(returnMessage.register)
+    expect(response.body.message).toBe(returnMessage.register);
     expect(response.status).toBe(201);
   });
 

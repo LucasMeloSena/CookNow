@@ -1,4 +1,4 @@
-import { prisma } from "../infra/database";
+import { prisma } from "../infra/database/database";
 import { Upload } from "../interfaces/upload.interface";
 import { UserRegister } from "../interfaces/user.interface";
 

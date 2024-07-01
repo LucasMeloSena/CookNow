@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { NextFunction, Request, Response } from "express";
-import { prisma } from "../infra/database";
+import { prisma } from "../infra/database/database";
 import {
   User,
   UserRegister,
@@ -312,7 +312,7 @@ export const authCodeController = async (req: Request, res: Response, next: Next
     });
 
     if (!conta) {
-      res.status(404).json({ message: "Nenhuma conta com este email foi encontrada" });
+      res.status(404).json({ message: "Nenhuma conta com este email foi encontrada!" });
     } else {
       await transporter.sendMail({
         from: `"Cook Now!" <${process.env.EMAIL_USER}>`,

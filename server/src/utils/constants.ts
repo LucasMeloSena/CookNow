@@ -42,5 +42,6 @@ export enum fileTypes {
 export enum returnMessage {
   register = "Usuário cadastrado com sucesso!",
   login = "Login efetudo com sucesso!",
-  searchById = "Usuário encontrado com sucesso!"
+  searchById = "Usuário encontrado com sucesso!",
+  email = "Email enviado com sucesso!",
 }

@@ -1,7 +1,7 @@
 import request from "supertest";
 import orchestrator from "../orchestrator";
 import { app } from "../../app";
-import { prisma } from "../../infra/database";
+import { prisma } from "../../infra/database/database";
 import { returnMessage } from "../../utils/constants";
 
 describe("Search User By Id Controller", () => {
@@ -31,30 +31,29 @@ describe("Search User By Id Controller", () => {
       senha: "123456",
     });
 
-    const response = await request(app).get("/user/").query({
-      id: loginResponse.body.user.id
-    }).set('Authorization', `Bearer ${loginResponse.body.token}`);
+    const response = await request(app)
+      .get("/user/")
+      .query({
+        id: loginResponse.body.user.id,
+      })
+      .set("Authorization", `Bearer ${loginResponse.body.token}`);
 
     expect(response.status).toBe(200);
     expect(response.body.message).toBe(returnMessage.searchById);
     expect(response.body).toHaveProperty("user");
-  })
+  });
 
-  it ("GET to /user/ should not be able to find an user without token", async () => {
+  it("GET to /user/ should not be able to find an user without token", async () => {
     const loginResponse = await request(app).post("/user/login").send({
       email: "johndoe@email.com",
       senha: "123456",
     });
 
     const response = await request(app).get("/user/").query({
-      id: loginResponse.body.user.id
-    })
+      id: loginResponse.body.user.id,
+    });
 
     expect(response.status).toBe(404);
     expect(response.body.message).toBe("Token não fornecido!");
-  })
-
-  // it ("GET to /user/ should not be able to find an user with wrong id", async () => {
-
-  // })
-})
+  });
+});
