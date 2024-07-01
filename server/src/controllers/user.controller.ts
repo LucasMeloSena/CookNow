@@ -23,6 +23,7 @@ import { generateToken, getExpirationDate } from "../utils/token";
 import { validarCampoExistenteUserSchema } from "../utils/validator";
 import { z } from "zod";
 import { transporter } from "../infra/email";
+import { returnMessage } from "../utils/constants";
 
 export const createUserController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -34,7 +35,7 @@ export const createUserController = async (req: Request, res: Response, next: Ne
       data: user,
     });
 
-    res.status(201).json({ message: "Usuário cadastrado com sucesso!" });
+    res.status(201).json({ message: returnMessage.register });
   } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar cadastrar o usuário! Por favor, tente novamente mais tarde!";
 
@@ -78,7 +79,7 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
     if (user && correctPass) {
       const token: string = generateToken(user);
       const expirationDate = getExpirationDate(token);
-      res.status(200).json({ message: "Login efetudo com sucesso!", user: user, token: token, expiresIn: expirationDate });
+      res.status(200).json({ message: returnMessage.login, user: user, token: token, expiresIn: expirationDate });
     }
   } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar realizar o login! Por favor, tente novamente mais tarde!";
@@ -112,7 +113,7 @@ export const searchUserByIdController = async (req: Request, res: Response, next
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado!" });
     } else {
-      return res.status(200).json({ message: "Usuário encontrado com sucesso!", user: user });
+      return res.status(200).json({ message: returnMessage.searchById, user: user });
     }
   } catch (err) {
     const msg: string = "Ocorreu um erro ao tentar encontrar o usuário! Por favor, tente novamente mais tarde!";

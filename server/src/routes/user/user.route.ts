@@ -15,8 +15,6 @@ import { verifyToken } from "../../utils/token";
 
 const userRoute = express.Router();
 
-// limite de tentativas de login
-
 userRoute.post(userPath.getUser, loginUserController);
 userRoute.post(userPath.createUser, createUserController);
 userRoute.post(userPath.authCode, authCodeController);

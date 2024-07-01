@@ -1,7 +1,8 @@
 import request from "supertest";
-import { app } from "../../app";
 import orchestrator from "../orchestrator";
+import { app } from "../../app";
 import { prisma } from "../../infra/database";
+import { returnMessage } from "../../utils/constants";
 
 describe("Create User Controller", () => {
   beforeAll(async () => {
@@ -24,6 +25,7 @@ describe("Create User Controller", () => {
       dt_cadastro: new Date().toISOString(),
       dt_atualizacao: new Date().toISOString(),
     });
+    expect(response.body.message).toBe(returnMessage.register)
     expect(response.status).toBe(201);
   });
 
@@ -48,5 +50,20 @@ describe("Create User Controller", () => {
       dt_atualizacao: new Date().toISOString(),
     });
     expect(response.status).toBe(500);
+    expect(response.body.message).toContain("já está cadastrado!");
+  });
+
+  it("POST to /user/register should not be able to create user with wrong data", async () => {
+    const response = await request(app).post("/user/register").send({
+      nome: "",
+      email: "email",
+      celular: "(31) 9 0000-",
+      img_profile: "",
+      senha: "",
+      dt_cadastro: "",
+      dt_atualizacao: "",
+    });
+    expect(response.status).toBe(500);
+    expect(response.body.message).toContain("inválid");
   });
 });

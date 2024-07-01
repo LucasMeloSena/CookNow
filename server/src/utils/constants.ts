@@ -38,3 +38,9 @@ export enum fileTypes {
   jpeg = ".jpeg",
   png = ".png",
 }
+
+export enum returnMessage {
+  register = "Usuário cadastrado com sucesso!",
+  login = "Login efetudo com sucesso!",
+  searchById = "Usuário encontrado com sucesso!"
+}
