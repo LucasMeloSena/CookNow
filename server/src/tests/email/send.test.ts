@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { authCodeController } from "../../controllers/user.controller";
 import { prisma } from "../../infra/database/database";
-import { returnMessage } from "../../utils/constants";
+import { userReturnMessage } from "../../utils/constants";
 
 jest.mock("nodemailer", () => {
   const sendMailMock = jest.fn().mockResolvedValue("Email sent");
@@ -12,7 +12,7 @@ jest.mock("nodemailer", () => {
   };
 });
 
-describe("Send Email To Get Auth Code Controller", () => {
+describe("Send Email To Get Auth Code", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: NextFunction;
@@ -34,7 +34,7 @@ describe("Send Email To Get Auth Code Controller", () => {
     jest.clearAllMocks();
   });
 
-  it("POST to /auth/pass should return 200", async () => {
+  it("POST to user/auth/pass should return 200", async () => {
     prisma.user.findUnique = jest.fn().mockResolvedValue({
       id: "1",
       nome: "Test User",
@@ -49,27 +49,27 @@ describe("Send Email To Get Auth Code Controller", () => {
     await authCodeController(req as Request, res as Response, next);
 
     expect(prisma.user.findUnique).toHaveBeenCalledWith({
-      where: { email: 'test@example.com' },
+      where: { email: "test@example.com" },
     });
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
-      message: returnMessage.email,
+      message: userReturnMessage.email,
       code: expect.any(String),
       id: expect.any(String),
     });
   });
 
-  it("POST to auth/pass should not be able to send an email with invalid user", async () => {
+  it("POST to user/auth/pass should not be able to send an email with invalid user", async () => {
     prisma.user.findUnique = jest.fn().mockResolvedValue(null);
 
     await authCodeController(req as Request, res as Response, next);
 
     expect(prisma.user.findUnique).toHaveBeenCalledWith({
-      where: { email: 'test@example.com' },
+      where: { email: "test@example.com" },
     });
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({
       message: "Nenhuma conta com este email foi encontrada!",
     });
-  })
+  });
 });

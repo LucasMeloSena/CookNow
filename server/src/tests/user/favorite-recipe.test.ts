@@ -4,7 +4,7 @@ import { app } from "../../app";
 import { prisma } from "../../infra/database/database";
 import { userReturnMessage } from "../../utils/constants";
 
-describe("Search User By Id", () => {
+describe("Favorite Recipe", () => {
   beforeAll(async () => {
     await orchestrator.waitForAllServices();
     await prisma.user_recipe.deleteMany();
@@ -15,7 +15,7 @@ describe("Search User By Id", () => {
     await prisma.$disconnect();
   });
 
-  it("GET to /user/ should return 200", async () => {
+  it("POST to user/favorite/recipe should return 201", async () => {
     await request(app).post("/user/register").send({
       nome: "John Doe",
       email: "johndoe@email.com",
@@ -32,28 +32,47 @@ describe("Search User By Id", () => {
     });
 
     const response = await request(app)
-      .get("/user/")
-      .query({
-        id: loginResponse.body.user.id,
+      .post("/user/favorite/recipe")
+      .send({
+        userId: loginResponse.body.user.id,
+        recipeId: 1,
       })
       .set("Authorization", `Bearer ${loginResponse.body.token}`);
 
-    expect(response.status).toBe(200);
-    expect(response.body.message).toBe(userReturnMessage.searchById);
-    expect(response.body).toHaveProperty("user");
+    expect(response.status).toBe(201);
+    expect(response.body.message).toBe(userReturnMessage.favoriteRecipe);
   });
 
-  it("GET to /user/ should not be able to find an user without token", async () => {
+  it("POST to user/favorite/recipe should not be able to complete the action without token", async () => {
     const loginResponse = await request(app).post("/user/login").send({
       email: "johndoe@email.com",
       senha: "123456",
     });
 
-    const response = await request(app).get("/user/").query({
-      id: loginResponse.body.user.id,
+    const response = await request(app).post("/user/favorite/recipe").send({
+      userId: loginResponse.body.user.id,
+      recipeId: 2,
     });
 
     expect(response.status).toBe(404);
     expect(response.body.message).toBe("Token não fornecido!");
+  });
+
+  it("POST to user/favorite/recipe should not be able favorite a recipe already favorited", async () => {
+    const loginResponse = await request(app).post("/user/login").send({
+      email: "johndoe@email.com",
+      senha: "123456",
+    });
+
+    const response = await request(app)
+      .post("/user/favorite/recipe")
+      .send({
+        userId: loginResponse.body.user.id,
+        recipeId: 1,
+      })
+      .set("Authorization", `Bearer ${loginResponse.body.token}`);
+
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe("Esta receita já está como favorita no seu usuário!");
   });
 });

@@ -2,13 +2,13 @@ import request from "supertest";
 import orchestrator from "../orchestrator";
 import { app } from "../../app";
 import { prisma } from "../../infra/database/database";
-import { returnMessage } from "../../utils/constants";
+import { userReturnMessage } from "../../utils/constants";
 
-describe("Login User Controller", () => {
+describe("Login User", () => {
   beforeAll(async () => {
     await orchestrator.waitForAllServices();
-    await prisma.user.deleteMany();
     await prisma.user_recipe.deleteMany();
+    await prisma.user.deleteMany();
   });
 
   afterAll(async () => {
@@ -31,7 +31,7 @@ describe("Login User Controller", () => {
       senha: "123456",
     });
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe(returnMessage.login);
+    expect(response.body.message).toBe(userReturnMessage.login);
     expect(response.body).toHaveProperty("user");
     expect(response.body).toHaveProperty("token");
     expect(response.body).toHaveProperty("expiresIn");

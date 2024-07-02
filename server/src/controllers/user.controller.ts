@@ -23,7 +23,7 @@ import { generateToken, getExpirationDate } from "../utils/token";
 import { validarCampoExistenteUserSchema } from "../utils/validator";
 import { z } from "zod";
 import { transporter } from "../infra/email";
-import { returnMessage } from "../utils/constants";
+import { userReturnMessage } from "../utils/constants";
 
 export const createUserController = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,7 +35,7 @@ export const createUserController = async (req: Request, res: Response, next: Ne
       data: user,
     });
 
-    res.status(201).json({ message: returnMessage.register });
+    res.status(201).json({ message: userReturnMessage.register });
   } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar cadastrar o usuário! Por favor, tente novamente mais tarde!";
 
@@ -79,7 +79,7 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
     if (user && correctPass) {
       const token: string = generateToken(user);
       const expirationDate = getExpirationDate(token);
-      res.status(200).json({ message: returnMessage.login, user: user, token: token, expiresIn: expirationDate });
+      res.status(200).json({ message: userReturnMessage.login, user: user, token: token, expiresIn: expirationDate });
     }
   } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar realizar o login! Por favor, tente novamente mais tarde!";
@@ -113,7 +113,7 @@ export const searchUserByIdController = async (req: Request, res: Response, next
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado!" });
     } else {
-      return res.status(200).json({ message: returnMessage.searchById, user: user });
+      return res.status(200).json({ message: userReturnMessage.searchById, user: user });
     }
   } catch (err) {
     const msg: string = "Ocorreu um erro ao tentar encontrar o usuário! Por favor, tente novamente mais tarde!";
@@ -158,7 +158,7 @@ export const favoriteUserRecipeController = async (req: Request, res: Response, 
       },
     });
 
-    return res.status(201).json({ message: "Receita favoritada com sucesso!" });
+    return res.status(201).json({ message: userReturnMessage.favoriteRecipe });
   } catch (err) {
     const msg: string = "Ocorreu um erro ao tentar favoritar esta receita! Por favor, tente novamente mais tarde!";
     const errMessage: string = (err as Error).message ?? msg;
@@ -194,7 +194,7 @@ export const searchFavoriteUserRecipesController = async (req: Request, res: Res
       return res.status(404).json({ message: "Receitas não encontradas!" });
     } else {
       const recipesId: number[] = userFavoriteUserRecipes.map((item) => item.recipeId);
-      res.status(200).json({ message: "Dados encontrados com sucesso!", recipes: recipesId });
+      res.status(200).json({ message: userReturnMessage.searchFavoriteRecipes, recipes: recipesId });
     }
   } catch (err) {
     const msg: string = "Ocorreu um erro ao tentar localizar as receitas! Por favor, tente novamente mais tarde!";
@@ -222,6 +222,17 @@ export const deleteFavoriteUserRecipeController = async (req: Request, res: Resp
   try {
     const userRecipe: UserRecipe = createUserRecipeSchema.parse(req.body);
 
+    const recipes = await prisma.user_recipe.findMany({
+      where: {
+        userId: userRecipe.userId,
+        recipeId: userRecipe.recipeId,
+      },
+    });
+
+    if (recipes.length == 0) {
+      return res.status(404).json({ message: "Não é possível remover uma receita que não está nos seus favoritos!" });
+    }
+
     await prisma.user_recipe.deleteMany({
       where: {
         userId: userRecipe.userId,
@@ -229,7 +240,7 @@ export const deleteFavoriteUserRecipeController = async (req: Request, res: Resp
       },
     });
 
-    return res.status(201).json({ message: "Receita removida dos favoritos com sucesso!" });
+    return res.status(200).json({ message: userReturnMessage.deleteFavoriteRecipe });
   } catch (err) {
     const msg: string = "Ocorreu um erro ao tentar remover as receitas dos favoritos! Por favor, tente novamente mais tarde!";
     const errMessage: string = (err as Error).message ?? msg;
@@ -262,6 +273,10 @@ export const updateUserController = async (req: Request, res: Response, next: Ne
       },
     });
 
+    if (!userInfo) {
+      return res.status(404).json({message: "Usuário não encontrado!"})
+    }
+
     if (userInfo?.senha != user.senha) {
       user.senha = await cryptPass(user.senha);
     }
@@ -280,7 +295,7 @@ export const updateUserController = async (req: Request, res: Response, next: Ne
       },
     });
 
-    res.status(201).json({ message: "Usuário atualizado com sucesso!", user: userInfo });
+    res.status(200).json({ message: userReturnMessage.updateUser, user: userInfo });
   } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar atualizar o usuário! Por favor, tente novamente mais tarde!";
 
@@ -323,7 +338,7 @@ export const authCodeController = async (req: Request, res: Response, next: Next
       });
 
       res.status(200).json({
-        message: "Email enviado com sucesso!",
+        message: userReturnMessage.email,
         code: codigo,
         id: conta.id,
       });
@@ -353,7 +368,7 @@ export const updateUserPasswordController = async (req: Request, res: Response, 
     user.password = await cryptPass(user.password);
 
     if (user.token != process.env.TOKEN) {
-      res.status(404).json({ message: "Token inválido!" });
+      return res.status(404).json({ message: "Token inválido!" });
     }
 
     await prisma.user.update({
@@ -366,7 +381,7 @@ export const updateUserPasswordController = async (req: Request, res: Response, 
       },
     });
 
-    res.status(200).json({ message: "Senha do usuário atualizada com sucesso!" });
+    res.status(200).json({ message: userReturnMessage.updatePass });
   } catch (err) {
     const errMessage: string = (err as Error).message ?? "Ocorreu um erro ao tentar atualizar o usuário! Por favor, tente novamente mais tarde!";
 

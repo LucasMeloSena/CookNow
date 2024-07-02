@@ -4,7 +4,7 @@ import { app } from "../../app";
 import { prisma } from "../../infra/database/database";
 import { userReturnMessage } from "../../utils/constants";
 
-describe("Search User By Id", () => {
+describe("Update User Password", () => {
   beforeAll(async () => {
     await orchestrator.waitForAllServices();
     await prisma.user_recipe.deleteMany();
@@ -15,7 +15,7 @@ describe("Search User By Id", () => {
     await prisma.$disconnect();
   });
 
-  it("GET to /user/ should return 200", async () => {
+  it("POST to user/update/pass should return 200", async () => {
     await request(app).post("/user/register").send({
       nome: "John Doe",
       email: "johndoe@email.com",
@@ -31,29 +31,31 @@ describe("Search User By Id", () => {
       senha: "123456",
     });
 
-    const response = await request(app)
-      .get("/user/")
-      .query({
-        id: loginResponse.body.user.id,
-      })
-      .set("Authorization", `Bearer ${loginResponse.body.token}`);
-
-    expect(response.status).toBe(200);
-    expect(response.body.message).toBe(userReturnMessage.searchById);
-    expect(response.body).toHaveProperty("user");
-  });
-
-  it("GET to /user/ should not be able to find an user without token", async () => {
-    const loginResponse = await request(app).post("/user/login").send({
-      email: "johndoe@email.com",
-      senha: "123456",
+    const response = await request(app).post("/user/update/pass").send({
+      id: loginResponse.body.user.id,
+      password: "12345678",
+      dt_atualizacao: new Date().toISOString(),
+      token: process.env.TOKEN,
     });
 
-    const response = await request(app).get("/user/").query({
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe(userReturnMessage.updatePass);
+  });
+
+  it("POST to user/update/pass should not be able to update user password with wrong token", async () => {
+    const loginResponse = await request(app).post("/user/login").send({
+      email: "johndoe@email.com",
+      senha: "12345678",
+    });
+
+    const response = await request(app).post("/user/update/pass").send({
       id: loginResponse.body.user.id,
+      password: loginResponse.body.user.senha,
+      dt_atualizacao: new Date().toISOString(),
+      token: "AnotherTokenWithWrongData",
     });
 
     expect(response.status).toBe(404);
-    expect(response.body.message).toBe("Token não fornecido!");
+    expect(response.body.message).toBe("Token inválido!");
   });
 });
