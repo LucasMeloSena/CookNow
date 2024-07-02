@@ -48,5 +48,11 @@ export enum userReturnMessage {
   favoriteRecipe = "Receita favoritada com sucesso!",
   searchFavoriteRecipes = "Receitas encontradas com sucesso!",
   deleteFavoriteRecipe = "Receita removida dos favoritos com sucesso!",
-  updateUser = "Usuário atualizado com sucesso!"
+  updateUser = "Usuário atualizado com sucesso!",
+}
+
+export enum uploadReturnMessage {
+  upload = "Upload de imagem realizado com sucesso!",
+  delete = "Imagem excluída com sucesso!",
+  update = "Imagem atualizada com sucesso!"
 }

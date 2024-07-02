@@ -32,48 +32,54 @@ describe("Update User", () => {
       senha: "123456",
     });
 
-    const updateResponse = await request(app).put("/user/update").send({
-      id: loginResponse.body.user.id,
-      nome: "John Doe II",
-      email: "johndoe2@email.com",
-      celular: "(31) 9 0000-0001",
-      img_profile: loginResponse.body.user.img_profile,
-      senha: '12345678',
-      dt_atualizacao: new Date().toISOString(),
-    }).set("Authorization", `Bearer ${loginResponse.body.token}`);
+    const updateResponse = await request(app)
+      .put("/user/update")
+      .send({
+        id: loginResponse.body.user.id,
+        nome: "John Doe II",
+        email: "johndoe2@email.com",
+        celular: "(31) 9 0000-0001",
+        img_profile: loginResponse.body.user.img_profile,
+        senha: "12345678",
+        dt_atualizacao: new Date().toISOString(),
+      })
+      .set("Authorization", `Bearer ${loginResponse.body.token}`);
 
-    expect(updateResponse.status).toBe(200)
-    expect(updateResponse.body.message).toBe(userReturnMessage.updateUser)
-    expect(updateResponse.body).toHaveProperty("user")
-  })
+    expect(updateResponse.status).toBe(200);
+    expect(updateResponse.body.message).toBe(userReturnMessage.updateUser);
+    expect(updateResponse.body).toHaveProperty("user");
+  });
 
   it("PUT to /user/update should not be able to update a not available user", async () => {
     const loginResponse = await request(app).post("/user/login").send({
       email: "johndoe2@email.com",
       senha: "12345678",
     });
-    expect(loginResponse.status).toBe(200)
+    expect(loginResponse.status).toBe(200);
 
-    const response = await request(app).put("/user/update").send({
-      id: new ObjectId().toString(),
-      nome: "John Doe II",
-      email: "johndoe2@email.com",
-      celular: "(31) 9 0000-0001",
-      img_profile: 'https://imagemvalida.com.br',
-      senha: '12345678',
-      dt_atualizacao: new Date().toISOString(),
-    }).set("Authorization", `Bearer ${loginResponse.body.token}`);
+    const response = await request(app)
+      .put("/user/update")
+      .send({
+        id: new ObjectId().toString(),
+        nome: "John Doe II",
+        email: "johndoe2@email.com",
+        celular: "(31) 9 0000-0001",
+        img_profile: "https://imagemvalida.com.br",
+        senha: "12345678",
+        dt_atualizacao: new Date().toISOString(),
+      })
+      .set("Authorization", `Bearer ${loginResponse.body.token}`);
 
-    expect(response.status).toBe(404)
-    expect(response.body.message).toBe("Usuário não encontrado!")
-  })
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe("Usuário não encontrado!");
+  });
 
   it("PUT to /user/update should not be able to update user data without token", async () => {
     const loginResponse = await request(app).post("/user/login").send({
       email: "johndoe2@email.com",
       senha: "12345678",
     });
-    expect(loginResponse.status).toBe(200)
+    expect(loginResponse.status).toBe(200);
 
     const response = await request(app).put("/user/update").send({
       id: loginResponse.body.user.id,
@@ -81,11 +87,11 @@ describe("Update User", () => {
       email: "johndoe2@email.com",
       celular: "(31) 9 0000-0001",
       img_profile: loginResponse.body.user.img_profile,
-      senha: '12345678',
+      senha: "12345678",
       dt_atualizacao: new Date().toISOString(),
-    })
+    });
 
-    expect(response.status).toBe(404)
-    expect(response.body.message).toBe("Token não fornecido!")
-  })
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe("Token não fornecido!");
+  });
 });

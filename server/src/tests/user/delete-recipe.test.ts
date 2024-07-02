@@ -64,10 +64,10 @@ describe("Delete Favorite Recipe", () => {
         recipeId: 1,
       })
       .set("Authorization", `Bearer ${loginResponse.body.token}`);
-    
-    expect(response.status).toBe(404)
-    expect(response.body.message).toBe("Não é possível remover uma receita que não está nos seus favoritos!")
-  })
+
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe("Não é possível remover uma receita que não está nos seus favoritos!");
+  });
 
   it("DELETE to /user/favorite/recipe should not be able to remove without token", async () => {
     const loginResponse = await request(app).post("/user/login").send({
@@ -83,12 +83,10 @@ describe("Delete Favorite Recipe", () => {
       })
       .set("Authorization", `Bearer ${loginResponse.body.token}`);
 
-    const response = await request(app)
-      .delete("/user/favorite/recipe")
-      .send({
-        userId: loginResponse.body.user.id,
-        recipeId: 1,
-      })
+    const response = await request(app).delete("/user/favorite/recipe").send({
+      userId: loginResponse.body.user.id,
+      recipeId: 1,
+    });
 
     expect(response.status).toBe(404);
     expect(response.body.message).toBe("Token não fornecido!");
