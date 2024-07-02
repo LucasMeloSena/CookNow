@@ -39,9 +39,14 @@ export enum fileTypes {
   png = ".png",
 }
 
-export enum returnMessage {
+export enum userReturnMessage {
   register = "Usuário cadastrado com sucesso!",
   login = "Login efetudo com sucesso!",
   searchById = "Usuário encontrado com sucesso!",
   email = "Email enviado com sucesso!",
+  updatePass = "Senha do usuário atualizada com sucesso!",
+  favoriteRecipe = "Receita favoritada com sucesso!",
+  searchFavoriteRecipes = "Receitas encontradas com sucesso!",
+  deleteFavoriteRecipe = "Receita removida dos favoritos com sucesso!",
+  updateUser = "Usuário atualizado com sucesso!"
 }

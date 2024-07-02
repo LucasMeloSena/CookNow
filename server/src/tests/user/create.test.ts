@@ -2,13 +2,13 @@ import request from "supertest";
 import orchestrator from "../orchestrator";
 import { app } from "../../app";
 import { prisma } from "../../infra/database/database";
-import { returnMessage } from "../../utils/constants";
+import { userReturnMessage } from "../../utils/constants";
 
-describe("Create User Controller", () => {
+describe("Create User", () => {
   beforeAll(async () => {
     await orchestrator.waitForAllServices();
-    await prisma.user.deleteMany();
     await prisma.user_recipe.deleteMany();
+    await prisma.user.deleteMany();
   });
 
   afterAll(async () => {
@@ -25,7 +25,7 @@ describe("Create User Controller", () => {
       dt_cadastro: new Date().toISOString(),
       dt_atualizacao: new Date().toISOString(),
     });
-    expect(response.body.message).toBe(returnMessage.register);
+    expect(response.body.message).toBe(userReturnMessage.register);
     expect(response.status).toBe(201);
   });
 
