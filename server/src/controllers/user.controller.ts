@@ -274,7 +274,7 @@ export const updateUserController = async (req: Request, res: Response, next: Ne
     });
 
     if (!userInfo) {
-      return res.status(404).json({message: "Usuário não encontrado!"})
+      return res.status(404).json({ message: "Usuário não encontrado!" });
     }
 
     if (userInfo?.senha != user.senha) {
