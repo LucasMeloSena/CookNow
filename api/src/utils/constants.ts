@@ -13,6 +13,10 @@ export enum ingredientesPath {
   getIngredienteById = "/ingrediente/:id",
 }
 
+export enum migrationsPath {
+  action = "/",
+}
+
 export const defaultPrismaQuery = {
   modo_preparo: {
     select: {

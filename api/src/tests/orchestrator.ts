@@ -2,7 +2,7 @@ import retry from "async-retry";
 
 async function waitForAllServices() {
   const fetchStatusPage = async () => {
-    const url = "http://localhost:3001/";
+    const url = "http://localhost:3002/";
     try {
       const response = await fetch(url);
       if (!response.ok) {

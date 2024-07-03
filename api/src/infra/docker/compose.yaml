@@ -1,0 +1,15 @@
+services:
+  postgres:
+    container_name: "postgres-dev-cooknow-api"
+    image: bitnami/postgresql:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=cooknow_api
+    volumes:
+      - portfolio_pg_data:/bitnami/postgresql
+
+volumes:
+  portfolio_pg_data:

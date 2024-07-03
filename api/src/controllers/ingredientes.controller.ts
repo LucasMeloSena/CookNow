@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { prisma } from "../infra/database";
+import { prisma } from "../infra/database/database";
 import { Id, createIdSchema } from "../interfaces/common";
 import { ZodError } from "zod";
 
