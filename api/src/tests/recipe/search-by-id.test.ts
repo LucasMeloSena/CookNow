@@ -8,7 +8,7 @@ describe("Search Recipe By Id", () => {
   });
 
   it("GET to /v1/recipe/:id should return 200", async () => {
-    const response = await request(app).get("/v1/recipe/1")
+    const response = await request(app).get("/v1/recipe/1");
 
     expect(response.status).toBe(200);
     expect(response.body.recipe).toHaveProperty("id");
@@ -28,8 +28,8 @@ describe("Search Recipe By Id", () => {
   });
 
   it("GET to /v1/recipe/:id should return error with invalid id", async () => {
-    const response = await request(app).get("/v1/recipe/999")
-    expect(response.status).toBe(404)
-    expect(response.body.message).toBe("Não existe uma receita com este id!")
-  })
+    const response = await request(app).get("/v1/recipe/999");
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe("Não existe uma receita com este id!");
+  });
 });

@@ -8,7 +8,7 @@ describe("Search Featured Recipes", () => {
   });
 
   it("GET to /v1/recipes/destaques/ should return 200", async () => {
-    const response = await request(app).get("/v1/recipes/destaques/")
+    const response = await request(app).get("/v1/recipes/destaques/");
 
     if (response.body.recipes && response.body.recipes[0].avaliacao == 5) {
       expect(response.status).toBe(200);
@@ -26,10 +26,9 @@ describe("Search Featured Recipes", () => {
       expect(response.body.recipes[0]).toHaveProperty("categoria");
       expect(response.body.recipes[0].modo_preparo.length).toBeGreaterThan(0);
       expect(response.body.recipes[0].ingredientes.length).toBeGreaterThan(0);
-    }
-    else {
-      expect(response.status).toBe(404)
-      expect(response.body.message).toBe("Não foi encontrada nenhuma receita destaque!")
+    } else {
+      expect(response.status).toBe(404);
+      expect(response.body.message).toBe("Não foi encontrada nenhuma receita destaque!");
     }
   });
 });

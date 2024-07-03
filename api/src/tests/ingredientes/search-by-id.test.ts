@@ -19,6 +19,6 @@ describe("Search Ingredient By Id", () => {
     const response = await request(app).get("/v1/ingrediente/999");
 
     expect(response.status).toBe(404);
-    expect(response.body.message).toBe("Nenhum ingrediente com este id foi encontrado!")
-  })
+    expect(response.body.message).toBe("Nenhum ingrediente com este id foi encontrado!");
+  });
 });

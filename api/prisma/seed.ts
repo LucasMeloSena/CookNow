@@ -3,9 +3,9 @@ import { prisma } from "../src/infra/database/database";
 async function seed() {
   await prisma.categoria.create({
     data: {
-      nome: "Salgado"
-    }
-  })
+      nome: "Salgado",
+    },
+  });
 
   await prisma.receita.create({
     data: {

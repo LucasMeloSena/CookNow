@@ -8,7 +8,7 @@ describe("Search Recipe By Location", () => {
   });
 
   it("GET to /v1/recipes/location/:location should return 200", async () => {
-    const response = await request(app).get("/v1/recipes/location/Brasil")
+    const response = await request(app).get("/v1/recipes/location/Brasil");
 
     expect(response.status).toBe(200);
     expect(response.body.recipes[0]).toHaveProperty("id");
@@ -28,8 +28,8 @@ describe("Search Recipe By Location", () => {
   });
 
   it("GET to /v1/recipes/location/:location should return error with invalid location", async () => {
-    const response = await request(app).get("/v1/recipes/location/Unavailbale")
-    expect(response.status).toBe(404)
-    expect(response.body.message).toBe("Não foi encontrada nenhuma receita que tem origem nesta localidade!")
-  })
+    const response = await request(app).get("/v1/recipes/location/Unavailbale");
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe("Não foi encontrada nenhuma receita que tem origem nesta localidade!");
+  });
 });

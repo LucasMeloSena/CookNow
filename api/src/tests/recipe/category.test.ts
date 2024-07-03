@@ -8,7 +8,7 @@ describe("Search Recipe By Category", () => {
   });
 
   it("GET to /v1/recipes/categoria/:categoria should return 200", async () => {
-    const response = await request(app).get("/v1/recipes/categoria/Salgado")
+    const response = await request(app).get("/v1/recipes/categoria/Salgado");
 
     expect(response.status).toBe(200);
     expect(response.body.recipes[0]).toHaveProperty("id");
@@ -28,8 +28,8 @@ describe("Search Recipe By Category", () => {
   });
 
   it("GET to /v1/recipes/categoria/:categoria should return error with invalid category", async () => {
-    const response = await request(app).get("/v1/recipes/categoria/Unavailbale")
-    expect(response.status).toBe(404)
-    expect(response.body.message).toBe("Nenhum receita com esta categoria foi encontrada!")
-  })
+    const response = await request(app).get("/v1/recipes/categoria/Unavailbale");
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe("Nenhum receita com esta categoria foi encontrada!");
+  });
 });

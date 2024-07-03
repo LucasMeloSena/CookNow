@@ -1,4 +1,5 @@
 import retry from "async-retry";
+import { MigrationStatus } from "../controllers/migrations.controller";
 
 async function waitForAllServices() {
   const fetchStatusPage = async () => {

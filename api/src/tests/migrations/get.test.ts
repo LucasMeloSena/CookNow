@@ -17,6 +17,6 @@ test("GET to /api/v1/migrations should return 200", async () => {
   expect(response.status).toEqual(200);
 
   const result = await response.json();
-  expect(result.status).toBe(MigrationStatus.Pending);
-  expect(result.message).toBe("Migrations pending...");
+  expect(result.status).toBe(MigrationStatus.Ok);
+  expect(result.message).toBe("Database schema is up to date");
 });
