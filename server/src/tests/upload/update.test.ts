@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { updateUserImageController, uploadUserImageController } from "../../controllers/upload.controller";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -11,7 +11,6 @@ jest.mock("firebase/auth");
 describe("Update File", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
-  let next: NextFunction;
 
   const email = process.env.FIREBASE_EMAIL;
   const pass = process.env.FIREBASE_SENHA;
@@ -33,7 +32,7 @@ describe("Update File", () => {
         filename: "file",
         encoding: "7bit",
         size: 1234,
-        stream: jest.fn() as any,
+        stream: jest.fn() as never,
         destination: "test",
         path: "./test.png",
       },
@@ -42,7 +41,6 @@ describe("Update File", () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    next = jest.fn();
 
     mockStorage.mockReturnValue({});
     mockRef.mockReturnValue({});
@@ -61,7 +59,7 @@ describe("Update File", () => {
   });
 
   it("POST to upload/update/user/image should return 200", async () => {
-    await updateUserImageController(req as Request, res as Response, next);
+    await updateUserImageController(req as Request, res as Response);
 
     expect(mockRef).toHaveBeenCalledWith(expect.any(Object), expect.any(String));
     expect(mockSignIn).toHaveBeenCalledWith(auth, email, pass);
@@ -75,7 +73,7 @@ describe("Update File", () => {
   it("POST to upload/update/user/image should not be able to upload file with wrong login data", async () => {
     req.body.email = "wrongemail@email.com";
 
-    await uploadUserImageController(req as Request, res as Response, next);
+    await uploadUserImageController(req as Request, res as Response);
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ message: "Dados de autenticação inválidos!" });

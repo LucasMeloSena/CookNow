@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { authCodeController } from "../../controllers/user.controller";
 import { prisma } from "../../infra/database/database";
 import { userReturnMessage } from "../../utils/constants";
@@ -15,7 +15,6 @@ jest.mock("nodemailer", () => {
 describe("Send Email To Get Auth Code", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
-  let next: NextFunction;
 
   beforeEach(() => {
     req = {
@@ -27,7 +26,6 @@ describe("Send Email To Get Auth Code", () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    next = jest.fn();
   });
 
   afterEach(() => {
@@ -46,7 +44,7 @@ describe("Send Email To Get Auth Code", () => {
       dt_atualizacao: new Date().toISOString(),
     });
 
-    await authCodeController(req as Request, res as Response, next);
+    await authCodeController(req as Request, res as Response);
 
     expect(prisma.user.findUnique).toHaveBeenCalledWith({
       where: { email: "test@example.com" },
@@ -62,7 +60,7 @@ describe("Send Email To Get Auth Code", () => {
   it("POST to user/auth/pass should not be able to send an email with invalid user", async () => {
     prisma.user.findUnique = jest.fn().mockResolvedValue(null);
 
-    await authCodeController(req as Request, res as Response, next);
+    await authCodeController(req as Request, res as Response);
 
     expect(prisma.user.findUnique).toHaveBeenCalledWith({
       where: { email: "test@example.com" },

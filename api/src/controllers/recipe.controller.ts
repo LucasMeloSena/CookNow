@@ -5,7 +5,7 @@ import { ZodError } from "zod";
 import { formatRecipeArrayResult, formatRecipeObjectResult, defaultPrismaQuery } from "../utils/constants";
 import { createLocationSchema } from "../interfaces/recipe.interface";
 
-export const getRecipesController = async (req: Request, res: Response, next: NextFunction) => {
+export const getRecipesController = async (req: Request, res: Response) => {
   try {
     const receitas = await prisma.receita.findMany({
       include: defaultPrismaQuery,
@@ -24,7 +24,7 @@ export const getRecipesController = async (req: Request, res: Response, next: Ne
   }
 };
 
-export const getRecipeByIdController = async (req: Request, res: Response, next: NextFunction) => {
+export const getRecipeByIdController = async (req: Request, res: Response) => {
   try {
     const recipeId: Id = createIdSchema.parse(req.params);
 
@@ -59,7 +59,7 @@ export const getRecipeByIdController = async (req: Request, res: Response, next:
   }
 };
 
-export const getRecipesByCategoryController = async (req: Request, res: Response, next: NextFunction) => {
+export const getRecipesByCategoryController = async (req: Request, res: Response) => {
   try {
     const recipeCategory: Category = createCategorySchema.parse(req.params);
 
@@ -99,7 +99,7 @@ export const getRecipesByCategoryController = async (req: Request, res: Response
   }
 };
 
-export const getRecipesByLocationController = async (req: Request, res: Response, next: NextFunction) => {
+export const getRecipesByLocationController = async (req: Request, res: Response) => {
   try {
     const location = createLocationSchema.parse(req.params);
     const recipes = await prisma.receita.findMany({
@@ -135,7 +135,7 @@ export const getRecipesByLocationController = async (req: Request, res: Response
   }
 };
 
-export const getFeaturedRecipesController = async (req: Request, res: Response, next: NextFunction) => {
+export const getFeaturedRecipesController = async (req: Request, res: Response) => {
   try {
     const featuredRecipes = await prisma.receita.findMany({
       where: {

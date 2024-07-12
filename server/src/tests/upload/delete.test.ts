@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import orchestrator from "../orchestrator";
@@ -11,7 +11,6 @@ jest.mock("firebase/auth");
 describe("Delete File", () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
-  let next: NextFunction;
 
   const email = process.env.FIREBASE_EMAIL;
   const pass = process.env.FIREBASE_SENHA;
@@ -28,7 +27,6 @@ describe("Delete File", () => {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    next = jest.fn();
 
     mockStorage.mockReturnValue({});
     mockRef.mockReturnValue({});
@@ -45,7 +43,7 @@ describe("Delete File", () => {
   });
 
   it("DELETE to upload/user/image should return 200", async () => {
-    await removeUserImageController(req as Request, res as Response, next);
+    await removeUserImageController(req as Request, res as Response);
 
     expect(mockRef).toHaveBeenCalledWith(expect.any(Object), expect.any(String));
     expect(mockSignIn).toHaveBeenCalledWith(auth, email, pass);
@@ -57,7 +55,7 @@ describe("Delete File", () => {
   it("DELETE to upload/user/image should not be able to delete with wrong auth data", async () => {
     req.body.email = "wrongemail@email.com";
 
-    await removeUserImageController(req as Request, res as Response, next);
+    await removeUserImageController(req as Request, res as Response);
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ message: "Dados de autenticação inválidos!" });

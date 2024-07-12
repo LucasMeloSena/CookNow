@@ -1,10 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
 
-let firebaseConfig = {
+const firebaseConfig = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
   projectId: process.env.PROJECT_ID,
@@ -22,14 +22,11 @@ export enum userPath {
   getUserById = "/",
   authCode = "/auth/pass/",
   updatePass = "/update/pass/",
-  crateFavoriteRecipe = "/favorite/recipe/",
-  searchFavoriteRecipe = "/favorite/recipe/",
-  deleteFavoriteRecipe = "/favorite/recipe/",
+  favoriteRecipeOptions = "/favorite/recipe/",
 }
 
 export enum uploadPath {
-  uploadUserImage = "/user/image/",
-  removeUserImage = "/user/image/",
+  userImageControl = "/user/image/",
   updateUserImage = "/update/user/image/",
 }
 
@@ -54,5 +51,5 @@ export enum userReturnMessage {
 export enum uploadReturnMessage {
   upload = "Upload de imagem realizado com sucesso!",
   delete = "Imagem excluída com sucesso!",
-  update = "Imagem atualizada com sucesso!"
+  update = "Imagem atualizada com sucesso!",
 }

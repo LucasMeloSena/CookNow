@@ -4,8 +4,8 @@ import { ingredientesRoute } from "./routes/ingredientes.route";
 import { migrationsRoute } from "./routes/migrations.route";
 import cors from "cors";
 import swaggerDocs from "../swagger.json";
-const swaggerUI = require("swagger-ui-express");
-const dotenv = require("dotenv");
+import swaggerUI from 'swagger-ui-express'
+import dotenv from 'dotenv'
 dotenv.config();
 
 const app = express();
