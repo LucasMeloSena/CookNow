@@ -6,6 +6,11 @@ jobs:
   prettier:
     name: Prettier
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./server
+
     steps:
       - uses: actions/checkout@v4
 
@@ -20,6 +25,11 @@ jobs:
   eslint:
     name: Eslint
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./server
+
     steps:
       - uses: actions/checkout@v4
 
