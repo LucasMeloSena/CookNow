@@ -16,6 +16,7 @@ This project is an app of the user can see a lot of recipes and favorite then in
 * [PostgreSQL:](https://www.postgresql.org/) Open-source relational database with SQL compliance.
 * [Prisma ORM:](https://www.prisma.io/) ORM for Node.js and TypeScript for database interactions.
 * [Jest:](https://jestjs.io/pt-BR/) JavaScript testing framework for unit and integration tests.
+* [Continuous integration:](https://github.com/features/actions) Automates all software workflows
 
 ## 🔗 Integration
 You can see the API documentation <a href="https://cook-now.vercel.app/api-docs/"> here </a>
