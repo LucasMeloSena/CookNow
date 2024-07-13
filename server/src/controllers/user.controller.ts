@@ -1,5 +1,5 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { prisma } from "../infra/database/database";
 import {
   User,
@@ -25,7 +25,7 @@ import { z } from "zod";
 import { transporter } from "../infra/email";
 import { userReturnMessage } from "../utils/constants";
 
-export const createUserController = async (req: Request, res: Response, next: NextFunction) => {
+export const createUserController = async (req: Request, res: Response) => {
   try {
     const user: UserRegister = createUserRegisterShema.parse(req.body);
     await validarCampoExistenteUserSchema(user);
@@ -55,7 +55,7 @@ export const createUserController = async (req: Request, res: Response, next: Ne
   }
 };
 
-export const loginUserController = async (req: Request, res: Response, next: NextFunction) => {
+export const loginUserController = async (req: Request, res: Response) => {
   try {
     const userLogin: UserLogin = createUserLoginShema.parse(req.body);
     const user: User = await prisma.user.findUnique({
@@ -100,7 +100,7 @@ export const loginUserController = async (req: Request, res: Response, next: Nex
   }
 };
 
-export const searchUserByIdController = async (req: Request, res: Response, next: NextFunction) => {
+export const searchUserByIdController = async (req: Request, res: Response) => {
   try {
     const userId: UserId = createUserIdSchema.parse(req.query);
 
@@ -137,7 +137,7 @@ export const searchUserByIdController = async (req: Request, res: Response, next
   }
 };
 
-export const favoriteUserRecipeController = async (req: Request, res: Response, next: NextFunction) => {
+export const favoriteUserRecipeController = async (req: Request, res: Response) => {
   try {
     const userRecipe: UserRecipe = createUserRecipeSchema.parse(req.body);
 
@@ -181,7 +181,7 @@ export const favoriteUserRecipeController = async (req: Request, res: Response, 
   }
 };
 
-export const searchFavoriteUserRecipesController = async (req: Request, res: Response, next: NextFunction) => {
+export const searchFavoriteUserRecipesController = async (req: Request, res: Response) => {
   try {
     const userId: UserId = createUserIdSchema.parse(req.query);
 
@@ -218,7 +218,7 @@ export const searchFavoriteUserRecipesController = async (req: Request, res: Res
   }
 };
 
-export const deleteFavoriteUserRecipeController = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteFavoriteUserRecipeController = async (req: Request, res: Response) => {
   try {
     const userRecipe: UserRecipe = createUserRecipeSchema.parse(req.body);
 
@@ -263,7 +263,7 @@ export const deleteFavoriteUserRecipeController = async (req: Request, res: Resp
   }
 };
 
-export const updateUserController = async (req: Request, res: Response, next: NextFunction) => {
+export const updateUserController = async (req: Request, res: Response) => {
   try {
     const user: UserUpdate = createUserUpdateShema.parse(req.body);
 
@@ -315,7 +315,7 @@ export const updateUserController = async (req: Request, res: Response, next: Ne
   }
 };
 
-export const authCodeController = async (req: Request, res: Response, next: NextFunction) => {
+export const authCodeController = async (req: Request, res: Response) => {
   try {
     const user: UserEmail = createUserEmailSchema.parse(req.body);
     const codigo: string = generate4DigitCode();
@@ -362,7 +362,7 @@ export const authCodeController = async (req: Request, res: Response, next: Next
   }
 };
 
-export const updateUserPasswordController = async (req: Request, res: Response, next: NextFunction) => {
+export const updateUserPasswordController = async (req: Request, res: Response) => {
   try {
     const user: UserPass = createUserPassSchema.parse(req.body);
     user.password = await cryptPass(user.password);

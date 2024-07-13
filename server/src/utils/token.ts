@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../interfaces/user.interface";
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
 
 export const getExpirationDate = (token: string) => {
@@ -37,7 +37,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     return res.status(404).json({ message: "Token não fornecido!" });
   }
 
-  jwt.verify(token, key, (err, decoded) => {
+  jwt.verify(token, key, (err) => {
     if (err) {
       return res.status(403).json({ message: "Token inválido!" });
     }

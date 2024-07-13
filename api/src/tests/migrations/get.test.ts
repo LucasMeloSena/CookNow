@@ -1,5 +1,4 @@
 import { MigrationStatus } from "../../controllers/migrations.controller";
-import { prisma } from "../../infra/database/database";
 import orchestrator from "../orchestrator";
 
 beforeAll(async () => {

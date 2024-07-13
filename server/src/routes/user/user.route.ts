@@ -20,9 +20,9 @@ userRoute.post(userPath.createUser, createUserController);
 userRoute.post(userPath.authCode, authCodeController);
 userRoute.post(userPath.updatePass, updateUserPasswordController);
 userRoute.get(userPath.getUserById, verifyToken, searchUserByIdController);
-userRoute.post(userPath.crateFavoriteRecipe, verifyToken, favoriteUserRecipeController);
-userRoute.get(userPath.searchFavoriteRecipe, verifyToken, searchFavoriteUserRecipesController);
-userRoute.delete(userPath.deleteFavoriteRecipe, verifyToken, deleteFavoriteUserRecipeController);
+userRoute.post(userPath.favoriteRecipeOptions, verifyToken, favoriteUserRecipeController);
+userRoute.get(userPath.favoriteRecipeOptions, verifyToken, searchFavoriteUserRecipesController);
+userRoute.delete(userPath.favoriteRecipeOptions, verifyToken, deleteFavoriteUserRecipeController);
 userRoute.put(userPath.updateUser, verifyToken, updateUserController);
 
 export { userRoute };

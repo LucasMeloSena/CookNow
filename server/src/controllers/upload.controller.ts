@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Auth, File, UpdateFile, Upload, createAuthSchema, createFileSchema, createFileUpdateSchema } from "../interfaces/upload.interface";
@@ -6,10 +6,10 @@ import { validarUploadArquivo } from "../utils/validator";
 import { z } from "zod";
 import { auth, uploadReturnMessage } from "../utils/constants";
 import { FirebaseError } from "firebase/app";
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
 
-export const uploadUserImageController = async (req: Request, res: Response, next: NextFunction) => {
+export const uploadUserImageController = async (req: Request, res: Response) => {
   try {
     const authInfo: Auth = createAuthSchema.parse(req.body);
 
@@ -60,7 +60,7 @@ export const uploadUserImageController = async (req: Request, res: Response, nex
   }
 };
 
-export const removeUserImageController = async (req: Request, res: Response, next: NextFunction) => {
+export const removeUserImageController = async (req: Request, res: Response) => {
   try {
     const authInfo: Auth = createAuthSchema.parse(req.body);
     const file: File = createFileSchema.parse(req.body);
@@ -99,7 +99,7 @@ export const removeUserImageController = async (req: Request, res: Response, nex
   }
 };
 
-export const updateUserImageController = async (req: Request, res: Response, next: NextFunction) => {
+export const updateUserImageController = async (req: Request, res: Response) => {
   try {
     const authInfo: Auth = createAuthSchema.parse(req.body);
     const oldFile: UpdateFile = createFileUpdateSchema.parse(req.body);

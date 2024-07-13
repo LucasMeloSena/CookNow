@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { prisma } from "../infra/database/database";
 import { Id, createIdSchema } from "../interfaces/common";
 import { ZodError } from "zod";
 
-export const getIngredientesController = async (req: Request, res: Response, next: NextFunction) => {
+export const getIngredientesController = async (req: Request, res: Response) => {
   try {
     const ingredientes = await prisma.ingrediente.findMany();
     res.status(200).json({ ingredientes: ingredientes });
@@ -15,7 +15,7 @@ export const getIngredientesController = async (req: Request, res: Response, nex
   }
 };
 
-export const getIngredienteByIdController = async (req: Request, res: Response, next: NextFunction) => {
+export const getIngredienteByIdController = async (req: Request, res: Response) => {
   try {
     const infoIngrediente: Id = createIdSchema.parse(req.params);
     const ingrediente = await prisma.ingrediente.findUnique({

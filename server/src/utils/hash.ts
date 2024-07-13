@@ -1,5 +1,5 @@
 import bcryptjs from "bcryptjs";
-const dotenv = require("dotenv");
+import dotenv from "dotenv";
 dotenv.config();
 
 export const cryptPass = async (pass: string): Promise<string> => {
