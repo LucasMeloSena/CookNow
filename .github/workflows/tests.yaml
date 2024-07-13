@@ -3,8 +3,8 @@ name: Automated Tests
 on: pull_request
 
 jobs:
-  jest:
-    name: Jest Ubuntu
+  jest_server:
+    name: Jest Server
     runs-on: ubuntu-latest
 
     env:
@@ -23,11 +23,32 @@ jobs:
       EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
       TOKEN: ${{ secrets.TOKEN }}
 
-
-
     defaults:
       run:
         working-directory: ./server
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - run: npm test
+
+  jest_api:
+    name: Jest Api
+    runs-on: ubuntu-latest
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL_API }}
+      TOKEN: ${{ secrets.TOKEN_API }}
+
+    defaults:
+      run:
+        working-directory: ./api
 
     steps:
       - uses: actions/checkout@v4

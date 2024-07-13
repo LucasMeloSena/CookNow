@@ -3,8 +3,8 @@ name: Linting
 on: pull_request
 
 jobs:
-  prettier:
-    name: Prettier
+  prettier_server:
+    name: Prettier Server
     runs-on: ubuntu-latest
 
     defaults:
@@ -22,13 +22,51 @@ jobs:
 
       - run: npm run lint:prettier:check
 
-  eslint:
-    name: Eslint
+  eslint_server:
+    name: Eslint Server
     runs-on: ubuntu-latest
 
     defaults:
       run:
         working-directory: ./server
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - run: npm run lint:eslint:check
+
+  prettier_api:
+    name: Prettier Api
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - run: npm ci
+
+      - run: npm run lint:prettier:check
+
+  eslint_api:
+    name: Eslint Api
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./api
 
     steps:
       - uses: actions/checkout@v4
