@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "prisma generate && tsx watch ./src/server.ts",
+    "postinstall": "prisma generate",
+    "build": "tsx watch ./src/server.ts",
     "dev": "npm run services:up && npm run wait:mongodb && tsx watch ./src/server.ts",
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
