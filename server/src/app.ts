@@ -12,7 +12,7 @@ app.use("/upload", uploadRoute);
 
 app.get("/", (req: Request, res: Response) => {
   return res.status(200).json({
-    message: "Bem Vindo ao CookNow server!",
+    message: "Bem Vindo ao CookNow!",
   });
 });
 
